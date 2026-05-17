@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Project-generated data files
+projects/todo_data.json
+projects/expenses.csv
+projects/library.json
+12_file_handling/*.txt
+12_file_handling/*.csv
+00_setup/*.txt
+01_parichay/*.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
