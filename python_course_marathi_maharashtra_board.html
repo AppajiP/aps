@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>महाराष्ट्र राज्य मंडळासाठी Python कोर्स (मराठी)</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --accent: #0f766e;
+      --accent-soft: #e6fffb;
+      --border: #d1d5db;
+      --code-bg: #111827;
+      --code-text: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans Devanagari", "Mukta", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(1100px, 94%);
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .hero, section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, h4 { margin-top: 0; }
+    h1 { color: var(--accent); margin-bottom: 8px; }
+    h2 { color: #0f172a; border-left: 5px solid var(--accent); padding-left: 10px; }
+    h3 { color: #1d4ed8; margin-top: 14px; }
+    h4 { color: #374151; margin-bottom: 6px; }
+
+    p.lead { color: var(--muted); margin-top: 0; }
+
+    ul, ol { padding-left: 22px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--accent-soft);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fcfffe;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 12px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 8px 0;
+    }
+
+    code {
+      font-family: "Fira Code", Consolas, monospace;
+      font-size: 0.93rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #0f766e;
+      font-size: 0.86rem;
+      border: 1px solid #99f6e4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1>महाराष्ट्र राज्य मंडळासाठी Python कोर्स (मराठी)</h1>
+      <p class="lead">
+        महाराष्ट्र राज्य मंडळातील विद्यार्थ्यांसाठी (इयत्ता 11वी/12वी) Python चे मूलभूत ते प्रात्यक्षिक शिक्षण.
+        या कोर्समध्ये syntax चा अर्थ व उपयोग, प्रत्येक topic साठी hands-on lab, lab terms ची स्पष्टीकरणे,
+        आणि project-based practical labs समाविष्ट आहेत.
+      </p>
+      <span class="badge">School-Level Practical Course</span>
+    </header>
+
+    <section>
+      <h2>1) कोर्सचा उद्देश</h2>
+      <ul>
+        <li>Python syntax समजावून घेणे: <strong>Meaning + Usage</strong></li>
+        <li>प्रत्येक अध्यायानंतर <strong>Hands-on Lab</strong> करणे</li>
+        <li>लॅबमध्ये वापरलेल्या terms चा सोपा अर्थ शिकणे</li>
+        <li>लहान projects द्वारे प्रत्यक्ष समस्या सोडवणे</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2) पूर्वतयारी</h2>
+      <ul>
+        <li>Python 3 install केलेले असणे</li>
+        <li>Editor: IDLE / Thonny / VS Code</li>
+        <li>Keyboard typing ची सवय</li>
+        <li>मूलभूत इंग्रजी keywords ची ओळख (if, for, def, class)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3) Python Basic Syntax: अर्थ आणि वापर</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Syntax</th>
+            <th>अर्थ (Meaning)</th>
+            <th>वापर (Usage)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>print(x)</code></td><td>स्क्रीनवर आउटपुट दाखवणे</td><td>निकाल/माहिती दाखवण्यासाठी</td></tr>
+          <tr><td><code>input()</code></td><td>वापरकर्त्याकडून value घेणे</td><td>नाव, गुण, संख्या घेण्यासाठी</td></tr>
+          <tr><td><code># comment</code></td><td>स्पष्टीकरणासाठी न चालणारी ओळ</td><td>कोड नोट्स लिहिण्यासाठी</td></tr>
+          <tr><td><code>=</code></td><td>assignment operator</td><td>variable ला value देण्यासाठी</td></tr>
+          <tr><td><code>int(), float(), str()</code></td><td>type conversion</td><td>input रूपांतरासाठी</td></tr>
+          <tr><td><code>if / elif / else</code></td><td>निर्णय नियंत्रण</td><td>अटींवर आधारित output</td></tr>
+          <tr><td><code>for / while</code></td><td>looping (पुनरावृत्ती)</td><td>एकच काम अनेकदा चालवण्यासाठी</td></tr>
+          <tr><td><code>def ... return</code></td><td>function तयार करणे</td><td>पुनर्वापरयोग्य code</td></tr>
+          <tr><td><code>list, tuple, set, dict</code></td><td>data structures</td><td>डेटा साठवणे/प्रक्रिया</td></tr>
+          <tr><td><code>open(), with open()</code></td><td>file handling</td><td>data file मध्ये जतन करणे</td></tr>
+          <tr><td><code>try / except</code></td><td>error handling</td><td>program crash टाळणे</td></tr>
+          <tr><td><code>class</code></td><td>OOP blueprint</td><td>object-आधारित डिझाइन</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4) Topic-wise Hands-on Labs</h2>
+
+      <div class="grid">
+        <article class="card">
+          <h3>Lab 1: परिचय कार्यक्रम</h3>
+          <p><strong>Topic:</strong> <code>print()</code>, <code>input()</code>, comments</p>
+<pre><code>name = input("तुमचे नाव टाका: ")
+std = input("इयत्ता टाका: ")
+school = input("शाळेचे नाव टाका: ")
+
+print("नाव:", name)
+print("इयत्ता:", std)
+print("शाळा:", school)</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Interpreter:</strong> Python code चालवणारे साधन</li>
+            <li><strong>Statement:</strong> कोडमधील एक सूचना</li>
+            <li><strong>Prompt:</strong> <code>input()</code> मधील प्रश्न मजकूर</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 2: गुणपत्रिका</h3>
+          <p><strong>Topic:</strong> Variables, data types, conversion</p>
+<pre><code>name = input("नाव: ")
+m1 = int(input("गणित गुण: "))
+m2 = int(input("विज्ञान गुण: "))
+m3 = int(input("इंग्रजी गुण: "))
+
+total = m1 + m2 + m3
+avg = total / 3
+print(name, "एकूण:", total, "सरासरी:", avg)</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Variable:</strong> value ठेवण्याची जागा</li>
+            <li><strong>Data Type:</strong> <code>int</code>, <code>float</code>, <code>str</code></li>
+            <li><strong>Type Conversion:</strong> प्रकार बदलणे</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 3: Calculator</h3>
+          <p><strong>Topic:</strong> Operators</p>
+<pre><code>a = float(input("पहिली संख्या: "))
+b = float(input("दुसरी संख्या: "))
+print("बेरीज:", a + b)
+print("वजाबाकी:", a - b)
+print("गुणाकार:", a * b)
+print("भागाकार:", a / b)</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Operand:</strong> operator भोवती असलेल्या values</li>
+            <li><strong>Modulo:</strong> उरलेली बाकी (<code>%</code>)</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 4: Grade Finder</h3>
+          <p><strong>Topic:</strong> <code>if-elif-else</code></p>
+<pre><code>marks = int(input("गुण टाका: "))
+if marks >= 75:
+    print("Grade A")
+elif marks >= 60:
+    print("Grade B")
+elif marks >= 35:
+    print("Grade C")
+else:
+    print("नापास")</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Condition:</strong> True/False देणारी अट</li>
+            <li><strong>Branching:</strong> अटीवरून मार्ग बदलणे</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 5: पाढा Program</h3>
+          <p><strong>Topic:</strong> Loops</p>
+<pre><code>n = int(input("पाढा कोणता?: "))
+for i in range(1, 11):
+    print(n, "x", i, "=", n * i)</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Iteration:</strong> loop ची प्रत्येक फेरी</li>
+            <li><strong>Counter:</strong> मोजणी variable</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 6: String विश्लेषण</h3>
+          <p><strong>Topic:</strong> Strings</p>
+<pre><code>text = input("वाक्य टाका: ")
+print("लांबी:", len(text))
+print("Upper:", text.upper())
+print("Lower:", text.lower())
+print("पहिली 5 अक्षरे:", text[:5])</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Index:</strong> स्थान क्रमांक</li>
+            <li><strong>Slice:</strong> मजकूराचा भाग</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 7: Dictionary Student Record</h3>
+          <p><strong>Topic:</strong> Data structures</p>
+<pre><code>student = {}
+student["name"] = input("नाव: ")
+student["roll"] = int(input("रोल: "))
+student["marks"] = int(input("गुण: "))
+print(student)</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Key-Value:</strong> dictionary नोंद</li>
+            <li><strong>Mutable:</strong> बदलता येणारा डेटा प्रकार</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 8: Function वापर</h3>
+          <p><strong>Topic:</strong> Functions</p>
+<pre><code>def percentage(total, out_of):
+    return (total / out_of) * 100
+
+total = int(input("एकूण गुण: "))
+out_of = int(input("पूर्ण गुण: "))
+print("टक्केवारी:", percentage(total, out_of))</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Parameter:</strong> function define करताना input नाव</li>
+            <li><strong>Argument:</strong> function call मध्ये दिलेली value</li>
+            <li><strong>Return:</strong> function कडून आलेला निकाल</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 9: File Attendance</h3>
+          <p><strong>Topic:</strong> File handling</p>
+<pre><code>name = input("नाव: ")
+status = input("Present/Absent: ")
+with open("attendance.txt", "a", encoding="utf-8") as f:
+    f.write(name + " - " + status + "\n")
+print("नोंद पूर्ण")</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Append:</strong> फाईलच्या शेवटी भर घालणे</li>
+            <li><strong>Encoding:</strong> अक्षरांचे साठवण स्वरूप</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 10: Error-safe Division</h3>
+          <p><strong>Topic:</strong> Exception handling</p>
+<pre><code>try:
+    a = int(input("संख्या 1: "))
+    b = int(input("संख्या 2: "))
+    print("भागाकार:", a / b)
+except ValueError:
+    print("वैध संख्या टाका.")
+except ZeroDivisionError:
+    print("0 ने भागाकार होत नाही.")
+finally:
+    print("प्रक्रिया पूर्ण.")</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Exception:</strong> रनटाइम त्रुटी</li>
+            <li><strong>ZeroDivisionError:</strong> 0 ने भागाकार त्रुटी</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 11: OOP Student Class</h3>
+          <p><strong>Topic:</strong> Class आणि object</p>
+<pre><code>class Student:
+    def __init__(self, name, marks):
+        self.name = name
+        self.marks = marks
+
+    def show(self):
+        print(self.name, self.marks)
+
+s1 = Student("Rutuja", 87)
+s1.show()</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Class:</strong> object तयार करण्याचा साचा</li>
+            <li><strong>Object:</strong> class चे instance</li>
+            <li><strong>Attribute:</strong> object मधील data</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Lab 12: Random Guess</h3>
+          <p><strong>Topic:</strong> Modules</p>
+<pre><code>from random import randint
+num = randint(1, 10)
+guess = int(input("1 ते 10 अंदाज: "))
+if guess == num:
+    print("बरोबर!")
+else:
+    print("चुकले. योग्य:", num)</code></pre>
+          <h4>Terms:</h4>
+          <ul>
+            <li><strong>Module:</strong> वेगळा Python code file</li>
+            <li><strong>Import:</strong> module program मध्ये वापरणे</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>5) Projects with Practical Hands-on Labs</h2>
+
+      <article class="card">
+        <h3>Project 1: विद्यार्थी गुणपत्रिका व्यवस्थापन प्रणाली</h3>
+        <p><strong>उद्देश:</strong> नाव + 5 विषयांचे गुण घेऊन total, average, percentage, grade काढणे.</p>
+        <h4>Practical Steps</h4>
+        <ol>
+          <li><code>input()</code> वापरून नाव व 5 विषयांचे गुण घ्या</li>
+          <li>गुण <code>list</code> मध्ये साठवा</li>
+          <li><code>sum()</code> वापरून total काढा</li>
+          <li><code>def</code> function करून percentage काढा</li>
+          <li><code>if-elif-else</code> ने grade ठरवा</li>
+          <li>निकाल <code>report.txt</code> मध्ये save करा</li>
+        </ol>
+        <h4>Terms</h4>
+        <ul>
+          <li><strong>Validation:</strong> input योग्य आहे का तपासणे</li>
+          <li><strong>Business Logic:</strong> grade/percentage नियम</li>
+          <li><strong>Reusable Function:</strong> पुन्हा वापरता येणारे function</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Project 2: शाळा ग्रंथालय व्यवस्थापन (Mini LMS)</h3>
+        <p><strong>उद्देश:</strong> पुस्तक add, issue, return आणि उपलब्धता ट्रॅक करणे.</p>
+        <h4>Practical Steps</h4>
+        <ol>
+          <li><code>dict</code> मध्ये पुस्तक नाव आणि प्रती संख्या ठेवा</li>
+          <li><code>while True</code> menu-driven loop तयार करा</li>
+          <li>Issue वेळी count कमी करा</li>
+          <li>Return वेळी count वाढवा</li>
+          <li>Final record file मध्ये write करा</li>
+        </ol>
+        <h4>Terms</h4>
+        <ul>
+          <li><strong>Menu-driven Program:</strong> पर्याय निवडून चालणारा program</li>
+          <li><strong>State:</strong> program ची current स्थिती</li>
+          <li><strong>Persistence:</strong> data file मध्ये कायम ठेवणे</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Project 3: कुटुंब खर्च ट्रॅकर</h3>
+        <p><strong>उद्देश:</strong> रोजचा खर्च category नुसार साठवून monthly report बनवणे.</p>
+        <h4>Practical Steps</h4>
+        <ol>
+          <li>Category व amount input घ्या</li>
+          <li>Data list/dictionary मध्ये साठवा</li>
+          <li>Loop वापरून category-wise totals काढा</li>
+          <li>सर्वाधिक खर्च असलेली category शोधा</li>
+          <li>Report <code>expense_report.txt</code> मध्ये save करा</li>
+        </ol>
+        <h4>Terms</h4>
+        <ul>
+          <li><strong>Category:</strong> खर्चाचा प्रकार</li>
+          <li><strong>Aggregation:</strong> समान data एकत्र करून total काढणे</li>
+          <li><strong>Report:</strong> विश्लेषित अंतिम निष्कर्ष</li>
+        </ul>
+      </article>
+    </section>
+
+    <section>
+      <h2>6) मूल्यांकन आणि सराव</h2>
+      <ul>
+        <li>30%: Concept Quiz</li>
+        <li>40%: Topic-wise Hands-on Labs</li>
+        <li>30%: Project Practical & Viva</li>
+      </ul>
+      <h3>सराव प्रश्न</h3>
+      <ol>
+        <li>Factorial program लिहा</li>
+        <li>Palindrome string तपासा</li>
+        <li>List मधील सर्वात मोठी संख्या शोधा</li>
+        <li>Dictionary मधून highest marks विद्यार्थी शोधा</li>
+        <li>CSV वाचून subject-wise average काढा</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>7) शिक्षकांसाठी वापर मार्गदर्शक</h2>
+      <ul>
+        <li>प्रत्येक topic नंतर mini lab घ्या</li>
+        <li>विद्यार्थ्यांना syntax note + practical notebook लिहायला सांगा</li>
+        <li>Pair programming वापरून peer learning वाढवा</li>
+        <li>Debugging आधारित छोट्या चाचण्या घ्या</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
