@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प २: भावना विश्लेषक — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">उद्दिष्ट</a></li>
+        <li><a href="#idea">मूळ कल्पना</a></li>
+        <li><a href="#lexicon">शब्दकोश तयार करणे</a></li>
+        <li><a href="#score">स्कोअर मोजणे</a></li>
+        <li><a href="#lab">पूर्ण लॅब</a></li>
+        <li><a href="#extend">पुढे काय?</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प २: मराठी भावना विश्लेषक</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अंदाजे वेळ: ३० मिनिटे</div>
+
+      <section id="goal">
+        <h2>उद्दिष्ट</h2>
+        <p>दिलेले मराठी वाक्य <strong>सकारात्मक</strong>, <strong>नकारात्मक</strong> की <strong>तटस्थ</strong> हे आपोआप ठरवणारे साधन.</p>
+      </section>
+
+      <section id="idea">
+        <h2>मूळ कल्पना (Idea)</h2>
+        <p>
+          सकारात्मक व नकारात्मक शब्दांचा एक <strong>शब्दकोश (lexicon)</strong> बनवू. वाक्यातील प्रत्येक शब्द
+          त्या यादीत असेल तर गुण ± करत राहू. शेवटचा एकूण गुण भावना ठरवेल.
+        </p>
+        <div class="callout tip">
+          <strong>का?</strong> ही पद्धत सोपी आणि शिकायला उत्तम आहे. अधिक प्रगत मॉडेल्स हीच कल्पना मोठ्या डेटा + ML ने करतात.
+        </div>
+      </section>
+
+      <section id="lexicon">
+        <h2>शब्दकोश</h2>
+        <pre class="code-block">positive = {
+    "छान": 2, "मस्त": 2, "उत्तम": 3, "सुंदर": 2,
+    "आवडले": 2, "आनंद": 2, "खूप": 1, "जिंकले": 2,
+}
+negative = {
+    "वाईट": 2, "खराब": 2, "कंटाळवाणे": 2, "रडले": 2,
+    "नापास": 3, "दुःख": 3, "त्रास": 2, "हरले": 2,
+}
+intensifiers = {"खूप": 2, "अति": 2}
+negators     = {"नाही", "नको"}</pre>
+
+        <h3>सिंटॅक्स विश्लेषण</h3>
+        <table class="syntax-table">
+          <tbody>
+            <tr><td>Dict <code>{shabd: weight}</code></td><td>शब्दाला किती वजन (intensity) द्यायचे.</td></tr>
+            <tr><td>Set <code>{ ... }</code></td><td>फक्त शब्द आहे का — हे जलद तपासायला.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="score">
+        <h2>स्कोअर कसा मोजायचा?</h2>
+        <ol>
+          <li>वाक्याचे tokens करा (split + lower).</li>
+          <li>प्रत्येक शब्द — positive असेल तर <code>+weight</code>, negative असेल तर <code>-weight</code>.</li>
+          <li>आधीचा शब्द ‘नाही’ असेल तर भावना उलटी होते.</li>
+          <li>‘खूप’/‘अति’ नंतर येणाऱ्या शब्दाचे वजन दुप्पट करा.</li>
+          <li>एकूण score &gt; 0 → सकारात्मक, &lt; 0 → नकारात्मक, = 0 → तटस्थ.</li>
+        </ol>
+      </section>
+
+      <section id="lab">
+        <h2>पूर्ण लॅब</h2>
+
+        <div class="lab" id="lab-p2">
+          <div class="lab-head">
+            <h4>Marathi Sentiment Analyzer</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">positive = {"छान":2,"मस्त":2,"उत्तम":3,"सुंदर":2,"आवडले":2,"आनंद":2,"जिंकले":2}
+negative = {"वाईट":2,"खराब":2,"कंटाळवाणे":2,"रडले":2,"नापास":3,"दुःख":3,"त्रास":2,"हरले":2}
+intensifiers = {"खूप", "अति", "जास्त"}
+negators     = {"नाही", "नको"}
+
+def score_vakya(vakya):
+    shabd = vakya.lower().split()
+    total = 0
+    for i, w in enumerate(shabd):
+        weight = 0
+        if w in positive: weight =  positive[w]
+        if w in negative: weight = -negative[w]
+        if weight == 0:
+            continue
+        # आधीचा शब्द intensifier?
+        if i > 0 and shabd[i-1] in intensifiers:
+            weight *= 2
+        # आधीचा शब्द negator?
+        if i > 0 and shabd[i-1] in negators:
+            weight *= -1
+        total += weight
+    return total
+
+def label(score):
+    if score > 0:   return f"😊 सकारात्मक  (score={score})"
+    if score < 0:   return f"😞 नकारात्मक  (score={score})"
+    return            "😐 तटस्थ      (score=0)"
+
+samples = [
+    "हा चित्रपट खूप छान आणि सुंदर आहे",
+    "अभ्यास खूप कंटाळवाणे आहे मला आवडले नाही",
+    "आज शाळेला सुट्टी",
+    "मला परीक्षा अति वाईट गेली",
+    "तू उत्तम काम केले, मस्त!",
+]
+
+for s in samples:
+    sc = score_vakya(s)
+    print(s)
+    print("  →", label(sc), "\n")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-p2')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-p2')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-p2')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="extend">
+        <h2>पुढे काय?</h2>
+        <ul>
+          <li>शब्दकोशात तुमचे आणखी १० शब्द जोडा.</li>
+          <li>स्वतःचे ५ वाक्ये <code>samples</code> मध्ये टाका.</li>
+          <li>‘शक्यतो’, ‘कदाचित’ अशा संदिग्ध शब्दांसाठी नवीन भार वर्ग बनवा.</li>
+        </ul>
+
+        <div class="page-nav">
+          <a href="project1_chatbot.html"><small>← मागे</small>प्रकल्प १: चॅटबॉट</a>
+          <a href="project3_iris.html"><small>पुढे →</small>प्रकल्प ३: फूल वर्गीकरण</a>
+        </div>
+      </section>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

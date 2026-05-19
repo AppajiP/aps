@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प ४: गुण अंदाज — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">उद्दिष्ट</a></li>
+        <li><a href="#math">गणित — Least Squares</a></li>
+        <li><a href="#evaluate">मूल्यमापन</a></li>
+        <li><a href="#lab">पूर्ण लॅब</a></li>
+        <li><a href="#extend">पुढे काय?</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प ४: गुण अंदाज (Marks Predictor)</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अंदाजे वेळ: ४० मिनिटे</div>
+
+      <section id="goal">
+        <h2>उद्दिष्ट</h2>
+        <p>‘रोज किती तास अभ्यास’ या एका वैशिष्ट्यावरून परीक्षेतील गुणांचा अंदाज लावणारे ML मॉडेल बनवणे.</p>
+      </section>
+
+      <section id="math">
+        <h2>गणित — Linear Regression</h2>
+        <p>आपण <code>y = m · x + b</code> या सरळ रेषेला डेटात बसवू. ‘चांगली’ रेषा म्हणजे प्रत्यक्ष व अंदाजित गुणांमधील त्रुटीचा वर्ग कमी असलेली.</p>
+        <pre class="code-block">m = ( n·Σxy − Σx·Σy ) / ( n·Σx² − (Σx)² )
+b = ( Σy − m·Σx ) / n</pre>
+
+        <h3>संज्ञा</h3>
+        <table class="syntax-table">
+          <tbody>
+            <tr><td><code>x</code></td><td>इनपुट (अभ्यासाचे तास)</td></tr>
+            <tr><td><code>y</code></td><td>आउटपुट (गुण)</td></tr>
+            <tr><td><code>m</code> (slope)</td><td>1 तास वाढल्यास गुण किती वाढतात</td></tr>
+            <tr><td><code>b</code> (intercept)</td><td>0 तास अभ्यासात अंदाजे गुण</td></tr>
+            <tr><td>R²</td><td>मॉडेल किती ‘बसले’ — 1 = परिपूर्ण</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="evaluate">
+        <h2>मूल्यमापन (Evaluation)</h2>
+        <ul>
+          <li><strong>MAE</strong> — सरासरी पूर्ण त्रुटी (mean absolute error).</li>
+          <li><strong>RMSE</strong> — त्रुटींच्या वर्गांची सरासरीचे वर्गमूळ.</li>
+          <li><strong>R² Score</strong> — मॉडेलने किती ‘variance’ स्पष्ट केले.</li>
+        </ul>
+      </section>
+
+      <section id="lab">
+        <h2>पूर्ण लॅब</h2>
+
+        <div class="lab" id="lab-p4">
+          <div class="lab-head">
+            <h4>Marks Predictor</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">import math
+
+X = [1, 2, 2.5, 3, 4, 4.5, 5, 6, 7, 8]      # अभ्यासाचे तास
+y = [35, 45, 48, 55, 65, 70, 74, 82, 88, 95] # गुण
+
+n = len(X)
+sum_x  = sum(X);        sum_y  = sum(y)
+sum_xy = sum(xi*yi for xi, yi in zip(X, y))
+sum_xx = sum(xi*xi for xi in X)
+
+m = (n*sum_xy - sum_x*sum_y) / (n*sum_xx - sum_x*sum_x)
+b = (sum_y - m*sum_x) / n
+
+def predict(hr):
+    return m*hr + b
+
+# कामगिरीचे मोजमाप
+mean_y = sum_y / n
+ss_tot = sum((yi - mean_y) ** 2 for yi in y)
+ss_res = sum((yi - predict(xi)) ** 2 for xi, yi in zip(X, y))
+r2     = 1 - ss_res / ss_tot
+mae    = sum(abs(yi - predict(xi)) for xi, yi in zip(X, y)) / n
+rmse   = math.sqrt(ss_res / n)
+
+print(f"शिकलेली रेषा : y = {round(m, 2)} * x + {round(b, 2)}")
+print(f"R² Score    : {round(r2, 3)}   (1 जवळ = उत्तम)")
+print(f"MAE         : {round(mae, 2)}")
+print(f"RMSE        : {round(rmse, 2)}")
+
+print("\nनवीन विद्यार्थ्यांसाठी अंदाज:")
+for h in [1.5, 3.5, 5.5, 9, 10]:
+    g = predict(h)
+    g = max(0, min(100, g))     # गुण 0-100 दरम्यानच ठेवू
+    print(f"  {h} तास अभ्यास → अंदाजे {round(g, 1)} गुण")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-p4')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-p4')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-p4')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="extend">
+        <h2>पुढे काय?</h2>
+        <ul>
+          <li>स्वतःचा डेटा <code>X, y</code> मध्ये टाका — १५ वर्गमित्रांचा.</li>
+          <li>दुसरे वैशिष्ट्य जोडा: ‘झोप तास’ — multi-feature regression.</li>
+          <li>Python ची <code>scikit-learn</code> वापरून तेच मॉडेल बनवून बघा.</li>
+        </ul>
+
+        <div class="callout tip">
+          <strong>अभिनंदन! 🎉</strong>
+          तुम्ही Azone Academy चा संपूर्ण AI अभ्यासक्रम पूर्ण केला.
+          आता मोठ्या डेटाबेस, NumPy, Pandas, scikit-learn, TensorFlow शिकायला तयार आहात.
+        </div>
+
+        <div class="page-nav">
+          <a href="project3_iris.html"><small>← मागे</small>प्रकल्प ३: फूल वर्गीकरण</a>
+          <a href="../index.html"><small>घरी →</small>मुख्यपृष्ठ</a>
+        </div>
+      </section>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ३: AI चे प्रकार — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#capability">क्षमतेनुसार वर्गीकरण</a></li>
+        <li><a href="#function">कार्यानुसार वर्गीकरण</a></li>
+        <li><a href="#examples">सोपी उदाहरणे</a></li>
+        <li><a href="#lab">लॅब: AI प्रकार ओळखा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ३: AI चे प्रकार</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~१४ मिनिटे</div>
+
+      <section id="capability">
+        <h2>१. क्षमतेनुसार AI चे तीन प्रकार</h2>
+        <table class="syntax-table">
+          <thead><tr><th>प्रकार</th><th>वर्णन</th><th>उदाहरण</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Narrow AI</strong><br>(ANI / संकुचित AI)</td>
+              <td>एकाच विशिष्ट कामात निपुण. इतर काही करता येत नाही.</td>
+              <td>Google Translate, Siri, Spam Filter, ChatGPT</td>
+            </tr>
+            <tr>
+              <td><strong>General AI</strong><br>(AGI / सामान्य AI)</td>
+              <td>माणसासारखी कोणतीही बौद्धिक कामगिरी करू शकणारा. <em>अद्याप अस्तित्वात नाही.</em></td>
+              <td>विज्ञान काल्पनिक चित्रपटांतील रोबोट</td>
+            </tr>
+            <tr>
+              <td><strong>Super AI</strong><br>(ASI / अति-AI)</td>
+              <td>माणसापेक्षा खूप अधिक बुद्धिमान. केवळ सैद्धांतिक संकल्पना.</td>
+              <td>भविष्यातील कल्पना — अजून नाही</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout tip">
+          <strong>आज २०२६ मध्ये</strong>
+          आपण वापरत असलेला <em>प्रत्येक</em> AI — ChatGPT, Gemini, स्वयं-चालित कार, सर्व — <strong>Narrow AI</strong> आहे.
+          AGI अद्याप संशोधनात आहे.
+        </div>
+      </section>
+
+      <section id="function">
+        <h2>२. कार्यानुसार AI चे चार प्रकार</h2>
+        <ol>
+          <li>
+            <strong>Reactive Machines (प्रतिक्रियात्मक यंत्र):</strong>
+            फक्त सध्याच्या परिस्थितीला प्रतिसाद देते — कोणतीही स्मृती नाही.
+            <em>उदा. IBM Deep Blue (बुद्धिबळ).</em>
+          </li>
+          <li>
+            <strong>Limited Memory (मर्यादित स्मृती):</strong>
+            ठराविक मागील डेटा लक्षात ठेवून निर्णय घेते.
+            <em>उदा. स्वयं-चालित कार — मागील काही सेकंदांचे ट्रॅफिक.</em>
+          </li>
+          <li>
+            <strong>Theory of Mind (मनाची संकल्पना):</strong>
+            इतरांच्या भावना, हेतू समजणारी AI — <em>संशोधनात</em>.
+          </li>
+          <li>
+            <strong>Self-aware AI (स्व-जाणीवयुक्त):</strong>
+            स्वतःच्या अस्तित्वाची जाणीव असलेली — <em>अद्याप काल्पनिक</em>.
+          </li>
+        </ol>
+      </section>
+
+      <section id="examples">
+        <h2>३. आपल्या वर्गातील उदाहरणाने समजून घ्या</h2>
+        <ul>
+          <li><strong>Narrow AI:</strong> एक विद्यार्थी जो फक्त गणितात तज्ज्ञ, पण इतिहासात काही नाही.</li>
+          <li><strong>General AI:</strong> सर्व विषयांत तितकाच चांगला विद्यार्थी.</li>
+          <li><strong>Super AI:</strong> शिक्षकांपेक्षाही अधिक जाणणारा विद्यार्थी!</li>
+        </ul>
+      </section>
+
+      <section id="lab">
+        <h2>४. हँड्स-ऑन लॅब: AI चा प्रकार ओळखणारा प्रोग्राम</h2>
+        <p>
+          आपण एक list of dictionaries वापरून काही AI उदाहरणे साठवू व त्यांचा प्रकार छापू.
+        </p>
+
+        <h3>सिंटॅक्स विश्लेषण</h3>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>[ {..}, {..} ]</code></td><td>List आत dictionaries — <em>structured data</em> साठवायचा सोपा मार्ग.</td></tr>
+            <tr><td><code>for item in lst:</code></td><td>List मधील प्रत्येक घटक एक-एक करून घेते.</td></tr>
+            <tr><td><code>item["nav"]</code></td><td>Dictionary मधील specific key चे value मिळवते.</td></tr>
+            <tr><td><code>if .. == "Narrow":</code></td><td>दोन मूल्ये समान आहेत का — boolean तपासणी.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="lab" id="lab-3-1">
+          <div class="lab-head">
+            <h4>लॅब ३.१ — AI Type Classifier</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">examples = [
+    {"nav": "ChatGPT",       "prakar": "Narrow"},
+    {"nav": "Google Maps",   "prakar": "Narrow"},
+    {"nav": "Siri",          "prakar": "Narrow"},
+    {"nav": "काल्पनिक रोबोट", "prakar": "General"},
+]
+
+print("Narrow AI चे उदाहरण:")
+for x in examples:
+    if x["prakar"] == "Narrow":
+        print("  •", x["nav"])
+
+print("\nGeneral AI चे उदाहरण:")
+for x in examples:
+    if x["prakar"] == "General":
+        print("  •", x["nav"])
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-3-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-3-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-3-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>५. चाचणी</h2>
+        <div class="quiz" id="quiz-3">
+          <div class="q" data-answer="a" data-answer-text="अ. Narrow AI">
+            <p>१) ChatGPT कोणत्या प्रकारच्या AI मध्ये मोडतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. Narrow AI</label>
+              <label><input type="radio" name="q1" value="b" /> ब. General AI</label>
+              <label><input type="radio" name="q1" value="c" /> क. Super AI</label>
+              <label><input type="radio" name="q1" value="d" /> ड. Self-aware AI</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. Limited Memory">
+            <p>२) स्वयं-चालित गाडी कोणत्या कार्यात्मक प्रकारात मोडते?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. Reactive</label>
+              <label><input type="radio" name="q2" value="b" /> ब. Theory of Mind</label>
+              <label><input type="radio" name="q2" value="c" /> क. Limited Memory</label>
+              <label><input type="radio" name="q2" value="d" /> ड. Self-aware</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-3')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>६. सारांश</h2>
+        <ul>
+          <li>क्षमतेनुसार: Narrow / General / Super AI.</li>
+          <li>कार्यानुसार: Reactive / Limited Memory / Theory of Mind / Self-aware.</li>
+          <li>आजचा सर्व प्रत्यक्ष AI = Narrow + Limited Memory.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch03')">✓ धडा ३ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter02.html"><small>← मागे</small>धडा २: AI चा इतिहास</a>
+        <a href="chapter04.html"><small>पुढे →</small>धडा ४: AI चे उपयोग</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

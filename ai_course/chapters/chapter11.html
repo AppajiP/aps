@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ११: संगणक दृष्टी (Computer Vision) — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#what">CV म्हणजे काय?</a></li>
+        <li><a href="#pixel">पिक्सेल आणि चित्र</a></li>
+        <li><a href="#tasks">CV ची प्रमुख कामे</a></li>
+        <li><a href="#lab">लॅब्स</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ११: संगणक दृष्टी (Computer Vision)</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~२० मिनिटे</div>
+
+      <section id="what">
+        <h2>१. Computer Vision म्हणजे काय?</h2>
+        <p>
+          संगणकाला <strong>‘पाहायला’ शिकवण्याचे शास्त्र</strong>. म्हणजेच, फोटो / व्हिडिओमधून
+          वस्तू, चेहरे, अक्षरे, हालचाली ओळखणे.
+        </p>
+        <div class="callout tip">
+          <strong>उदा.</strong> Google Lens, Face Unlock, MRI विश्लेषण, ATM मध्ये Cheque स्कॅन, स्वयं-चालित कार.
+        </div>
+      </section>
+
+      <section id="pixel">
+        <h2>२. पिक्सेल — प्रत्येक चित्राचे एकक</h2>
+        <p>
+          चित्र म्हणजे लाखो लहान चौकोनांचा (pixels) समूह. प्रत्येक pixel ला एक तीव्रता (intensity) आणि (रंगीत असेल तर) तीन रंगांचे मूल्य — R, G, B — असते.
+        </p>
+
+        <table class="syntax-table">
+          <thead><tr><th>प्रकार</th><th>प्रत्येक pixel</th></tr></thead>
+          <tbody>
+            <tr><td>Grayscale</td><td>0 (काळा) ते 255 (पांढरा)</td></tr>
+            <tr><td>Color (RGB)</td><td>(R, G, B) — प्रत्येक 0–255</td></tr>
+            <tr><td>Binary</td><td>0 किंवा 1</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>उदाहरण:</strong> एक 1000 × 1000 चा रंगीत फोटो म्हणजे
+          1000 × 1000 × 3 = ३० लाख संख्या!
+        </div>
+      </section>
+
+      <section id="tasks">
+        <h2>३. CV ची प्रमुख कामे</h2>
+        <ol>
+          <li><strong>Image Classification:</strong> "हा फोटो मांजर आहे की कुत्रा?"</li>
+          <li><strong>Object Detection:</strong> "फोटोत २ कार, १ माणूस आहेत — कुठे?"</li>
+          <li><strong>Image Segmentation:</strong> कोणता pixel कोणत्या वस्तूचा.</li>
+          <li><strong>Face Recognition:</strong> चेहरा ओळख.</li>
+          <li><strong>OCR:</strong> चित्रातील अक्षरे वाचणे.</li>
+        </ol>
+      </section>
+
+      <section id="lab">
+        <h2>४. हँड्स-ऑन लॅब्स</h2>
+
+        <div class="lab" id="lab-11-1">
+          <div class="lab-head">
+            <h4>लॅब ११.१ — पिक्सेलचा 2D matrix छापा</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+            <h3 style="margin-top:0">सिंटॅक्स विश्लेषण</h3>
+            <table class="syntax-table">
+              <tbody>
+                <tr><td>2D list (<code>[[...],[...]]</code>)</td><td>row × col पध्दतीने pixels साठवते.</td></tr>
+                <tr><td>nested <code>for</code></td><td>आधी row, मग त्यातील प्रत्येक column.</td></tr>
+                <tr><td><code>print(..., end="")</code></td><td>नंतर नवीन ओळ टाकू नका.</td></tr>
+              </tbody>
+            </table>
+
+<textarea class="editor" spellcheck="false">image = [
+    [0, 0, 1, 1, 0, 0],
+    [0, 1, 1, 1, 1, 0],
+    [1, 1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 1, 0],
+    [0, 0, 1, 1, 0, 0],
+]
+
+print("एक साधा 6x5 पिक्सेल फोटो:")
+for row in image:
+    for pix in row:
+        print("█" if pix == 1 else "·", end=" ")
+    print()
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-11-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-11-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-11-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-11-2">
+          <div class="lab-head">
+            <h4>लॅब ११.२ — Grayscale ची तीव्रता वाढवा (Brightness +50)</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+            <p class="text-muted" style="margin:0 0 8px;">
+              प्रत्येक pixel ला 50 जोडू पण 255 च्या वर जाऊ देणार नाही.
+            </p>
+<textarea class="editor" spellcheck="false">img = [
+    [ 30,  60,  90, 120],
+    [ 60, 100, 150, 200],
+    [ 90, 130, 180, 220],
+]
+
+def brighten(image, delta):
+    return [[min(255, p + delta) for p in row] for row in image]
+
+new_img = brighten(img, 50)
+
+print("मूळ चित्र:")
+for r in img: print(r)
+print("\nब्राइटनेस +50:")
+for r in new_img: print(r)
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-11-2')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-11-2')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-11-2')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-11-3">
+          <div class="lab-head">
+            <h4>लॅब ११.३ — साधा edge detector (फरक काढून)</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+            <p class="text-muted" style="margin:0 0 8px;">
+              शेजारच्या pixels मधील फरक मोठा असेल तर तिथे ‘edge’ आहे.
+            </p>
+<textarea class="editor" spellcheck="false">img = [
+    [10, 10, 10, 200, 200, 200],
+    [10, 10, 10, 200, 200, 200],
+    [10, 10, 10, 200, 200, 200],
+]
+
+edges = []
+for row in img:
+    new_row = []
+    for i in range(len(row) - 1):
+        new_row.append(abs(row[i+1] - row[i]))
+    edges.append(new_row)
+
+print("Edge tivrata (मोठी संख्या = कडा):")
+for r in edges: print(r)
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-11-3')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-11-3')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-11-3')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>५. चाचणी</h2>
+        <div class="quiz" id="quiz-11">
+          <div class="q" data-answer="b" data-answer-text="ब. 0 ते 255">
+            <p>१) Grayscale pixel चे मूल्य कोणत्या मर्यादेत असते?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. 0 ते 1</label>
+              <label><input type="radio" name="q1" value="b" /> ब. 0 ते 255</label>
+              <label><input type="radio" name="q1" value="c" /> क. 0 ते 1000</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. Object Detection">
+            <p>२) फोटोत किती कार आहेत व कुठे आहेत हे ओळखणे?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. Image Classification</label>
+              <label><input type="radio" name="q2" value="b" /> ब. OCR</label>
+              <label><input type="radio" name="q2" value="c" /> क. Object Detection</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-11')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>६. सारांश</h2>
+        <ul>
+          <li>चित्र = pixels चा matrix; CV त्याच्यावर काम करते.</li>
+          <li>Classification, Detection, Segmentation, OCR ही प्रमुख कामे.</li>
+          <li>Brightness, edge detection ही साधी image processing ची उदाहरणे.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch11')">✓ धडा ११ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter10.html"><small>← मागे</small>धडा १०: NLP</a>
+        <a href="chapter12.html"><small>पुढे →</small>धडा १२: AI नैतिकता</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

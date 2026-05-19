@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ९: न्यूरल नेटवर्क्स — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#neuron">जैविक vs कृत्रिम न्यूरॉन</a></li>
+        <li><a href="#perceptron">परसेप्ट्रॉन (Perceptron)</a></li>
+        <li><a href="#layers">Layers — Input/Hidden/Output</a></li>
+        <li><a href="#activation">Activation functions</a></li>
+        <li><a href="#lab">लॅब: एक परसेप्ट्रॉन शिकवा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ९: न्यूरल नेटवर्क्स</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~२५ मिनिटे</div>
+
+      <section id="neuron">
+        <h2>१. जैविक न्यूरॉन आणि कृत्रिम न्यूरॉन</h2>
+        <p>
+          आपल्या मेंदूत सुमारे ८६ अब्ज न्यूरॉन्स आहेत. प्रत्येक न्यूरॉन इतर अनेकांकडून सिग्नल घेतो,
+          त्यांची बेरीज करतो, आणि एका मर्यादेपेक्षा जास्त असेल तर पुढे ‘फायर’ (Fire) करतो.
+          हीच कल्पना संगणकात उतरवली — त्यालाच <strong>कृत्रिम न्यूरॉन</strong> म्हणतात.
+        </p>
+        <table class="syntax-table">
+          <thead><tr><th>जैविक</th><th>कृत्रिम</th></tr></thead>
+          <tbody>
+            <tr><td>Dendrite (इनपुट)</td><td>Inputs <code>x1, x2, ...</code></td></tr>
+            <tr><td>Synapse strength</td><td>Weights <code>w1, w2, ...</code></td></tr>
+            <tr><td>Cell body — बेरीज</td><td><code>z = Σ wi·xi + b</code></td></tr>
+            <tr><td>Axon — output</td><td><code>y = f(z)</code> (activation)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="perceptron">
+        <h2>२. परसेप्ट्रॉन</h2>
+        <p>
+          सर्वात साधे कृत्रिम न्यूरॉन. इनपुटला weights ने गुणून, bias मिळवून, मर्यादेच्या वर असेल तर <strong>1</strong>, नाहीतर <strong>0</strong> देते.
+        </p>
+        <pre class="code-block">z = w1*x1 + w2*x2 + b
+output = 1 if z >= 0 else 0</pre>
+
+        <div class="callout">
+          <strong>शिकणे</strong> = <em>योग्य</em> <code>w1, w2, b</code> शोधणे.
+          प्रत्येक चुकीनंतर weights किंचित बदलून बरोबर उत्तराकडे जातात.
+        </div>
+      </section>
+
+      <section id="layers">
+        <h2>३. Layers: Input → Hidden → Output</h2>
+        <p>
+          एका न्यूरॉनने फार कठीण काम होत नाही, म्हणून अनेक न्यूरॉन्स ‘थर’ (layer) म्हणून जोडतात.
+        </p>
+        <ul>
+          <li><strong>Input layer:</strong> कच्चा डेटा (पिक्सेल, गुण इ.)</li>
+          <li><strong>Hidden layers:</strong> छुपे थर — pattern शिकतात. एकाहून जास्त असतील तर <em>Deep Learning</em>.</li>
+          <li><strong>Output layer:</strong> शेवटचे उत्तर (वर्ग किंवा संख्या).</li>
+        </ul>
+      </section>
+
+      <section id="activation">
+        <h2>४. Activation Functions</h2>
+        <table class="syntax-table">
+          <thead><tr><th>नाव</th><th>सूत्र</th><th>उपयोग</th></tr></thead>
+          <tbody>
+            <tr><td>Step</td><td>0 / 1</td><td>परसेप्ट्रॉन</td></tr>
+            <tr><td>Sigmoid</td><td>1/(1+e<sup>-z</sup>)</td><td>संभाव्यता (0–1)</td></tr>
+            <tr><td>ReLU</td><td>max(0, z)</td><td>आधुनिक Deep Learning</td></tr>
+            <tr><td>Softmax</td><td>multi-class</td><td>अनेक वर्ग वर्गीकरण</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="lab">
+        <h2>५. हँड्स-ऑन लॅब: AND gate शिकवणारा परसेप्ट्रॉन</h2>
+        <p>
+          AND gate चे सत्य कोष्टक:
+        </p>
+        <table class="syntax-table">
+          <thead><tr><th>x1</th><th>x2</th><th>y</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>1</td></tr>
+          </tbody>
+        </table>
+
+        <h3>सिंटॅक्स विश्लेषण</h3>
+        <table class="syntax-table">
+          <tbody>
+            <tr><td><code>for epoch in range(...)</code></td><td>संपूर्ण डेटावर अनेक वेळा फिरणे — हाच ML मधील ‘अभ्यास’.</td></tr>
+            <tr><td><code>err = target - pred</code></td><td>उत्तरातील चूक.</td></tr>
+            <tr><td><code>w += lr * err * x</code></td><td>weight सुधारण्याचा perceptron नियम.</td></tr>
+            <tr><td><code>lr</code> (learning rate)</td><td>किती मोठे पाऊल टाकायचे — सहसा 0.1.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="lab" id="lab-9-1">
+          <div class="lab-head">
+            <h4>लॅब ९.१ — Perceptron Trainer</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">data = [
+    ((0,0), 0),
+    ((0,1), 0),
+    ((1,0), 0),
+    ((1,1), 1),
+]
+
+w1, w2, b = 0.0, 0.0, 0.0
+lr = 0.1
+
+def predict(x1, x2):
+    z = w1*x1 + w2*x2 + b
+    return 1 if z >= 0 else 0
+
+for epoch in range(20):
+    total_err = 0
+    for (x1, x2), target in data:
+        pred = predict(x1, x2)
+        err  = target - pred
+        w1  += lr * err * x1
+        w2  += lr * err * x2
+        b   += lr * err
+        total_err += abs(err)
+    if total_err == 0:
+        print(f"Epoch {epoch+1}: पूर्ण शिकले!")
+        break
+
+print(f"शिकलेले weights : w1={round(w1,2)}, w2={round(w2,2)}, b={round(b,2)}")
+print("तपासणी (AND gate):")
+for (x1, x2), t in data:
+    print(f"  {x1} AND {x2} = {predict(x1, x2)}  (हवे: {t})")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-9-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-9-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-9-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li>‘OR gate’ साठी डेटा बदलून पुन्हा चालवा.</li>
+          <li><code>lr</code> 0.5 करा — किती epochs कमी लागतात?</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>६. चाचणी</h2>
+        <div class="quiz" id="quiz-9">
+          <div class="q" data-answer="b" data-answer-text="ब. Weights व Bias">
+            <p>१) न्यूरल नेटवर्क ‘शिकते’ म्हणजे काय करते?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. नवीन neuron जोडते</label>
+              <label><input type="radio" name="q1" value="b" /> ब. Weights व Bias बदलते</label>
+              <label><input type="radio" name="q1" value="c" /> क. इनपुट डेटा वाढवते</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. एकाहून जास्त hidden layers">
+            <p>२) ‘Deep Learning’ म्हणजे काय?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. खूप डेटा</label>
+              <label><input type="radio" name="q2" value="b" /> ब. खोल विहिरीसारखा code</label>
+              <label><input type="radio" name="q2" value="c" /> क. एकाहून जास्त hidden layers</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-9')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>७. सारांश</h2>
+        <ul>
+          <li>कृत्रिम न्यूरॉन = inputs × weights + bias → activation.</li>
+          <li>Layers एकत्र जोडून मोठे pattern शिकता येतात (Deep Learning).</li>
+          <li>Perceptron rule ने <code>w</code> व <code>b</code> सुधारत AND gate स्वतः शिकले.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch09')">✓ धडा ९ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter08.html"><small>← मागे</small>धडा ८: ML प्रकार</a>
+        <a href="chapter10.html"><small>पुढे →</small>धडा १०: NLP</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

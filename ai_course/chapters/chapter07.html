@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ७: मशीन लर्निंगची ओळख — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#what">ML म्हणजे काय?</a></li>
+        <li><a href="#diff">पारंपरिक vs ML</a></li>
+        <li><a href="#steps">ML चे ६ टप्पे</a></li>
+        <li><a href="#lab">लॅब: स्वतःचा सोपा ML</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ७: मशीन लर्निंगची ओळख</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~२० मिनिटे</div>
+
+      <section id="what">
+        <h2>१. Machine Learning (ML) म्हणजे काय?</h2>
+        <p>
+          <strong>“संगणकाला उदाहरणांवरून शिकवणे”</strong> — हेच ML.
+          आपण नियम न लिहिता, फक्त <em>उदाहरणे (data + correct answers)</em> देतो; संगणक स्वतः नियम शोधतो.
+        </p>
+        <div class="callout tip">
+          <strong>उदाहरण:</strong> ‘कोणत्या ईमेल स्पॅम आहेत?’ हे ओळखायला आपण १००० स्पॅम + १००० सामान्य ईमेल देतो.
+          ML मॉडेल त्यांचा अभ्यास करून नवीन ईमेलसाठीसुद्धा अंदाज देऊ शकते.
+        </div>
+      </section>
+
+      <section id="diff">
+        <h2>२. पारंपरिक प्रोग्रामिंग वि. ML</h2>
+        <table class="syntax-table">
+          <thead><tr><th></th><th>पारंपरिक प्रोग्रामिंग</th><th>Machine Learning</th></tr></thead>
+          <tbody>
+            <tr><td>इनपुट</td><td>डेटा + नियम</td><td>डेटा + उत्तरे</td></tr>
+            <tr><td>आउटपुट</td><td>उत्तर</td><td>नियम (मॉडेल)</td></tr>
+            <tr><td>उदाहरण</td><td>“जर temp &gt; 100 → ज्वर”</td><td>१००० रुग्ण → मॉडेल → कोणाला ज्वर हे ठरवते</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="steps">
+        <h2>३. ML प्रकल्पाचे सहा टप्पे</h2>
+        <ol>
+          <li><strong>Problem Definition:</strong> काय शिकायचे? (वर्गीकरण/अंदाज?)</li>
+          <li><strong>Data Collection:</strong> डेटा गोळा करा.</li>
+          <li><strong>Preprocessing:</strong> स्वच्छ करा, missing भरा, scale करा.</li>
+          <li><strong>Train / Test Split:</strong> साधारण ८० % शिकवायला, २० % तपासायला.</li>
+          <li><strong>Model Training:</strong> Algorithm ने pattern शिकवा.</li>
+          <li><strong>Evaluation + Deployment:</strong> Accuracy तपासा, मग वापरा.</li>
+        </ol>
+      </section>
+
+      <section id="lab">
+        <h2>४. हँड्स-ऑन लॅब: पहिले मिनी-ML मॉडेल</h2>
+        <p>
+          आपण ‘अभ्यासाचे तास’ → ‘परीक्षा पास/नापास’ हे शिकू.
+          येथे एक सोपा थ्रेशोल्ड शोधणारा (rule-finder) ML बनवू.
+        </p>
+
+        <h3>सिंटॅक्स विश्लेषण</h3>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>zip(a, b)</code></td><td>दोन lists एकत्र जोडून जोड्या तयार करते: <code>(a[0],b[0]),(a[1],b[1])...</code></td></tr>
+            <tr><td><code>min(...)</code> / <code>max(...)</code></td><td>List मधील सर्वात लहान / मोठे मूल्य.</td></tr>
+            <tr><td><code>round(x, n)</code></td><td><code>x</code> ला <code>n</code> दशांशापर्यंत गोल करते.</td></tr>
+            <tr><td><code>accuracy = correct/total</code></td><td>किती अंदाज बरोबर ठरले याचे प्रमाण.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="lab" id="lab-7-1">
+          <div class="lab-head">
+            <h4>लॅब ७.१ — Threshold शोधणारा ML</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false"># X = अभ्यासाचे तास, y = पास(1) / नापास(0)
+X = [1, 2, 2.5, 3, 4, 4.5, 5, 6, 7, 8]
+y = [0, 0, 0,   1, 1, 1,   1, 1, 1, 1]
+
+# सर्व संभाव्य thresholds तपासा (1 ते 8 दरम्यान)
+best_thr, best_acc = 0, 0
+for thr_x10 in range(10, 81):
+    thr = thr_x10 / 10.0
+    # अंदाज: तास >= thr तर पास(1), अन्यथा नापास(0)
+    preds = [1 if hr >= thr else 0 for hr in X]
+    bara = sum(1 for p, t in zip(preds, y) if p == t)
+    acc = bara / len(y)
+    if acc > best_acc:
+        best_acc, best_thr = acc, thr
+
+print("शिकलेला नियम: 'जर अभ्यासाचे तास >=", best_thr, "तर पास.'")
+print("Accuracy:", round(best_acc * 100, 2), "%")
+
+# नवीन विद्यार्थ्यांसाठी अंदाज
+chachni = [1.5, 3.2, 5.0, 7.5]
+for h in chachni:
+    print(f"  {h} तास → ", "पास" if h >= best_thr else "नापास")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-7-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-7-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-7-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <h3>हे ‘शिकणे’ कसे झाले?</h3>
+        <p>
+          आपण <strong>१</strong> ते <strong>८</strong> या मधील सर्व thresholds तपासले, आणि ज्या thresholds वर सर्वाधिक अचूक अंदाज लागले,
+          तो निवडला. हेच ML चे मूलतत्त्व: <em>data वरून सर्वोत्तम parameter शोधणे.</em>
+        </p>
+      </section>
+
+      <section id="quiz">
+        <h2>५. चाचणी</h2>
+        <div class="quiz" id="quiz-7">
+          <div class="q" data-answer="b" data-answer-text="ब. डेटा + उत्तरे">
+            <p>१) ML चे इनपुट काय असते?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. डेटा + नियम</label>
+              <label><input type="radio" name="q1" value="b" /> ब. डेटा + उत्तरे</label>
+              <label><input type="radio" name="q1" value="c" /> क. फक्त नियम</label>
+              <label><input type="radio" name="q1" value="d" /> ड. फक्त डेटा</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. Train/Test Split">
+            <p>२) मॉडेलची खरी कामगिरी तपासायला कोणता टप्पा महत्त्वाचा?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. Data Collection</label>
+              <label><input type="radio" name="q2" value="b" /> ब. Preprocessing</label>
+              <label><input type="radio" name="q2" value="c" /> क. Train/Test Split</label>
+              <label><input type="radio" name="q2" value="d" /> ड. Deployment</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-7')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>६. सारांश</h2>
+        <ul>
+          <li>ML = उदाहरणांवरून नियम शोधणे.</li>
+          <li>६ टप्पे: Problem → Data → Preprocess → Split → Train → Evaluate.</li>
+          <li>आज आपण ‘threshold शोधणारा’ साधा ML बनवला.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch07')">✓ धडा ७ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter06.html"><small>← मागे</small>धडा ६: डेटा</a>
+        <a href="chapter08.html"><small>पुढे →</small>धडा ८: Supervised / Unsupervised</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>
