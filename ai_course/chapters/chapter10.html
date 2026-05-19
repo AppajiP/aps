@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा १०: नैसर्गिक भाषा प्रक्रिया (NLP) — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#what">NLP म्हणजे काय?</a></li>
+        <li><a href="#steps">मूलभूत पायऱ्या</a></li>
+        <li><a href="#applications">वापर</a></li>
+        <li><a href="#lab">लॅब्स</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा १०: नैसर्गिक भाषा प्रक्रिया (NLP)</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~२० मिनिटे</div>
+
+      <section id="what">
+        <h2>१. NLP म्हणजे काय?</h2>
+        <p>
+          संगणकाला मानवी भाषा (मराठी, इंग्रजी, हिंदी...) <strong>समजवणे</strong>, <strong>तयार करणे</strong>
+          आणि <strong>अनुवादित करणे</strong> शिकवणारी AI ची शाखा.
+        </p>
+        <div class="callout tip">
+          <strong>उदा.</strong> Google Translate, मराठी voice typing, ChatGPT, स्पॅम फिल्टर, मराठी subtitles.
+        </div>
+      </section>
+
+      <section id="steps">
+        <h2>२. NLP च्या मूलभूत पायऱ्या</h2>
+        <ol>
+          <li><strong>Tokenization (टोकनायझेशन):</strong> वाक्याचे शब्दांत / अक्षरांत तुकडे.</li>
+          <li><strong>Lowercasing / Cleaning:</strong> मोठ्या-लहान अक्षरांचा गोंधळ टाळणे, विरामचिन्हे काढणे.</li>
+          <li><strong>Stop-words काढणे:</strong> ‘आणि’, ‘तो’, ‘हे’ — अर्थहीन शब्द काढणे.</li>
+          <li><strong>Stemming / Lemmatization:</strong> शब्दांची मुळे शोधणे (मराठीत मर्यादित).</li>
+          <li><strong>Vectorization:</strong> शब्द → संख्या (Bag of Words / TF-IDF / Embeddings).</li>
+          <li><strong>Model:</strong> वर्गीकरण / अनुवाद / निर्मिती.</li>
+        </ol>
+      </section>
+
+      <section id="applications">
+        <h2>३. NLP चे प्रत्यक्ष वापर</h2>
+        <ul>
+          <li>📨 स्पॅम वर्गीकरण</li>
+          <li>😊 भावना विश्लेषण (Sentiment Analysis)</li>
+          <li>🌐 भाषांतर (Translation)</li>
+          <li>🎤 Speech-to-Text</li>
+          <li>💬 चॅटबॉट</li>
+          <li>📰 बातम्यांचा सारांश (Summarisation)</li>
+        </ul>
+      </section>
+
+      <section id="lab">
+        <h2>४. हँड्स-ऑन लॅब्स</h2>
+
+        <div class="lab" id="lab-10-1">
+          <div class="lab-head">
+            <h4>लॅब १०.१ — Tokenization + Bag of Words</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+            <h3 style="margin-top:0">सिंटॅक्स विश्लेषण</h3>
+            <table class="syntax-table">
+              <tbody>
+                <tr><td><code>s.lower()</code></td><td>String लोअर-केस करते.</td></tr>
+                <tr><td><code>s.split()</code></td><td>स्पेसने तुकडे करून list परत करते.</td></tr>
+                <tr><td><code>str.translate(...)</code></td><td>विशिष्ट अक्षरे काढण्यासाठी.</td></tr>
+                <tr><td><code>collections.Counter</code></td><td>प्रत्येक शब्द किती वेळा आला हे मोजते.</td></tr>
+              </tbody>
+            </table>
+
+<textarea class="editor" spellcheck="false">from collections import Counter
+import string
+
+vakya = "AI शिकणे मजेदार आहे. AI सर्वत्र आहे आणि AI भविष्य आहे!"
+
+# 1) विरामचिन्हे काढा
+saaf = vakya.translate(str.maketrans("", "", string.punctuation))
+
+# 2) Tokenize
+tokens = saaf.lower().split()
+print("Tokens :", tokens)
+
+# 3) Bag of Words
+bow = Counter(tokens)
+print("\nBag of Words:")
+for shabd, ganana in bow.most_common():
+    print(f"  {shabd:10s} : {ganana}")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-10-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-10-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-10-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-10-2">
+          <div class="lab-head">
+            <h4>लॅब १०.२ — भावना विश्लेषण (Marathi Sentiment)</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+            <p class="text-muted" style="margin:0 0 8px;">
+              शब्दकोश आधारित (Lexicon based) साधे सकारात्मक / नकारात्मक वर्गीकरण.
+            </p>
+<textarea class="editor" spellcheck="false">positive = {"छान", "मस्त", "आवडले", "उत्तम", "खूप", "सुंदर", "आनंद"}
+negative = {"वाईट", "खराब", "नाही", "कंटाळवाणे", "रडले", "नापास", "दुःख"}
+
+def bhavna(vakya):
+    shabd = vakya.lower().split()
+    p = sum(1 for w in shabd if w in positive)
+    n = sum(1 for w in shabd if w in negative)
+    if   p > n: return "😊 सकारात्मक"
+    elif n > p: return "😞 नकारात्मक"
+    else:       return "😐 तटस्थ"
+
+chachni = [
+    "हा चित्रपट खूप छान आणि सुंदर आहे",
+    "अभ्यास खूप कंटाळवाणे आहे, मला नाही आवडले",
+    "आज शाळेला सुट्टी आहे",
+]
+for v in chachni:
+    print(f"{v}\n  → {bhavna(v)}\n")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-10-2')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-10-2')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-10-2')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>५. चाचणी</h2>
+        <div class="quiz" id="quiz-10">
+          <div class="q" data-answer="b" data-answer-text="ब. वाक्याचे तुकडे करणे">
+            <p>१) Tokenization म्हणजे काय?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. शब्द भाषांतरित करणे</label>
+              <label><input type="radio" name="q1" value="b" /> ब. वाक्याचे तुकडे करणे</label>
+              <label><input type="radio" name="q1" value="c" /> क. वाक्य लांब करणे</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="a" data-answer-text="अ. Sentiment Analysis">
+            <p>२) ‘हा सिनेमा छान आहे’ → सकारात्मक — हे कशाचे उदाहरण?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. Sentiment Analysis</label>
+              <label><input type="radio" name="q2" value="b" /> ब. Translation</label>
+              <label><input type="radio" name="q2" value="c" /> क. Summarisation</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-10')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>६. सारांश</h2>
+        <ul>
+          <li>NLP = संगणकाला मानवी भाषा शिकवणे.</li>
+          <li>Tokenization → Cleaning → Vectorization → Model — हे ठरलेले टप्पे.</li>
+          <li>‘Bag of Words’ ही सर्वात सोपी vectorization पद्धत.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch10')">✓ धडा १० पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter09.html"><small>← मागे</small>धडा ९: न्यूरल नेटवर्क्स</a>
+        <a href="chapter11.html"><small>पुढे →</small>धडा ११: Computer Vision</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

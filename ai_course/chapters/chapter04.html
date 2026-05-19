@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ४: AI चे दैनंदिन उपयोग — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#fields">महत्त्वाची क्षेत्रे</a></li>
+        <li><a href="#stories">तीन यशकथा</a></li>
+        <li><a href="#india">भारतातील वापर</a></li>
+        <li><a href="#lab">लॅब: शिफारस यंत्रणा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ४: AI चे दैनंदिन उपयोग</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~१६ मिनिटे</div>
+
+      <section id="fields">
+        <h2>१. प्रमुख क्षेत्रे जिथे AI काम करतो</h2>
+        <table class="syntax-table">
+          <thead><tr><th>क्षेत्र</th><th>उदाहरण</th></tr></thead>
+          <tbody>
+            <tr><td>🏥 आरोग्य</td><td>X-Ray, MRI चे विश्लेषण; आजाराचा प्रारंभिक अंदाज</td></tr>
+            <tr><td>🚜 शेती</td><td>पिकाचा रोग ओळख; हवामान-आधारित सल्ला</td></tr>
+            <tr><td>🏦 बँकिंग</td><td>फसवणुकीचे व्यवहार ओळखणे; क्रेडिट स्कोअर</td></tr>
+            <tr><td>🛒 ई-कॉमर्स</td><td>शिफारशी (Amazon, Flipkart); किंमत अंदाज</td></tr>
+            <tr><td>🎬 मनोरंजन</td><td>Netflix, YouTube चे सुचवलेले व्हिडिओ</td></tr>
+            <tr><td>🚗 वाहतूक</td><td>Google Maps, Ola/Uber, स्वयं-चालित गाड्या</td></tr>
+            <tr><td>📚 शिक्षण</td><td>वैयक्तिक शिकवणी, स्वयं-तपासणी, अनुवाद</td></tr>
+            <tr><td>🛡 सुरक्षा</td><td>चेहरा ओळख, अनधिकृत प्रवेश</td></tr>
+            <tr><td>🗣 भाषा</td><td>अनुवाद, उपशीर्षके, मराठी टाइपिंग सूचना</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="stories">
+        <h2>२. तीन प्रेरणादायी यशकथा</h2>
+        <div class="callout">
+          <strong>🌾 शेती:</strong>
+          Microsoft व ICRISAT यांच्या प्रकल्पात AI ने भारतातील शेतकऱ्यांना पेरणीचा योग्य वेळ सांगून <em>३० % अधिक उत्पन्न</em> मिळवून दिले.
+        </div>
+        <div class="callout tip">
+          <strong>👁 दृष्टी:</strong>
+          Google चा ‘Diabetic Retinopathy’ AI डोळ्यांच्या रेटिनाच्या फोटोवरून मधुमेहामुळे होणारा अंधत्वाचा धोका ओळखतो — अनेक तज्ज्ञ डॉक्टरांएवढी अचूकता.
+        </div>
+        <div class="callout warn">
+          <strong>🐯 वन्यजीव:</strong>
+          भारतातील व्याघ्रप्रकल्पांत कॅमेरा ट्रॅप + AI ने वाघांची मोजणी अधिक अचूक झाली.
+        </div>
+      </section>
+
+      <section id="india">
+        <h2>३. भारतातील विशेष वापर</h2>
+        <ul>
+          <li><strong>BHASHINI:</strong> भारतीय भाषांमध्ये अनुवाद (मराठी ↔ हिंदी ↔ इंग्रजी).</li>
+          <li><strong>DigiYatra:</strong> विमानतळावरील चेहरा-आधारित प्रवेश.</li>
+          <li><strong>e-NAM:</strong> शेतमालासाठी ऑनलाइन बाजार + किंमत अंदाज.</li>
+          <li><strong>Aarogya Setu:</strong> कोरोना काळातील संपर्क ओळख.</li>
+        </ul>
+      </section>
+
+      <section id="lab">
+        <h2>४. हँड्स-ऑन लॅब: छोटी शिफारस यंत्रणा</h2>
+        <p>
+          तुमच्या आवडत्या प्रकारानुसार चित्रपट सुचवणारी अगदी साधी प्रणाली बनवू.
+        </p>
+
+        <h3>सिंटॅक्स विश्लेषण</h3>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>def shifaras(genre):</code></td><td>एक <em>function</em> — पुनःपुन्हा वापरता येणारा कोडाचा तुकडा.</td></tr>
+            <tr><td><code>genre.lower()</code></td><td>String लोअर-केसमध्ये करते — तुलना सोपी होते.</td></tr>
+            <tr><td><code>.get(key, default)</code></td><td>Dictionary मध्ये key नसेल तर default value परत करते.</td></tr>
+            <tr><td><code>return</code></td><td>Function मधून मूल्य परत पाठवते.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="lab" id="lab-4-1">
+          <div class="lab-head">
+            <h4>लॅब ४.१ — Movie Recommender</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">database = {
+    "action":   ["Bahubali", "RRR", "War"],
+    "comedy":   ["3 Idiots", "Hera Pheri", "Munna Bhai MBBS"],
+    "drama":    ["Sairat", "Court", "Natsamrat"],
+    "kids":     ["Mogli", "Frozen", "Inside Out"],
+}
+
+def shifaras(awad):
+    awad = awad.lower().strip()
+    movies = database.get(awad, [])
+    if not movies:
+        return f"माफ करा, '{awad}' प्रकाराची माहिती उपलब्ध नाही."
+    return "तुमच्यासाठी सुचवलेले चित्रपट: " + ", ".join(movies)
+
+print(shifaras("Drama"))
+print(shifaras("Comedy"))
+print(shifaras("horror"))
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-4-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-4-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-4-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li><code>"horror"</code> साठी ३ चित्रपट जोडा.</li>
+          <li>Function मध्ये पॅरामीटर म्हणून ‘किती सुचवायचे’ हे जोडा (default = 2).</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>५. चाचणी</h2>
+        <div class="quiz" id="quiz-4">
+          <div class="q" data-answer="b" data-answer-text="ब. शिफारस यंत्रणा (Recommendation System)">
+            <p>१) YouTube वर ‘तुम्हाला आवडतील असे व्हिडिओ’ — हा AI चा कोणता उपयोग?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. NLP</label>
+              <label><input type="radio" name="q1" value="b" /> ब. शिफारस यंत्रणा</label>
+              <label><input type="radio" name="q1" value="c" /> क. Computer Vision</label>
+              <label><input type="radio" name="q1" value="d" /> ड. Robotics</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="d" data-answer-text="ड. वरील सर्व">
+            <p>२) AI चा वापर करणारे भारतीय प्रकल्प कोणते?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. BHASHINI</label>
+              <label><input type="radio" name="q2" value="b" /> ब. DigiYatra</label>
+              <label><input type="radio" name="q2" value="c" /> क. e-NAM</label>
+              <label><input type="radio" name="q2" value="d" /> ड. वरील सर्व</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-4')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>६. सारांश</h2>
+        <ul>
+          <li>AI दैनंदिन जीवनात सर्वत्र आहे — आरोग्य, शेती, बँकिंग, मनोरंजन, शिक्षण.</li>
+          <li>‘शिफारस यंत्रणा’ हा AI चा सर्वात लोकप्रिय वापर.</li>
+          <li>Python <code>dict</code> + <code>function</code> ने मिनी AI ॲप बनवता येतो.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch04')">✓ धडा ४ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter03.html"><small>← मागे</small>धडा ३: AI चे प्रकार</a>
+        <a href="chapter05.html"><small>पुढे →</small>धडा ५: Python मूलतत्त्वे</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

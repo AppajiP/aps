@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ६: डेटा — AI चे इंधन — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#whatis">डेटा म्हणजे काय?</a></li>
+        <li><a href="#types">डेटाचे प्रकार</a></li>
+        <li><a href="#quality">डेटा गुणवत्ता</a></li>
+        <li><a href="#stats">मूलभूत सांख्यिकी</a></li>
+        <li><a href="#lab">लॅब्स</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ६: डेटा — AI चे इंधन</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~२० मिनिटे</div>
+
+      <section id="whatis">
+        <h2>१. डेटा (Data) म्हणजे काय?</h2>
+        <p>
+          आपल्या आजूबाजूला जे मोजता, पाहता, ऐकता येते — त्या प्रत्येक नोंदीला <strong>डेटा</strong> म्हणतात.
+          AI ला शिकवण्यासाठी हाच कच्चा माल लागतो.
+        </p>
+        <div class="callout">
+          <strong>उदाहरण:</strong> इयत्ता ९ वी मधील ३० विद्यार्थ्यांची उंची, वय, गुण — हा डेटा.
+          त्यावर आधारित ‘गुण आणि अभ्यासाचे तास’ यांचा संबंध शिकता येतो.
+        </div>
+      </section>
+
+      <section id="types">
+        <h2>२. डेटाचे प्रकार</h2>
+        <table class="syntax-table">
+          <thead><tr><th>प्रकार</th><th>उदाहरण</th></tr></thead>
+          <tbody>
+            <tr><td><strong>संख्यात्मक (Numerical)</strong></td><td>वय, उंची, तापमान — संख्या</td></tr>
+            <tr><td><strong>श्रेणीबद्ध (Categorical)</strong></td><td>लिंग, राज्य, इयत्ता — गट</td></tr>
+            <tr><td><strong>मजकूर (Text)</strong></td><td>पुस्तक, मेसेज, रिव्ह्यू</td></tr>
+            <tr><td><strong>प्रतिमा (Image)</strong></td><td>JPG, PNG फोटो — पिक्सेलचा matrix</td></tr>
+            <tr><td><strong>ध्वनी (Audio)</strong></td><td>आवाज, गाणी — Waveform</td></tr>
+            <tr><td><strong>व्हिडिओ</strong></td><td>अनेक प्रतिमा + ध्वनी</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="quality">
+        <h2>३. डेटा गुणवत्ता — ‘Garbage In, Garbage Out’</h2>
+        <p>चुकीचा / खराब डेटा दिला तर AI सुद्धा चुकीचे उत्तर देईल. चांगल्या डेटाचे पाच गुण:</p>
+        <ol>
+          <li><strong>अचूक (Accurate)</strong> — मूल्ये बरोबर.</li>
+          <li><strong>पूर्ण (Complete)</strong> — कोणतीही माहिती गहाळ नाही.</li>
+          <li><strong>सुसंगत (Consistent)</strong> — एकसारखे एकक (उदा. cm की inch).</li>
+          <li><strong>नवीन (Timely)</strong> — आजच्या परिस्थितीला लागू.</li>
+          <li><strong>संबंधित (Relevant)</strong> — आपल्या प्रश्नाशी जोडलेला.</li>
+        </ol>
+        <div class="callout warn">
+          <strong>पूर्वग्रह (Bias):</strong> जर शिक्षणासाठी फक्त एका शहरातील डेटा वापरला तर मॉडेल इतर ठिकाणी चांगले काम करणार नाही.
+        </div>
+      </section>
+
+      <section id="stats">
+        <h2>४. मूलभूत सांख्यिकी — सरासरी, मध्यका, बहुलक</h2>
+        <table class="syntax-table">
+          <thead><tr><th>संकल्पना</th><th>व्याख्या</th><th>Python</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Mean (सरासरी)</strong></td><td>सर्व मूल्यांची बेरीज ÷ संख्या</td><td><code>sum(x)/len(x)</code></td></tr>
+            <tr><td><strong>Median (मध्यका)</strong></td><td>क्रमाने मांडल्यावर मधले मूल्य</td><td><code>statistics.median(x)</code></td></tr>
+            <tr><td><strong>Mode (बहुलक)</strong></td><td>सर्वांत वारंवार दिसणारे मूल्य</td><td><code>statistics.mode(x)</code></td></tr>
+            <tr><td><strong>Min / Max</strong></td><td>लहानात लहान / मोठ्यात मोठे</td><td><code>min(x)</code>, <code>max(x)</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="lab">
+        <h2>५. हँड्स-ऑन लॅब्स</h2>
+
+        <div class="lab" id="lab-6-1">
+          <div class="lab-head">
+            <h4>लॅब ६.१ — वर्गाच्या गुणांची सांख्यिकी</h4>
+            <span class="lab-badge">Python • statistics</span>
+          </div>
+          <div class="lab-body">
+            <h3 style="margin-top:0">सिंटॅक्स विश्लेषण</h3>
+            <table class="syntax-table">
+              <tbody>
+                <tr><td><code>import statistics</code></td><td>Python ची तयार लायब्ररी आणते.</td></tr>
+                <tr><td><code>statistics.mean(x)</code></td><td>list <code>x</code> ची सरासरी.</td></tr>
+                <tr><td><code>statistics.median(x)</code></td><td>मध्यका.</td></tr>
+                <tr><td><code>statistics.stdev(x)</code></td><td>Standard Deviation — मूल्ये किती पसरली आहेत.</td></tr>
+              </tbody>
+            </table>
+<textarea class="editor" spellcheck="false">import statistics as st
+
+gun = [78, 65, 90, 82, 70, 88, 95, 60, 72, 80]
+
+print("एकूण विद्यार्थी:", len(gun))
+print("सरासरी (mean) :", st.mean(gun))
+print("मध्यका (median):", st.median(gun))
+print("किमान:", min(gun), " कमाल:", max(gun))
+print("Standard Deviation:", round(st.stdev(gun), 2))
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-6-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-6-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-6-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-6-2">
+          <div class="lab-head">
+            <h4>लॅब ६.२ — डेटा स्वच्छता (Missing values)</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+            <p class="text-muted" style="margin:0 0 8px;">List मधील <code>None</code> मूल्ये काढून सरासरीने भरूया.</p>
+<textarea class="editor" spellcheck="false">data = [70, None, 85, 90, None, 60, 75]
+
+# 1) उपलब्ध मूल्ये गोळा करा
+upalabdh = [v for v in data if v is not None]
+
+# 2) सरासरी काढा
+saras = sum(upalabdh) / len(upalabdh)
+print("उपलब्ध मूल्यांची सरासरी:", saras)
+
+# 3) None च्या जागी सरासरी भरून घ्या
+saaf = [v if v is not None else saras for v in data]
+print("स्वच्छ डेटा :", saaf)
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-6-2')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-6-2')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-6-2')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>६. चाचणी</h2>
+        <div class="quiz" id="quiz-6">
+          <div class="q" data-answer="b" data-answer-text="ब. सरासरी (mean)">
+            <p>१) <code>sum(x) / len(x)</code> काय काढते?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. मध्यका</label>
+              <label><input type="radio" name="q1" value="b" /> ब. सरासरी (mean)</label>
+              <label><input type="radio" name="q1" value="c" /> क. बहुलक</label>
+              <label><input type="radio" name="q1" value="d" /> ड. कमाल</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="d" data-answer-text="ड. वरील सर्व">
+            <p>२) चांगल्या डेटाचे लक्षण कोणते?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. अचूक</label>
+              <label><input type="radio" name="q2" value="b" /> ब. पूर्ण</label>
+              <label><input type="radio" name="q2" value="c" /> क. सुसंगत</label>
+              <label><input type="radio" name="q2" value="d" /> ड. वरील सर्व</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-6')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>७. सारांश</h2>
+        <ul>
+          <li>डेटा = AI चे इंधन; प्रकार: numerical, categorical, text, image, audio.</li>
+          <li>"Garbage In → Garbage Out" — खराब डेटा = खराब मॉडेल.</li>
+          <li>Python <code>statistics</code> मोड्यूल मूलभूत सांख्यिकीसाठी.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch06')">✓ धडा ६ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter05.html"><small>← मागे</small>धडा ५: Python मूलतत्त्वे</a>
+        <a href="chapter07.html"><small>पुढे →</small>धडा ७: मशीन लर्निंग</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

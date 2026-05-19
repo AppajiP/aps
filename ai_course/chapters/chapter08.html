@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ८: Supervised, Unsupervised व Reinforcement Learning — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#three">तीन प्रकारची शिक्षणे</a></li>
+        <li><a href="#sup">Supervised Learning</a></li>
+        <li><a href="#unsup">Unsupervised Learning</a></li>
+        <li><a href="#rl">Reinforcement Learning</a></li>
+        <li><a href="#lab">लॅब्स</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ८: पर्यवेक्षित, अपर्यवेक्षित व प्रोत्साहन शिक्षण</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~२० मिनिटे</div>
+
+      <section id="three">
+        <h2>१. ML चे तीन मुख्य प्रकार</h2>
+        <table class="syntax-table">
+          <thead><tr><th>प्रकार</th><th>शिकवण्याची पद्धत</th><th>उदा.</th></tr></thead>
+          <tbody>
+            <tr><td>Supervised</td><td>उदाहरणे + बरोबर उत्तर</td><td>ईमेल → स्पॅम का?</td></tr>
+            <tr><td>Unsupervised</td><td>फक्त उदाहरणे — उत्तर नाही</td><td>ग्राहकांना गटांत विभागणे</td></tr>
+            <tr><td>Reinforcement</td><td>क्रिया → बक्षीस/शिक्षा</td><td>खेळ शिकणे, रोबोट चालणे</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="sup">
+        <h2>२. Supervised Learning (पर्यवेक्षित शिक्षण)</h2>
+        <p>शिक्षक उत्तरपत्रिकेसह उदाहरणे देतो. मॉडेल त्यांचा अभ्यास करून नवीन प्रश्नाला अंदाज देते.</p>
+        <ul>
+          <li><strong>Classification:</strong> उत्तर एका गटातील — पास/नापास, मांजर/कुत्रा, स्पॅम/सामान्य.</li>
+          <li><strong>Regression:</strong> उत्तर संख्या — घराची किंमत, उद्याचे तापमान.</li>
+        </ul>
+      </section>
+
+      <section id="unsup">
+        <h2>३. Unsupervised Learning (अपर्यवेक्षित शिक्षण)</h2>
+        <p>उत्तरे नसताना, मॉडेल स्वतः <strong>नमुने / गट (clusters)</strong> शोधते.</p>
+        <ul>
+          <li><strong>Clustering:</strong> सारख्या वैशिष्ट्यांच्या ग्राहकांचे ३ गट.</li>
+          <li><strong>Association:</strong> ‘ब्रेड घेणारे लोक बटरही घेतात.’</li>
+        </ul>
+      </section>
+
+      <section id="rl">
+        <h2>४. Reinforcement Learning (प्रोत्साहन शिक्षण)</h2>
+        <p>
+          ‘Agent’ एखाद्या वातावरणात कृती करतो. योग्य कृती → बक्षीस, चूक → शिक्षा.
+          अनेक प्रयत्नांनंतर तो उत्तम धोरण (policy) शिकतो.
+        </p>
+        <div class="callout tip">
+          <strong>उदाहरण:</strong> AlphaGo, मांजरीला ट्रिक शिकवणे, स्वयं-चालित गाडी पार्किंग शिकणे.
+        </div>
+      </section>
+
+      <section id="lab">
+        <h2>५. हँड्स-ऑन लॅब्स</h2>
+
+        <div class="lab" id="lab-8-1">
+          <div class="lab-head">
+            <h4>लॅब ८.१ — Supervised: साधे रेषीय रिग्रेशन</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+            <p class="text-muted" style="margin:0 0 8px;">
+              अभ्यासाचे तास <code>X</code> वरून गुण <code>y</code> चा अंदाज. आपण <strong>least-squares</strong> सूत्र वापरून सरळ रेषा <code>y = m·x + b</code> शिकवू.
+            </p>
+
+            <h3 style="margin-top:0">सिंटॅक्स विश्लेषण</h3>
+            <table class="syntax-table">
+              <tbody>
+                <tr><td><code>n = len(X)</code></td><td>एकूण उदाहरणे.</td></tr>
+                <tr><td><code>sum(X)</code></td><td>List मधील सर्व मूल्यांची बेरीज.</td></tr>
+                <tr><td>List comprehension <code>[i*j for i,j in zip(X,y)]</code></td><td>एका ओळीत नवीन list तयार करण्याचा शॉर्टकट.</td></tr>
+                <tr><td><code>m = ...</code>, <code>b = ...</code></td><td>रेषेचा उतार आणि intercept शोधण्याची सूत्रे.</td></tr>
+              </tbody>
+            </table>
+
+<textarea class="editor" spellcheck="false">X = [1, 2, 3, 4, 5, 6, 7, 8]
+y = [35, 45, 50, 58, 65, 72, 80, 88]
+
+n = len(X)
+sum_x  = sum(X)
+sum_y  = sum(y)
+sum_xy = sum(xi * yi for xi, yi in zip(X, y))
+sum_xx = sum(xi * xi for xi in X)
+
+# Least squares सूत्र
+m = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x)
+b = (sum_y - m * sum_x) / n
+
+print(f"शिकलेली रेषा : y = {round(m,2)} * x + {round(b,2)}")
+
+# अंदाज
+chachni = [2.5, 5.5, 9]
+for h in chachni:
+    print(f"  {h} तास अभ्यास → अंदाजे गुण = {round(m*h + b, 1)}")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-8-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-8-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-8-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-8-2">
+          <div class="lab-head">
+            <h4>लॅब ८.२ — Unsupervised: साधे Clustering</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+            <p class="text-muted" style="margin:0 0 8px;">
+              अनेक मूल्ये दिली असता त्यांना ‘कमी / जास्त’ अशा दोन गटांत आपोआप विभागणारा एक भोळसर k-means.
+            </p>
+<textarea class="editor" spellcheck="false">data = [2, 3, 4, 10, 11, 12, 30, 31, 32]
+
+# सुरुवातीचे दोन centers - लहान आणि मोठा
+c1, c2 = min(data), max(data)
+
+for step in range(6):
+    g1 = [v for v in data if abs(v - c1) <= abs(v - c2)]
+    g2 = [v for v in data if abs(v - c1) >  abs(v - c2)]
+    new_c1 = sum(g1) / len(g1) if g1 else c1
+    new_c2 = sum(g2) / len(g2) if g2 else c2
+    if abs(new_c1 - c1) < 0.01 and abs(new_c2 - c2) < 0.01:
+        break
+    c1, c2 = new_c1, new_c2
+
+print("गट १ केंद्र:", round(c1, 2), "→", g1)
+print("गट २ केंद्र:", round(c2, 2), "→", g2)
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-8-2')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-8-2')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-8-2')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>६. चाचणी</h2>
+        <div class="quiz" id="quiz-8">
+          <div class="q" data-answer="a" data-answer-text="अ. Supervised">
+            <p>१) ‘ईमेल → स्पॅम का?’ — कोणता ML प्रकार?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. Supervised</label>
+              <label><input type="radio" name="q1" value="b" /> ब. Unsupervised</label>
+              <label><input type="radio" name="q1" value="c" /> क. Reinforcement</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="b" data-answer-text="ब. Clustering">
+            <p>२) ग्राहकांना समान वर्तनानुसार आपोआप गटांत विभागणे — हे काय आहे?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. Regression</label>
+              <label><input type="radio" name="q2" value="b" /> ब. Clustering</label>
+              <label><input type="radio" name="q2" value="c" /> क. Classification</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. Reinforcement Learning">
+            <p>३) AlphaGo कोणत्या प्रकारच्या ML ने शिकले?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. Supervised</label>
+              <label><input type="radio" name="q3" value="b" /> ब. Unsupervised</label>
+              <label><input type="radio" name="q3" value="c" /> क. Reinforcement Learning</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-8')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>७. सारांश</h2>
+        <ul>
+          <li>Supervised → लेबल असलेली उदाहरणे (classification / regression).</li>
+          <li>Unsupervised → फक्त डेटा, मॉडेल स्वतः नमुने शोधते.</li>
+          <li>Reinforcement → बक्षीस / शिक्षेद्वारे शिक्षण.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch08')">✓ धडा ८ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter07.html"><small>← मागे</small>धडा ७: ML ओळख</a>
+        <a href="chapter09.html"><small>पुढे →</small>धडा ९: न्यूरल नेटवर्क्स</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

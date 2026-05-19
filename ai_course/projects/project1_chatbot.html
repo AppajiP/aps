@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प १: साधा चॅटबॉट — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">उद्दिष्ट</a></li>
+        <li><a href="#plan">डिझाइन</a></li>
+        <li><a href="#step1">पाऊल १: कीवर्ड्स</a></li>
+        <li><a href="#step2">पाऊल २: फंक्शन</a></li>
+        <li><a href="#step3">पाऊल ३: संवाद</a></li>
+        <li><a href="#lab">पूर्ण लॅब</a></li>
+        <li><a href="#extend">पुढे काय?</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प १: साधा नियमाधारित चॅटबॉट</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अंदाजे वेळ: ३० मिनिटे</div>
+
+      <section id="goal">
+        <h2>उद्दिष्ट</h2>
+        <p>
+          एक चॅटबॉट तयार करणे जो मराठीत विचारलेले काही प्रश्न ओळखून उत्तर देऊ शकेल.
+          उदा. ‘तुझं नाव काय?’, ‘वेळ काय?’, ‘AI म्हणजे काय?’.
+        </p>
+      </section>
+
+      <section id="plan">
+        <h2>डिझाइन (कसा बनवायचा?)</h2>
+        <ol>
+          <li>प्रत्येक प्रश्नासाठी काही <strong>कीवर्ड्स</strong> ठरवू.</li>
+          <li>एक <strong>function</strong> लिहू: इनपुटमध्ये कोणते कीवर्ड्स आहेत ते तपासेल.</li>
+          <li>योग्य कीवर्ड सापडल्यास तयार उत्तर परत करेल; नसेल तर <em>"समजलं नाही"</em>.</li>
+          <li>एक <strong>while लूप</strong> वापरून संवाद चालू ठेवू.</li>
+        </ol>
+      </section>
+
+      <section id="step1">
+        <h2>पाऊल १ — कीवर्ड्स आणि उत्तरे</h2>
+        <pre class="code-block">rules = {
+    ("नमस्कार", "हाय", "हॅलो"):
+        "नमस्कार! मी आझोनबॉट. कशी मदत करू?",
+    ("नाव", "तू कोण"):
+        "माझे नाव AzoneBot. Appaji Patil यांनी मला बनवले.",
+    ("ai", "बुद्धिमत्ता"):
+        "AI म्हणजे संगणकाला विचार करायला, शिकायला शिकवणे.",
+    ("वेळ", "किती वाजले"):
+        "मला घड्याळ नाही, पण मोबाईलवर पहा 😊",
+    ("बाय", "धन्यवाद"):
+        "धन्यवाद! भेटूया लवकरच.",
+}</pre>
+
+        <h3>सिंटॅक्स विश्लेषण</h3>
+        <table class="syntax-table">
+          <tbody>
+            <tr><td><code>{(a, b, c): "उत्तर"}</code></td><td>Key म्हणून tuple — एकाच उत्तरासाठी अनेक कीवर्ड्स.</td></tr>
+            <tr><td><code>tuple</code></td><td><code>( ... )</code> मध्ये बंदिस्त, बदलता न येणारी रचना.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="step2">
+        <h2>पाऊल २ — उत्तर शोधणारे function</h2>
+        <pre class="code-block">def uttar(text):
+    t = text.lower()
+    for words, ans in rules.items():
+        if any(w in t for w in words):
+            return ans
+    return "माफ करा, हे मला समजले नाही. परत विचाराल का?"</pre>
+
+        <h3>सिंटॅक्स विश्लेषण</h3>
+        <table class="syntax-table">
+          <tbody>
+            <tr><td><code>rules.items()</code></td><td>Dict मधील (key, value) जोड्या एक-एक करून देते.</td></tr>
+            <tr><td><code>any(...)</code></td><td>कोणतीही एक अट <code>True</code> असेल तर <code>True</code>.</td></tr>
+            <tr><td><code>for w in words</code></td><td>Tuple मधील प्रत्येक कीवर्ड तपासते.</td></tr>
+            <tr><td><code>return</code></td><td>उत्तर सापडले की पुढे जाण्याची गरज नाही — लगेच परत.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="step3">
+        <h2>पाऊल ३ — संवाद लूप</h2>
+        <p>
+          प्रत्यक्ष वापरात <code>input()</code> वापरला जातो. आपल्या ब्राउझर-लॅबमध्ये आपण
+          ‘तुमचे प्रश्न’ खाली टाइप करू शकता (प्रत्येक प्रश्न नवीन ओळीवर).
+        </p>
+      </section>
+
+      <section id="lab">
+        <h2>पूर्ण लॅब — स्वतःचा चॅटबॉट चालवा</h2>
+
+        <div class="lab" id="lab-p1">
+          <div class="lab-head">
+            <h4>AzoneBot — चॅटबॉट</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+            <ol class="lab-steps">
+              <li>खालील ‘तुमचे प्रश्न’ कप्प्यात प्रत्येक ओळीवर एक प्रश्न लिहा (मराठीत).</li>
+              <li>“▶ चालवा” दाबा.</li>
+              <li>नवीन नियम जोडण्यासाठी <code>rules</code> मध्ये कीवर्ड व उत्तर वाढवा.</li>
+            </ol>
+
+            <label class="text-muted" style="display:block;margin:8px 0 4px;">तुमचे प्रश्न (प्रत्येक ओळीवर एक):</label>
+<input class="lab-input" type="text" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-family:inherit;"
+       value="नमस्कार|तुझं नाव काय?|AI म्हणजे काय|वेळ काय?|बाय" />
+
+<textarea class="editor" spellcheck="false">rules = {
+    ("नमस्कार", "हाय", "हॅलो"):
+        "नमस्कार! मी आझोनबॉट. कशी मदत करू?",
+    ("नाव", "तू कोण"):
+        "माझे नाव AzoneBot. Appaji Patil यांनी मला बनवले.",
+    ("ai", "बुद्धिमत्ता"):
+        "AI म्हणजे संगणकाला विचार करायला, शिकायला शिकवणे.",
+    ("वेळ", "किती वाजले"):
+        "मला घड्याळ नाही, पण मोबाईलवर पहा 😊",
+    ("बाय", "धन्यवाद"):
+        "धन्यवाद! भेटूया लवकरच.",
+}
+
+def uttar(text):
+    t = text.lower()
+    for words, ans in rules.items():
+        if any(w in t for w in words):
+            return ans
+    return "माफ करा, हे मला समजले नाही. परत विचाराल का?"
+
+while True:
+    try:
+        prashna = input("तुम्ही: ")
+    except EOFError:
+        break
+    if prashna.strip() == "":
+        break
+    print("बॉट :", uttar(prashna))
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-p1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-p1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-p1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="extend">
+        <h2>पुढे काय?</h2>
+        <ul>
+          <li>३ नवीन नियम जोडा (उदा. ‘शाळा’, ‘अभ्यास’, ‘खेळ’).</li>
+          <li>उत्तर एकाच नसून यादीतून <code>random.choice</code> ने निवडा.</li>
+          <li>‘कोण आहे तू?’ या प्रश्नाला अधिक नैसर्गिक उत्तर द्या.</li>
+        </ul>
+
+        <div class="page-nav">
+          <a href="index.html"><small>← मागे</small>प्रकल्प सूची</a>
+          <a href="project2_sentiment.html"><small>पुढे →</small>प्रकल्प २: भावना विश्लेषक</a>
+        </div>
+      </section>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा १२: AI नैतिकता व भविष्य — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#why">नैतिकता का?</a></li>
+        <li><a href="#issues">पाच मुख्य प्रश्न</a></li>
+        <li><a href="#bias">पूर्वग्रह (Bias)</a></li>
+        <li><a href="#future">AI चे भविष्य</a></li>
+        <li><a href="#lab">लॅब: साधे bias शोधक</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश + पुढे काय</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा १२: AI नैतिकता आणि भविष्य</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~१८ मिनिटे</div>
+
+      <section id="why">
+        <h2>१. नैतिकता का महत्त्वाची?</h2>
+        <p>
+          AI जितका शक्तिशाली, तितक्या मोठ्या जबाबदाऱ्या. उदा. चुकीचा AI मुलाखतीत कोणाला बाद करेल,
+          किंवा चुकीची वैद्यकीय भविष्यवाणी देईल — हे जीवनावर परिणाम करते.
+          म्हणून <strong>“Responsible AI”</strong> ची शिकवण घेतल्याशिवाय AI शिक्षण अपूर्ण आहे.
+        </p>
+      </section>
+
+      <section id="issues">
+        <h2>२. पाच मोठे प्रश्न</h2>
+        <table class="syntax-table">
+          <thead><tr><th>विषय</th><th>उदाहरण</th></tr></thead>
+          <tbody>
+            <tr><td>पूर्वग्रह (Bias)</td><td>फक्त शहरी डेटा → ग्रामीण विद्यार्थ्यांवर अन्याय</td></tr>
+            <tr><td>गोपनीयता (Privacy)</td><td>आमचा फोटो / आवाज कुठे साठवला?</td></tr>
+            <tr><td>पारदर्शकता (Explainability)</td><td>AI ने ‘नकार’ का दिला?</td></tr>
+            <tr><td>नोकरी (Jobs)</td><td>काही नोकऱ्या बदलतात, नवीन तयार होतात</td></tr>
+            <tr><td>सुरक्षा (Safety)</td><td>Deepfake, चुकीची माहिती</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="bias">
+        <h2>३. Bias — सर्वात मोठा धोका</h2>
+        <p>
+          प्रशिक्षण डेटा एकाच गटाकडे झुकलेला असेल, तर मॉडेलही तसेच निर्णय घेईल.
+          म्हणून <strong>डेटा वैविध्य</strong> आणि <strong>मानवी देखरेख</strong> गरजेची.
+        </p>
+
+        <div class="callout warn">
+          <strong>एक प्रसिद्ध उदाहरण</strong>
+          २०१८ मध्ये एका मोठ्या कंपनीच्या रिझ्युमे-फिल्टरिंग AI ने महिलांचे अर्ज नकळत वगळले,
+          कारण इतिहासात पुरुष उमेदवार जास्त निवडले गेले होते.
+        </div>
+      </section>
+
+      <section id="future">
+        <h2>४. AI चे भविष्य — विद्यार्थ्यांसाठी संधी</h2>
+        <ul>
+          <li>🧪 AI शास्त्रज्ञ (Researcher)</li>
+          <li>⚙️ ML अभियंता (Engineer)</li>
+          <li>📊 डेटा सायंटिस्ट</li>
+          <li>🧭 AI Ethicist (नैतिकता तज्ज्ञ)</li>
+          <li>🎨 Prompt Engineer / AI Designer</li>
+          <li>🏥 Domain expert + AI: डॉक्टर + AI, शेतकरी + AI</li>
+        </ul>
+        <div class="callout tip">
+          <strong>Appaji Patil यांचा संदेश:</strong>
+          “भविष्यात AI तुम्हाला कोणत्या ना कोणत्या रूपात भेटणार आहेच — तर त्याला घाबरण्यापेक्षा शिकूया, वापरूया आणि माणुसकीसाठी वापरूया.”
+        </div>
+      </section>
+
+      <section id="lab">
+        <h2>५. हँड्स-ऑन लॅब: साधा Bias डिटेक्टर</h2>
+        <p>
+          एका मॉडेलने दोन गटांना दिलेले accept-दर तुलना करून आपण bias शोधू.
+        </p>
+
+        <div class="lab" id="lab-12-1">
+          <div class="lab-head">
+            <h4>लॅब १२.१ — Fairness Check</h4>
+            <span class="lab-badge">Python</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">applications = [
+    # (gat, model_result)  result: 1=accept, 0=reject
+    ("A", 1), ("A", 1), ("A", 0), ("A", 1), ("A", 1),
+    ("B", 0), ("B", 0), ("B", 1), ("B", 0), ("B", 0),
+]
+
+def acceptance_rate(group):
+    items = [r for g, r in applications if g == group]
+    return sum(items) / len(items)
+
+a = acceptance_rate("A")
+b = acceptance_rate("B")
+print(f"गट A : {a*100:.0f}% accept")
+print(f"गट B : {b*100:.0f}% accept")
+
+farak = abs(a - b)
+print(f"फरक : {farak*100:.0f}%")
+if farak > 0.2:
+    print("⚠ संभाव्य BIAS — डेटा / मॉडेल पुन्हा तपासा!")
+else:
+    print("✓ निर्णय बऱ्यापैकी संतुलित आहेत.")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-12-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-12-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-12-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>६. चाचणी</h2>
+        <div class="quiz" id="quiz-12">
+          <div class="q" data-answer="a" data-answer-text="अ. प्रशिक्षण डेटातील असमतोल">
+            <p>१) AI मध्ये bias मुख्यतः कशामुळे येते?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. प्रशिक्षण डेटातील असमतोल</label>
+              <label><input type="radio" name="q1" value="b" /> ब. Wi-Fi स्पीड कमी</label>
+              <label><input type="radio" name="q1" value="c" /> क. Python ची आवृत्ती</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="b" data-answer-text="ब. Responsible AI तत्त्वे पाळणे">
+            <p>२) Bias टाळण्यासाठी काय करावे?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. आणखी जास्त parameters</label>
+              <label><input type="radio" name="q2" value="b" /> ब. Responsible AI तत्त्वे पाळणे (वैविध्यपूर्ण डेटा, मानवी देखरेख)</label>
+              <label><input type="radio" name="q2" value="c" /> क. AI बंद करणे</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-12')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>७. सारांश व अभिनंदन!</h2>
+        <p>
+          आपण १२ धडे पूर्ण केले — AI ची ओळख ते नैतिकता.
+          आता <a href="../projects/index.html">प्रकल्प (Projects)</a> भागात जाऊन शिकलेले एकत्र वापरू.
+        </p>
+        <ul>
+          <li>तंत्रज्ञान अधिकार आहेच, पण <strong>जबाबदारी</strong> अधिक.</li>
+          <li>विद्यार्थी म्हणून तुम्हीच पुढची पिढी आहात — माणुसकीसाठी AI बनवा.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch12')">✓ धडा १२ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter11.html"><small>← मागे</small>धडा ११: Computer Vision</a>
+        <a href="../projects/index.html"><small>पुढे →</small>प्रकल्प सुरू करा</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ५: AI साठी Python मूलतत्त्वे — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#why">Python का?</a></li>
+        <li><a href="#vars">व्हेरिएबल्स व डेटा प्रकार</a></li>
+        <li><a href="#io">इनपुट / आउटपुट</a></li>
+        <li><a href="#cond">अटी (if-else)</a></li>
+        <li><a href="#loop">पुनरावृत्ती (for / while)</a></li>
+        <li><a href="#fn">फंक्शन्स</a></li>
+        <li><a href="#list">List व Dict</a></li>
+        <li><a href="#lab">लॅब्स</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ५: AI साठी Python ची मूलतत्त्वे</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~३० मिनिटे</div>
+
+      <section id="why">
+        <h2>१. AI साठी Python का?</h2>
+        <ul>
+          <li>सोप्पी, इंग्रजीसारखी सिंटॅक्स — शिकायला सोपी.</li>
+          <li>NumPy, Pandas, Scikit-learn, TensorFlow, PyTorch सारखी जगभरातील AI लायब्ररी.</li>
+          <li>विनामूल्य आणि <em>cross-platform</em>.</li>
+          <li>आपण याच पानावर Pyodide मुळे Python थेट ब्राउझरमध्ये चालवू शकतो.</li>
+        </ul>
+      </section>
+
+      <!-- VARIABLES -->
+      <section id="vars">
+        <h2>२. व्हेरिएबल्स (Variables) व डेटा प्रकार</h2>
+        <p>व्हेरिएबल म्हणजे माहितीसाठी ठेवलेले ‘नाव’ — एक डबा.</p>
+
+        <pre class="code-block">naav   = "आर्या"        <span style="color:#9aa3c7"># str — मजकूर</span>
+vay    = 14              <span style="color:#9aa3c7"># int — पूर्णांक</span>
+unchi  = 5.4             <span style="color:#9aa3c7"># float — दशांश</span>
+ahe_vidyarthi = True     <span style="color:#9aa3c7"># bool — खरे/खोटे</span></pre>
+
+        <h3>सिंटॅक्स विश्लेषण</h3>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>=</code></td><td>Assignment — उजवीकडची किंमत डाव्या व्हेरिएबलमध्ये ठेवते. <em>तुलना नाही!</em></td></tr>
+            <tr><td><code>"..."</code> / <code>'...'</code></td><td>String (मजकूर) दर्शवण्यासाठी अवतरण.</td></tr>
+            <tr><td><code>#</code></td><td>Comment — पुढील मजकूर Python चालवत नाही.</td></tr>
+            <tr><td><code>type(naav)</code></td><td>व्हेरिएबलचा डेटा प्रकार कोणता आहे ते सांगते.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout warn">
+          <strong>नाव ठेवण्याचे नियम</strong>
+          फक्त <em>अक्षरे, अंक, अंडरस्कोर</em>; पहिले अक्षर अंक नको. Python के <em>case-sensitive</em> आहे — <code>Naav</code> आणि <code>naav</code> वेगळे आहेत.
+        </div>
+      </section>
+
+      <!-- IO -->
+      <section id="io">
+        <h2>३. इनपुट व आउटपुट</h2>
+        <pre class="code-block">naav = input("तुमचे नाव: ")
+print("नमस्कार,", naav, "!")</pre>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>input("...")</code></td><td>वापरकर्त्याकडून मजकूर मागते आणि string परत करते.</td></tr>
+            <tr><td><code>print(a, b)</code></td><td>स्क्रीनवर अनेक मूल्ये (स्पेसने जोडून) छापते.</td></tr>
+            <tr><td><code>int(x)</code></td><td>String / float ला पूर्णांक बनवते (typecasting).</td></tr>
+          </tbody>
+        </table>
+        <div class="callout tip">
+          <strong>लक्ष द्या:</strong> <code>input()</code> नेहमी <em>string</em> देते. वय / गुणांसारखी संख्या हवी असल्यास <code>int(input(...))</code> वापरा.
+        </div>
+      </section>
+
+      <!-- COND -->
+      <section id="cond">
+        <h2>४. अटी (Conditions) — if / elif / else</h2>
+        <pre class="code-block">gun = 72
+
+if gun >= 75:
+    print("उत्तम!")
+elif gun >= 35:
+    print("उत्तीर्ण")
+else:
+    print("पुन्हा प्रयत्न करा")</pre>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>if</code></td><td>अट खरी असेल तर ब्लॉक चालतो.</td></tr>
+            <tr><td><code>elif</code></td><td>आधीच्या अटी खोट्या असतील व ही खरी असेल तर.</td></tr>
+            <tr><td><code>else</code></td><td>वरील सगळ्या अटी खोट्या असतील तर.</td></tr>
+            <tr><td>Indentation</td><td><strong>४ स्पेस</strong> — Python मध्ये ब्लॉक ओळखण्याचा हाच मार्ग!</td></tr>
+            <tr><td><code>&gt;= , &lt;= , == , !=</code></td><td>तुलना ऑपरेटर्स — boolean (True/False) देतात.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- LOOP -->
+      <section id="loop">
+        <h2>५. पुनरावृत्ती (Loops)</h2>
+        <h3>for लूप</h3>
+        <pre class="code-block">for i in range(1, 6):
+    print("नमस्कार", i)</pre>
+        <p><code>range(1, 6)</code> = <strong>1, 2, 3, 4, 5</strong> (6 वगळून). त्यामुळे ‘नमस्कार 1’ ते ‘नमस्कार 5’ छापले जाते.</p>
+
+        <h3>while लूप</h3>
+        <pre class="code-block">n = 1
+while n <= 3:
+    print(n)
+    n = n + 1</pre>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>range(a, b, step)</code></td><td><code>a</code> पासून <code>b</code> पर्यंत (b सोडून), प्रत्येक वेळी <code>step</code> ने वाढ.</td></tr>
+            <tr><td><code>while अट:</code></td><td>अट खरी असेपर्यंत ब्लॉक पुन्हा चालतो.</td></tr>
+            <tr><td><code>break</code> / <code>continue</code></td><td>लूप थांबवणे / पुढची फेरी सुरू करणे.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- FUNCTION -->
+      <section id="fn">
+        <h2>६. फंक्शन्स (Functions)</h2>
+        <pre class="code-block">def beraj(a, b):
+    """दोन संख्यांची बेरीज परत करते."""
+    return a + b
+
+print(beraj(3, 4))   # 7</pre>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>def naav(...):</code></td><td>नवीन function तयार करायचे keyword.</td></tr>
+            <tr><td>Parameters (<code>a, b</code>)</td><td>Function ला दिले जाणारे इनपुट.</td></tr>
+            <tr><td><code>"""..."""</code></td><td>Docstring — function काय करते याचे वर्णन.</td></tr>
+            <tr><td><code>return</code></td><td>उत्तर परत पाठवते. नसेल तर <code>None</code>.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- COLLECTIONS -->
+      <section id="list">
+        <h2>७. List, Tuple, Dict, Set</h2>
+        <pre class="code-block">yadi = [10, 20, 30, 40]          <span style="color:#9aa3c7"># List - बदलता येते</span>
+joda = (10, 20)                  <span style="color:#9aa3c7"># Tuple - बदलता येत नाही</span>
+kosh = {"naav":"राम", "vay":15}  <span style="color:#9aa3c7"># Dict - key:value</span>
+sangha = {1, 2, 3, 3, 2}         <span style="color:#9aa3c7"># Set - duplicates काढते</span>
+
+print(yadi[0])         # 10
+print(kosh["naav"])    # राम
+print(len(sangha))     # 3
+yadi.append(50)        # शेवटी जोडा</pre>
+
+        <table class="syntax-table">
+          <thead><tr><th>संरचना</th><th>उपयोग</th><th>उदा.</th></tr></thead>
+          <tbody>
+            <tr><td>List</td><td>अनेक मूल्ये, क्रमाने, बदलता येतात.</td><td><code>[1,2,3]</code></td></tr>
+            <tr><td>Tuple</td><td>स्थिर मूल्ये (नंतर बदलणे शक्य नाही).</td><td><code>(x, y)</code></td></tr>
+            <tr><td>Dict</td><td>Key-value रचना — माहितीचा "टेबल".</td><td><code>{"a":1}</code></td></tr>
+            <tr><td>Set</td><td>अद्वितीय (unique) मूल्ये.</td><td><code>{1,2}</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- LAB -->
+      <section id="lab">
+        <h2>८. हँड्स-ऑन लॅब्स</h2>
+
+        <div class="lab" id="lab-5-1">
+          <div class="lab-head">
+            <h4>लॅब ५.१ — माहिती मांडणी</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+            <p class="text-muted" style="margin:0 0 8px;">तुमची माहिती dictionary मध्ये ठेवा व छापा.</p>
+<textarea class="editor" spellcheck="false">vidyarthi = {
+    "naav":  "स्वराली",
+    "vay":   14,
+    "shala": "आझोन अकादमी",
+    "vishay": ["गणित", "विज्ञान", "AI"],
+}
+
+print("नाव :", vidyarthi["naav"])
+print("वय  :", vidyarthi["vay"])
+print("शाळा:", vidyarthi["shala"])
+print("आवडते विषय:")
+for v in vidyarthi["vishay"]:
+    print("  •", v)
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-5-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-5-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-5-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-5-2">
+          <div class="lab-head">
+            <h4>लॅब ५.२ — सम / विषम तपासणी (अटी + लूप)</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">for n in range(1, 11):
+    if n % 2 == 0:
+        print(n, "→ सम")
+    else:
+        print(n, "→ विषम")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-5-2')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-5-2')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-5-2')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <div class="lab" id="lab-5-3">
+          <div class="lab-head">
+            <h4>लॅब ५.३ — Function: सरासरी काढा</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">def sarasari(yadi):
+    if len(yadi) == 0:
+        return 0
+    return sum(yadi) / len(yadi)
+
+gun = [78, 65, 90, 82, 70]
+print("गुणांची सरासरी:", sarasari(gun))
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-5-3')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-5-3')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-5-3')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>९. चाचणी</h2>
+        <div class="quiz" id="quiz-5">
+          <div class="q" data-answer="b" data-answer-text="ब. ४ स्पेस इंडेंट">
+            <p>१) Python मध्ये कोडाचा ब्लॉक कसा ओळखला जातो?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. <code>{ }</code></label>
+              <label><input type="radio" name="q1" value="b" /> ब. ४ स्पेस इंडेंट</label>
+              <label><input type="radio" name="q1" value="c" /> क. <code>begin / end</code></label>
+              <label><input type="radio" name="q1" value="d" /> ड. <code>;</code></label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. string">
+            <p>२) <code>input()</code> चे default return type कोणते?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. int</label>
+              <label><input type="radio" name="q2" value="b" /> ब. float</label>
+              <label><input type="radio" name="q2" value="c" /> क. string</label>
+              <label><input type="radio" name="q2" value="d" /> ड. bool</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="a" data-answer-text="अ. range(1, 11)">
+            <p>३) 1 ते 10 छापायला कोणते <code>range</code> वापरावे?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. range(1, 11)</label>
+              <label><input type="radio" name="q3" value="b" /> ब. range(1, 10)</label>
+              <label><input type="radio" name="q3" value="c" /> क. range(10)</label>
+              <label><input type="radio" name="q3" value="d" /> ड. range(0, 10)</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-5')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>१०. सारांश</h2>
+        <ul>
+          <li>Python = AI ची भाषा. सिंटॅक्स सोप्पी आहे.</li>
+          <li>व्हेरिएबल → डेटाचे नाव; <code>type()</code> ने प्रकार समजतो.</li>
+          <li><code>if / elif / else</code>, <code>for / while</code>, आणि <code>def</code> हे चार बुनियादी ब्लॉक्स.</li>
+          <li>Indentation = Python चा 'व्याकरण' — ४ स्पेस नियम.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch05')">✓ धडा ५ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter04.html"><small>← मागे</small>धडा ४: AI चे उपयोग</a>
+        <a href="chapter06.html"><small>पुढे →</small>धडा ६: डेटा — AI चे इंधन</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

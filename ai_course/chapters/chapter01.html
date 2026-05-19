@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा १: कृत्रिम बुद्धिमत्तेची ओळख — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#intro">AI म्हणजे काय?</a></li>
+        <li><a href="#examples">दैनंदिन उदाहरणे</a></li>
+        <li><a href="#human-vs-ai">मानवी वि. यंत्र बुद्धिमत्ता</a></li>
+        <li><a href="#components">AI चे घटक</a></li>
+        <li><a href="#lab">हँड्स-ऑन लॅब</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा १: कृत्रिम बुद्धिमत्तेची ओळख</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~१५ मिनिटे</div>
+
+      <section id="intro">
+        <h2>१. AI म्हणजे काय?</h2>
+        <p>
+          <strong>कृत्रिम बुद्धिमत्ता (Artificial Intelligence — AI)</strong> म्हणजे
+          संगणक किंवा यंत्रांना <em>विचार करणे, शिकणे आणि निर्णय घेणे</em> शिकवणारे शास्त्र.
+          ज्या गोष्टी पूर्वी फक्त माणूसच करू शकत होता — उदा. भाषा समजणे, चित्र ओळखणे, बुद्धिबळ खेळणे —
+          त्या आता संगणक स्वतःहून करू लागले आहेत.
+        </p>
+
+        <div class="callout tip">
+          <strong>सोपी व्याख्या</strong>
+          संगणकाने माणसासारखी बुद्धिमत्ता दाखवणे म्हणजेच AI.
+        </div>
+
+        <h3>उदाहरण: मोबाईलमधील Google Assistant</h3>
+        <p>
+          तुम्ही म्हणता — “उद्या पुण्यात पाऊस पडेल का?” — आणि Assistant तुम्हाला उत्तर देते.
+          येथे संगणकाने तीन गोष्टी केल्या:
+        </p>
+        <ol>
+          <li><strong>ऐकले</strong> (Speech Recognition) — तुमचा आवाज मजकुरात बदलला.</li>
+          <li><strong>समजून घेतले</strong> (Natural Language Understanding) — प्रश्नाचा अर्थ काढला.</li>
+          <li><strong>उत्तर दिले</strong> (Decision + Speech Synthesis) — माहिती शोधून बोलून सांगितले.</li>
+        </ol>
+      </section>
+
+      <section id="examples">
+        <h2>२. आपल्या आजूबाजूचे AI</h2>
+        <table class="syntax-table">
+          <thead><tr><th>ठिकाण</th><th>AI चा वापर</th></tr></thead>
+          <tbody>
+            <tr><td>YouTube</td><td>तुम्हाला आवडेल असा व्हिडिओ सुचवणे (Recommendation)</td></tr>
+            <tr><td>WhatsApp</td><td>स्पॅम मेसेज ओळखून ब्लॉक करणे</td></tr>
+            <tr><td>Google Maps</td><td>ट्रॅफिक ओळखून सर्वात जलद रस्ता दाखवणे</td></tr>
+            <tr><td>हॉस्पिटल</td><td>X-Ray पाहून आजार ओळखणे</td></tr>
+            <tr><td>शेती</td><td>पिकावरील रोग फोटोवरून ओळखणे</td></tr>
+            <tr><td>बँक</td><td>फसवणुकीचे व्यवहार आपोआप ओळखणे</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="human-vs-ai">
+        <h2>३. मानवी आणि यंत्र बुद्धिमत्ता — फरक</h2>
+        <table class="syntax-table">
+          <thead><tr><th>घटक</th><th>माणूस</th><th>AI (संगणक)</th></tr></thead>
+          <tbody>
+            <tr><td>शिकण्याचा वेग</td><td>हळू (अनुभव)</td><td>खूप जलद (लाखो उदाहरणे)</td></tr>
+            <tr><td>भावना</td><td>आहेत</td><td>नाहीत</td></tr>
+            <tr><td>थकवा</td><td>येतो</td><td>येत नाही</td></tr>
+            <tr><td>सामान्य ज्ञान (Common sense)</td><td>उत्तम</td><td>मर्यादित</td></tr>
+            <tr><td>गणित / डेटा प्रक्रिया</td><td>हळू</td><td>अत्यंत वेगवान</td></tr>
+            <tr><td>सर्जनशीलता</td><td>नैसर्गिक</td><td>उदाहरणांवर अवलंबून</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout warn">
+          <strong>लक्षात ठेवा</strong>
+          AI माणसाची जागा घेत नाही — तो माणसाला अधिक सक्षम बनवतो. एक डॉक्टर + AI ची जोडी, एकट्या डॉक्टरपेक्षा जास्त रुग्ण वाचवू शकते.
+        </div>
+      </section>
+
+      <section id="components">
+        <h2>४. AI चे चार मुख्य घटक</h2>
+        <ol>
+          <li><strong>डेटा (Data):</strong> AI शिकण्यासाठी उदाहरणे. जितका जास्त व चांगला डेटा, तितके चांगले शिक्षण.</li>
+          <li><strong>अल्गोरिदम (Algorithm):</strong> डेटातून शिकण्याची कृती / पद्धत.</li>
+          <li><strong>संगणकीय शक्ती (Computing Power):</strong> CPU / GPU — मोठा डेटा वेगाने हाताळण्यासाठी.</li>
+          <li><strong>उद्दिष्ट (Goal):</strong> AI कशासाठी बनवायचा? — चित्र ओळख, अनुवाद, अंदाज इ.</li>
+        </ol>
+        <p>एखादे झाड वाढायला माती, पाणी, सूर्यप्रकाश आणि बी लागते — तसेच AI साठी हे चार घटक.</p>
+      </section>
+
+      <section id="lab">
+        <h2>५. हँड्स-ऑन लॅब: तुमचा पहिला AI-स्टाईल प्रोग्राम</h2>
+        <p>
+          खालील Python प्रोग्राम तुम्ही दिलेल्या वाक्यात ‘कृत्रिम बुद्धिमत्ता’ हा शब्द आहे का हे तपासतो.
+          हे साधे <em>नियम-आधारित (rule-based)</em> AI चे उदाहरण आहे.
+        </p>
+
+        <h3>सिंटॅक्स विश्लेषण — प्रत्येक ओळ काय करते?</h3>
+        <table class="syntax-table">
+          <thead><tr><th>ओळ</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>vakya = "AI ..." </code></td><td><code>vakya</code> नावाच्या <em>व्हेरिएबल</em>मध्ये एक वाक्य (string) ठेवले.</td></tr>
+            <tr><td><code>"AI" in vakya</code></td><td><code>in</code> ऑपरेटर तपासतो की <code>"AI"</code> हा शब्द <code>vakya</code> मध्ये आहे का — उत्तर <code>True</code> किंवा <code>False</code>.</td></tr>
+            <tr><td><code>if ... :</code></td><td>अट खरी असेल तरच पुढील ओळ चालते.</td></tr>
+            <tr><td><code>print(...)</code></td><td>स्क्रीनवर मजकूर दाखवते.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="lab" id="lab-1-1">
+          <div class="lab-head">
+            <h4>लॅब १.१ — AI शब्द ओळख</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+            <ol class="lab-steps">
+              <li>खालील कोड वाचा.</li>
+              <li>“▶ चालवा” दाबा.</li>
+              <li><code>vakya</code> मधील मजकूर बदला आणि पुन्हा चालवा.</li>
+            </ol>
+<textarea class="editor" spellcheck="false">vakya = "मला AI शिकायला आवडते"
+
+if "AI" in vakya:
+    print("हो! वाक्यात AI चा उल्लेख आहे.")
+else:
+    print("नाही, AI चा उल्लेख नाही.")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-1-1')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-1-1')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-1-1')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li>‘AI’ ऐवजी ‘मराठी’ शब्द शोधण्यासाठी प्रोग्राम बदला.</li>
+          <li>दोन शब्द एकाच वेळी तपासा — <code>and</code> वापरून.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>६. चाचणी</h2>
+        <div class="quiz" id="quiz-1">
+          <h4>स्वयं-मूल्यमापन</h4>
+
+          <div class="q" data-answer="b" data-answer-text="ब. यंत्रांना माणसासारखी बुद्धिमत्ता शिकवणारे शास्त्र">
+            <p>१) AI ची सर्वात योग्य व्याख्या कोणती?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. केवळ रोबोट बनवण्याचे शास्त्र</label>
+              <label><input type="radio" name="q1" value="b" /> ब. यंत्रांना माणसासारखी बुद्धिमत्ता शिकवणारे शास्त्र</label>
+              <label><input type="radio" name="q1" value="c" /> क. फक्त गणित सोडवणारे प्रोग्राम्स</label>
+              <label><input type="radio" name="q1" value="d" /> ड. इंटरनेटचा एक भाग</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. डेटा">
+            <p>२) AI ला शिकण्यासाठी सर्वात महत्त्वाची गोष्ट कोणती?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. विजेची उपलब्धता</label>
+              <label><input type="radio" name="q2" value="b" /> ब. रंगीत स्क्रीन</label>
+              <label><input type="radio" name="q2" value="c" /> क. डेटा</label>
+              <label><input type="radio" name="q2" value="d" /> ड. प्रिंटर</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="d" data-answer-text="ड. वरील सर्व">
+            <p>३) खालीलपैकी AI चा उपयोग कोठे होतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. YouTube शिफारशी</label>
+              <label><input type="radio" name="q3" value="b" /> ब. Google Maps</label>
+              <label><input type="radio" name="q3" value="c" /> क. X-Ray विश्लेषण</label>
+              <label><input type="radio" name="q3" value="d" /> ड. वरील सर्व</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-1')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>७. सारांश</h2>
+        <ul>
+          <li>AI = यंत्रांना विचार + शिक्षण + निर्णय शिकवणे.</li>
+          <li>AI चे चार आधारस्तंभ: डेटा, अल्गोरिदम, संगणकीय शक्ती, उद्दिष्ट.</li>
+          <li>AI माणसाची जागा घेत नाही — तो माणसाला अधिक कार्यक्षम बनवतो.</li>
+          <li>Python चा <code>in</code> ऑपरेटर वापरून आपण साधे नियम-आधारित AI बनवू शकतो.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch01')">✓ धडा १ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="../index.html"><small>← मागे</small>मुख्यपृष्ठ</a>
+        <a href="chapter02.html"><small>पुढे →</small>धडा २: AI चा इतिहास</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

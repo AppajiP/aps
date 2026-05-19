@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प ३: फूल वर्गीकरण — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="12">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">उद्दिष्ट</a></li>
+        <li><a href="#data">डेटा</a></li>
+        <li><a href="#algo">अल्गोरिदम (k-NN)</a></li>
+        <li><a href="#syntax">सिंटॅक्स विश्लेषण</a></li>
+        <li><a href="#lab">पूर्ण लॅब</a></li>
+        <li><a href="#extend">पुढे काय?</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प ३: Iris फूल वर्गीकरण</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अंदाजे वेळ: ४५ मिनिटे</div>
+
+      <section id="goal">
+        <h2>उद्दिष्ट</h2>
+        <p>
+          पाकळी (petal) व सेपलची लांबी-रुंदी सांगितल्यावर ‘Iris’ ही फुलाची जात
+          (Setosa / Versicolor / Virginica) ओळखणारा छोटा मॉडेल तयार करणे.
+        </p>
+      </section>
+
+      <section id="data">
+        <h2>डेटा</h2>
+        <p>
+          प्रसिद्ध ‘Iris dataset’ — १५० फुलांची ४ मापे आणि त्यांची जात. आपण १५ नमुने वापरू
+          (कोडात थेट लिहिलेले).
+        </p>
+        <p>प्रत्येक नमुना: <code>(sepal_len, sepal_wid, petal_len, petal_wid, jaat)</code></p>
+      </section>
+
+      <section id="algo">
+        <h2>अल्गोरिदम — k-Nearest Neighbours (k-NN)</h2>
+        <ol>
+          <li>नवीन फुलाच्या मापांचे <strong>distance</strong> सर्व माहीत असलेल्या नमुन्यांशी काढा.</li>
+          <li>सर्वात जवळचे <code>k</code> नमुने निवडा.</li>
+          <li>त्यांच्यात बहुसंख्य जात कोणती — तीच नवीन फुलाची जात.</li>
+        </ol>
+        <div class="callout tip">
+          <strong>का:</strong> ‘जवळच्या’ गोष्टी सहसा सारख्या असतात — ही माणसाची सहज वृत्ती k-NN वापरतो.
+        </div>
+      </section>
+
+      <section id="syntax">
+        <h2>सिंटॅक्स विश्लेषण</h2>
+        <table class="syntax-table">
+          <tbody>
+            <tr><td><code>**</code></td><td>घातांक: <code>a ** 2</code> = a चा वर्ग.</td></tr>
+            <tr><td><code>math.sqrt(x)</code></td><td>x चे वर्गमूळ.</td></tr>
+            <tr><td><code>sorted(lst, key=...)</code></td><td>विशिष्ट निकषावर list लावायचे.</td></tr>
+            <tr><td><code>lambda</code></td><td>एका ओळीतले अनामिक function — <code>key</code> साठी उपयुक्त.</td></tr>
+            <tr><td><code>Counter(...).most_common(1)</code></td><td>सर्वाधिक वेळा आलेला घटक.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="lab">
+        <h2>पूर्ण लॅब</h2>
+
+        <div class="lab" id="lab-p3">
+          <div class="lab-head">
+            <h4>Iris k-NN Classifier</h4>
+            <span class="lab-badge">Python • Pyodide</span>
+          </div>
+          <div class="lab-body">
+<textarea class="editor" spellcheck="false">import math
+from collections import Counter
+
+# (sepal_len, sepal_wid, petal_len, petal_wid, jaat)
+data = [
+    (5.1, 3.5, 1.4, 0.2, "Setosa"),
+    (4.9, 3.0, 1.4, 0.2, "Setosa"),
+    (4.7, 3.2, 1.3, 0.2, "Setosa"),
+    (5.0, 3.6, 1.4, 0.2, "Setosa"),
+    (5.4, 3.9, 1.7, 0.4, "Setosa"),
+    (7.0, 3.2, 4.7, 1.4, "Versicolor"),
+    (6.4, 3.2, 4.5, 1.5, "Versicolor"),
+    (6.9, 3.1, 4.9, 1.5, "Versicolor"),
+    (5.5, 2.3, 4.0, 1.3, "Versicolor"),
+    (6.5, 2.8, 4.6, 1.5, "Versicolor"),
+    (6.3, 3.3, 6.0, 2.5, "Virginica"),
+    (5.8, 2.7, 5.1, 1.9, "Virginica"),
+    (7.1, 3.0, 5.9, 2.1, "Virginica"),
+    (6.3, 2.9, 5.6, 1.8, "Virginica"),
+    (6.5, 3.0, 5.8, 2.2, "Virginica"),
+]
+
+def antar(a, b):
+    return math.sqrt(sum((a[i]-b[i])**2 for i in range(4)))
+
+def predict(x, k=3):
+    distances = []
+    for row in data:
+        d = antar(x, row[:4])
+        distances.append((d, row[4]))
+    distances.sort(key=lambda t: t[0])
+    nearest = [j for _, j in distances[:k]]
+    return Counter(nearest).most_common(1)[0][0]
+
+# परीक्षा (नवीन फुलाची ४ मापे):
+chachni = [
+    (5.0, 3.4, 1.5, 0.2),   # लहान पाकळ्या → Setosa
+    (6.2, 3.0, 4.5, 1.5),   # मध्यम       → Versicolor
+    (6.9, 3.1, 5.7, 2.3),   # मोठ्या       → Virginica
+]
+for x in chachni:
+    print(f"नवीन फूल {x} → अंदाजे जात: {predict(x, k=3)}")
+</textarea>
+            <div class="lab-toolbar">
+              <button class="btn primary" onclick="runLab('lab-p3')">▶ चालवा</button>
+              <button class="btn" onclick="resetLab('lab-p3')">↺ रिसेट</button>
+              <button class="btn ghost" onclick="copyLab('lab-p3')">⧉ कॉपी</button>
+              <span class="run-status"></span>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="extend">
+        <h2>पुढे काय?</h2>
+        <ul>
+          <li><code>k</code> बदलून (1, 5, 7) निकाल कसा बदलतो ते बघा.</li>
+          <li>‘leave-one-out’ चाचणी — एक नमुना बाजूला ठेवा, उरलेल्यांवर predict करा.</li>
+          <li>स्वतःची ४ मापे टाकून तुमचा अंदाज तपासा.</li>
+        </ul>
+
+        <div class="page-nav">
+          <a href="project2_sentiment.html"><small>← मागे</small>प्रकल्प २: भावना</a>
+          <a href="project4_predict.html"><small>पुढे →</small>प्रकल्प ४: गुण अंदाज</a>
+        </div>
+      </section>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>
