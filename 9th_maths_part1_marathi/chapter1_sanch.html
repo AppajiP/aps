@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>इयत्ता ९वी | गणित भाग १ | धडा १ : संच — Azone Academy</title>
+<meta name="description" content="महाराष्ट्र राज्य पाठ्यपुस्तक मंडळ इयत्ता ९वी गणित भाग १ धडा १ – संच (Sets). मराठीतून सखोल विवेचन, GeoGebra प्रयोगशाळा, सर्व सोडवलेली व न सोडवलेली उदाहरणे यांच्या टप्प्या-टप्प्याने उकल. Azone Academy साठी अप्पाजी पाटील यांनी निर्मिती केली." />
+<meta name="author" content="Appaji Patil — Azone Academy" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Tiro+Devanagari+Marathi:ital@0;1&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+
+<style>
+:root{
+  --bg-0:#070b1a;
+  --bg-1:#0c1330;
+  --bg-2:#111a3f;
+  --card:#15214d;
+  --card-2:#1b2a60;
+  --text:#eef2ff;
+  --muted:#9aa6d6;
+  --brand:#7c5cff;
+  --brand-2:#22d3ee;
+  --accent:#f59e0b;
+  --success:#10b981;
+  --danger:#ef4444;
+  --gold:#fbbf24;
+  --line:rgba(255,255,255,.08);
+  --shadow: 0 10px 40px rgba(8,12,40,.55);
+  --grad-1: linear-gradient(135deg,#7c5cff 0%,#22d3ee 50%,#10b981 100%);
+  --grad-2: linear-gradient(135deg,#f43f5e 0%,#f59e0b 50%,#fbbf24 100%);
+  --grad-3: linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%);
+  --grad-soft: linear-gradient(135deg, rgba(124,92,255,.18), rgba(34,211,238,.12));
+}
+
+[data-theme="light"]{
+  --bg-0:#f5f6ff;
+  --bg-1:#ffffff;
+  --bg-2:#eef1fb;
+  --card:#ffffff;
+  --card-2:#f8faff;
+  --text:#0e1738;
+  --muted:#4b5481;
+  --line:rgba(15,23,42,.08);
+  --shadow: 0 10px 30px rgba(15,23,60,.08);
+  --grad-soft: linear-gradient(135deg, rgba(124,92,255,.10), rgba(34,211,238,.08));
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Noto Sans Devanagari','Tiro Devanagari Marathi',system-ui,sans-serif;
+  background: radial-gradient(1200px 800px at 80% -10%, rgba(124,92,255,.22), transparent 60%),
+              radial-gradient(900px 700px at -10% 30%, rgba(34,211,238,.16), transparent 60%),
+              var(--bg-0);
+  color:var(--text);
+  line-height:1.75;
+  font-size:17px;
+  overflow-x:hidden;
+}
+
+/* ---------- TOPBAR ---------- */
+.topbar{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter: blur(14px);
+  background: color-mix(in oklab, var(--bg-1) 70%, transparent);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:1400px; margin:0 auto;
+  display:flex; align-items:center; gap:18px;
+  padding:12px 20px;
+}
+.brand{
+  display:flex; align-items:center; gap:12px; cursor:pointer;
+}
+.brand-mark{
+  width:42px; height:42px; border-radius:12px;
+  background: var(--grad-1);
+  display:grid; place-items:center;
+  font-family:'Poppins',sans-serif; font-weight:800; color:#fff;
+  box-shadow: 0 6px 18px rgba(124,92,255,.45);
+  position:relative; overflow:hidden;
+}
+.brand-mark::after{
+  content:""; position:absolute; inset:0;
+  background: conic-gradient(from 0deg, transparent, rgba(255,255,255,.4), transparent 40%);
+  animation: spin 4s linear infinite;
+}
+.brand-mark span{position:relative; z-index:2}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.brand-title{display:flex; flex-direction:column; line-height:1.15}
+.brand-title b{font-family:'Poppins',sans-serif; font-size:18px; letter-spacing:.5px}
+.brand-title small{color:var(--muted); font-size:12px}
+
+.nav-spacer{flex:1}
+
+.search{
+  display:flex; align-items:center; gap:8px;
+  background: var(--card); border:1px solid var(--line);
+  padding:8px 14px; border-radius:999px; min-width:280px;
+}
+.search input{
+  background:transparent; border:0; outline:0; color:var(--text);
+  font-family:inherit; font-size:14px; width:100%;
+}
+.icon-btn{
+  border:1px solid var(--line); background:var(--card);
+  width:42px; height:42px; border-radius:12px;
+  display:grid; place-items:center; cursor:pointer; color:var(--text);
+  transition: transform .15s ease, background .2s ease;
+}
+.icon-btn:hover{transform: translateY(-2px); background:var(--card-2)}
+
+/* ---------- LAYOUT ---------- */
+.layout{
+  display:grid;
+  grid-template-columns: 290px 1fr;
+  gap:28px;
+  max-width:1400px; margin:0 auto; padding:24px 20px 80px;
+}
+@media (max-width: 980px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static !important; max-height:none !important}
+  .search{display:none}
+}
+
+/* ---------- SIDEBAR ---------- */
+.sidebar{
+  position:sticky; top:84px; align-self:start;
+  max-height: calc(100vh - 100px); overflow:auto;
+  background: var(--card);
+  border:1px solid var(--line);
+  border-radius:20px; padding:18px;
+  box-shadow: var(--shadow);
+}
+.sidebar h4{
+  margin:8px 6px 12px; font-family:'Poppins',sans-serif;
+  letter-spacing:.5px; color:var(--muted); font-size:12px; text-transform:uppercase;
+}
+.toc{list-style:none; margin:0; padding:0}
+.toc a{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px; border-radius:10px;
+  color:var(--text); text-decoration:none; font-size:14.5px;
+  border:1px solid transparent;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.toc a:hover{ background: var(--grad-soft); transform: translateX(4px) }
+.toc a.active{ background: var(--grad-soft); border-color: var(--line) }
+.toc .dot{
+  width:8px; height:8px; border-radius:50%;
+  background: var(--grad-1);
+}
+.toc .sub{margin-left:14px; border-left:1px dashed var(--line); padding-left:10px}
+
+.progress-wrap{margin:14px 4px 6px}
+.progress-bar{
+  height:8px; border-radius:999px; background: var(--bg-2); overflow:hidden;
+}
+.progress-bar > div{
+  height:100%; width:0%; background: var(--grad-1); transition: width .15s linear;
+}
+.progress-label{font-size:12px; color:var(--muted); margin-top:6px}
+
+/* ---------- MAIN ---------- */
+.main{min-width:0}
+
+/* HERO */
+.hero{
+  position:relative; overflow:hidden;
+  border-radius:24px;
+  padding:40px 36px;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(800px 400px at 100% 0%, rgba(124,92,255,.35), transparent 60%),
+    radial-gradient(700px 400px at 0% 100%, rgba(34,211,238,.25), transparent 60%),
+    var(--card);
+  box-shadow: var(--shadow);
+}
+.hero::before, .hero::after{
+  content:""; position:absolute; border-radius:50%;
+  filter: blur(60px); opacity:.5; pointer-events:none;
+}
+.hero::before{ width:300px; height:300px; background:#7c5cff; top:-80px; right:-60px }
+.hero::after { width:260px; height:260px; background:#22d3ee; bottom:-80px; left:-60px }
+
+.crumbs{font-size:13px; color:var(--muted); display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.crumbs span.sep{opacity:.6}
+.hero h1{
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  font-size:clamp(28px,4vw,46px); line-height:1.2; margin:14px 0 8px;
+  background: var(--grad-1); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero h2{
+  font-size:clamp(18px,2.2vw,22px); font-weight:600; color:var(--text);
+  margin:0 0 14px; opacity:.92;
+}
+.hero p.lead{
+  color:var(--muted); max-width:780px; margin:0 0 22px; font-size:16px;
+}
+.hero-meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:8px}
+.chip{
+  display:inline-flex; align-items:center; gap:8px;
+  background: rgba(255,255,255,.06);
+  border:1px solid var(--line); color:var(--text);
+  padding:8px 14px; border-radius:999px; font-size:13.5px;
+}
+.chip.lab{ background: var(--grad-3); color:#fff; border-color: transparent }
+.chip.gold{ background: var(--grad-2); color:#1a1300; border-color: transparent; font-weight:600 }
+
+.hero-author{
+  display:flex; align-items:center; gap:12px; margin-top:22px;
+  background: rgba(255,255,255,.05); border:1px solid var(--line);
+  padding:10px 14px; border-radius:14px; width:fit-content;
+}
+.author-avatar{
+  width:46px; height:46px; border-radius:50%;
+  background: var(--grad-2);
+  display:grid; place-items:center; color:#fff;
+  font-family:'Poppins',sans-serif; font-weight:800;
+  box-shadow: 0 4px 12px rgba(245,158,11,.45);
+}
+.author-meta b{display:block}
+.author-meta small{color:var(--muted)}
+
+/* SECTIONS */
+section.unit{
+  margin-top:26px;
+  background: var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:28px 30px;
+  box-shadow: var(--shadow);
+  scroll-margin-top: 100px;
+  position:relative; overflow:hidden;
+}
+section.unit::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:6px;
+  background: var(--grad-1);
+}
+.unit h2.unit-title{
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  font-size:clamp(22px,2.4vw,30px);
+  margin:0 0 6px;
+}
+.unit .unit-kicker{
+  display:inline-block;
+  background: var(--grad-soft);
+  color:var(--text);
+  padding:5px 12px; border-radius:999px;
+  font-size:12.5px; letter-spacing:.5px;
+  border:1px solid var(--line);
+  margin-bottom:10px;
+  font-weight:600;
+}
+.unit h3{
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif;
+  margin-top:28px; margin-bottom:8px; font-size:20px;
+  border-left:4px solid var(--brand-2); padding-left:12px;
+}
+.unit h4{
+  margin-top:18px; margin-bottom:6px; font-size:17px; color:var(--text);
+}
+.unit p{margin:8px 0}
+.unit ul, .unit ol{padding-left:22px}
+.unit ul li, .unit ol li{margin:6px 0}
+
+/* CARDS, CALLOUTS */
+.grid{display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top:14px}
+.feature-card{
+  background: var(--card-2); border:1px solid var(--line);
+  border-radius:16px; padding:18px;
+  transition: transform .2s ease, border-color .2s ease;
+  position:relative; overflow:hidden;
+}
+.feature-card:hover{transform: translateY(-3px); border-color: rgba(124,92,255,.4)}
+.feature-card .ico{
+  width:42px; height:42px; border-radius:12px;
+  display:grid; place-items:center;
+  background: var(--grad-1); color:#fff; font-weight:800; font-family:'Poppins',sans-serif;
+  margin-bottom:10px;
+}
+.feature-card.alt .ico{ background: var(--grad-2); color:#1a1300 }
+.feature-card.cool .ico{ background: var(--grad-3); }
+
+.callout{
+  border-radius:14px; padding:14px 16px; margin:14px 0;
+  border:1px solid var(--line); background: var(--grad-soft);
+  display:flex; gap:12px;
+}
+.callout .tag{
+  font-family:'Poppins',sans-serif; font-weight:700; font-size:12px;
+  letter-spacing:.5px; padding:4px 10px; border-radius:999px;
+  background:#fff2; color:var(--text); height:fit-content;
+  border:1px solid var(--line);
+}
+.callout.tip{ background: linear-gradient(135deg, rgba(16,185,129,.18), rgba(34,211,238,.10)) }
+.callout.tip .tag{ background:#10b98144; border-color:#10b98166 }
+.callout.warn{ background: linear-gradient(135deg, rgba(239,68,68,.18), rgba(245,158,11,.10)) }
+.callout.warn .tag{ background:#ef444444; border-color:#ef444466 }
+.callout.def{ background: linear-gradient(135deg, rgba(124,92,255,.18), rgba(59,130,246,.08)) }
+.callout.def .tag{ background:#7c5cff44; border-color:#7c5cff66 }
+
+/* TABLE */
+table{
+  width:100%; border-collapse:collapse; margin:12px 0;
+  background:var(--card-2); border-radius:12px; overflow:hidden;
+  border:1px solid var(--line);
+}
+th, td{ padding:10px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top }
+th{ background: var(--grad-soft); font-weight:700 }
+tr:last-child td{border-bottom:0}
+
+/* SOLVED EXAMPLES */
+.example{
+  background: var(--card-2);
+  border:1px solid var(--line);
+  border-left:5px solid var(--gold);
+  border-radius:14px;
+  padding:16px 18px;
+  margin:14px 0;
+  position:relative;
+}
+.example .ex-tag{
+  display:inline-flex; align-items:center; gap:8px;
+  background: var(--grad-2); color:#1a1300; font-weight:700;
+  padding:4px 10px; border-radius:999px; font-size:12px;
+  margin-bottom:6px;
+}
+.example .question{font-weight:600; color:var(--text); margin:6px 0}
+.example .solution{margin-top:8px}
+.example .solution::before{
+  content:"उकल → "; font-weight:700; color:var(--brand-2);
+}
+.steps{list-style:none; padding:0; margin:8px 0 0; counter-reset: step;}
+.steps li{
+  position:relative; padding:8px 12px 8px 44px; margin:6px 0;
+  background: var(--card); border-radius:10px; border:1px solid var(--line);
+}
+.steps li::before{
+  counter-increment: step;
+  content: counter(step);
+  position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  width:26px; height:26px; border-radius:50%;
+  background: var(--grad-1); color:#fff;
+  display:grid; place-items:center; font-weight:700; font-size:13px;
+  font-family:'Poppins',sans-serif;
+}
+
+/* PRACTICE QUESTION */
+.q{
+  background: var(--card-2);
+  border:1px solid var(--line);
+  border-left:5px solid var(--brand);
+  border-radius:14px;
+  padding:14px 18px;
+  margin:12px 0;
+}
+.q .q-head{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:6px; flex-wrap:wrap; gap:8px;
+}
+.q .q-num{
+  background: var(--grad-1); color:#fff; font-weight:700;
+  padding:3px 10px; border-radius:999px; font-size:12px;
+  font-family:'Poppins',sans-serif;
+}
+.q .reveal{
+  cursor:pointer; user-select:none;
+  background: var(--card); color:var(--text);
+  border:1px solid var(--line);
+  padding:5px 12px; border-radius:999px; font-size:12.5px;
+}
+.q .reveal:hover{ background: var(--grad-soft) }
+.q details{margin-top:8px}
+.q details > summary{display:none}
+.q .answer{
+  margin-top:10px; padding:12px 14px;
+  background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(34,211,238,.08));
+  border:1px dashed var(--line); border-radius:10px;
+}
+.q .answer-label{
+  display:inline-block; font-weight:700; color:var(--success);
+  background:#10b98122; padding:2px 10px; border-radius:999px;
+  font-size:12px; margin-bottom:6px;
+}
+
+/* GEOGEBRA LAB CARD */
+.lab{
+  border:1px solid var(--line);
+  border-radius:18px; overflow:hidden;
+  background: var(--card-2);
+  margin:16px 0;
+}
+.lab-head{
+  display:flex; gap:14px; align-items:center;
+  padding:14px 18px;
+  background: var(--grad-3);
+  color:#fff;
+}
+.lab-head .lab-num{
+  background:#fff3; border-radius:10px; padding:4px 10px;
+  font-family:'Poppins',sans-serif; font-weight:800;
+}
+.lab-head h4{margin:0; color:#fff; font-size:17px}
+.lab-head small{display:block; opacity:.9}
+.lab-body{padding:14px 18px}
+.lab iframe{
+  width:100%; height:520px; border:0; display:block;
+  background:#000;
+}
+.lab-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid var(--line); background:var(--card);
+  color:var(--text); padding:8px 14px; border-radius:10px;
+  text-decoration:none; font-size:14px; cursor:pointer;
+  transition: transform .15s ease, background .2s ease;
+}
+.btn:hover{ transform: translateY(-2px); background: var(--grad-soft) }
+.btn.primary{ background: var(--grad-1); border-color: transparent; color:#fff; font-weight:600 }
+
+/* Venn diagram (CSS only) */
+.venn{
+  position:relative; height:230px; margin:14px auto;
+  max-width:420px;
+}
+.venn .circle{
+  position:absolute; top:30px; width:200px; height:200px; border-radius:50%;
+  display:grid; place-items:center;
+  font-family:'Poppins',sans-serif; font-weight:700; font-size:22px;
+}
+.venn .A{ left:20px; background: rgba(124,92,255,.45); color:#fff; mix-blend-mode: screen }
+.venn .B{ right:20px; background: rgba(34,211,238,.45); color:#fff; mix-blend-mode: screen }
+.venn .U{
+  position:absolute; inset:0; border:2px dashed rgba(255,255,255,.25);
+  border-radius:18px;
+}
+.venn .U::after{
+  content:"U"; position:absolute; right:8px; top:6px; color:var(--muted); font-weight:700;
+}
+
+/* MCQ list */
+.mcq{ list-style: upper-alpha; margin:6px 0 6px 22px; padding:0 }
+.mcq li{ margin:3px 0 }
+
+/* FOOTER */
+footer.site-footer{
+  margin-top:50px; padding:30px 20px;
+  border-top:1px solid var(--line);
+  text-align:center; color:var(--muted);
+  background: var(--bg-1);
+}
+footer .footer-brand{
+  font-family:'Poppins',sans-serif; font-weight:800;
+  background: var(--grad-1); -webkit-background-clip:text; background-clip:text; color:transparent;
+  font-size:22px;
+}
+
+/* HELPER */
+.muted{color:var(--muted)}
+.center{text-align:center}
+.mt{margin-top:18px} .mb{margin-bottom:18px}
+.kbd{
+  font-family:'Poppins',sans-serif; font-weight:600;
+  background:var(--bg-2); border:1px solid var(--line);
+  padding:1px 6px; border-radius:6px; font-size:13px;
+}
+.math-set{ font-family: 'Times New Roman', serif; font-style: italic }
+
+/* Reveal animation */
+.fade-in{ opacity:0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease }
+.fade-in.show{ opacity:1; transform:none }
+
+/* Print */
+@media print{
+  .sidebar, .topbar, .lab iframe{ display:none !important }
+  body{ background:#fff; color:#000 }
+  .hero, section.unit{ box-shadow:none; border-color:#ddd }
+}
+</style>
+</head>
+<body data-theme="dark">
+
+<!-- ============ TOPBAR ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <div class="brand-mark"><span>A</span></div>
+      <div class="brand-title">
+        <b>Azone Academy</b>
+        <small>Online Learning · Online Class</small>
+      </div>
+    </div>
+
+    <div class="nav-spacer"></div>
+
+    <div class="search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="searchBox" type="search" placeholder="शोधा... (उदा. संच, उपसंच, युनियन)" />
+    </div>
+    <button class="icon-btn" id="themeToggle" title="Theme">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"/></svg>
+    </button>
+    <button class="icon-btn" onclick="window.print()" title="Print">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ============ LAYOUT ============ -->
+<div class="layout">
+
+  <!-- SIDEBAR / TOC -->
+  <aside class="sidebar">
+    <h4>अभ्यासक्रम — धडा १</h4>
+    <ul class="toc" id="toc">
+      <li><a href="#syllabus"><span class="dot"></span> अभ्यासक्रम (Syllabus)</a></li>
+      <li><a href="#intro"><span class="dot"></span> १.१ संचाची ओळख</a></li>
+      <li><a href="#methods"><span class="dot"></span> १.२ संच लिहिण्याच्या पद्धती</a></li>
+      <li><a href="#practice-11"><span class="dot"></span> सरावसंच १.१</a></li>
+      <li><a href="#types"><span class="dot"></span> १.३ संचाचे प्रकार</a></li>
+      <li><a href="#practice-12"><span class="dot"></span> सरावसंच १.२</a></li>
+      <li><a href="#subset"><span class="dot"></span> १.४ उपसंच व विश्वसंच</a></li>
+      <li><a href="#lab1"><span class="dot"></span> 🧪 प्रयोग १ — Venn Diagram</a></li>
+      <li><a href="#complement"><span class="dot"></span> १.५ संचाची पूरक</a></li>
+      <li><a href="#practice-13"><span class="dot"></span> सरावसंच १.३</a></li>
+      <li><a href="#operations"><span class="dot"></span> १.६ संचावरील क्रिया</a></li>
+      <li><a href="#lab2"><span class="dot"></span> 🧪 प्रयोग २ — Set Operations</a></li>
+      <li><a href="#lab3"><span class="dot"></span> 🧪 प्रयोग ३ — Two-set Statements</a></li>
+      <li><a href="#formula"><span class="dot"></span> १.७ n(A∪B) चे सूत्र</a></li>
+      <li><a href="#practice-14"><span class="dot"></span> सरावसंच १.४</a></li>
+      <li><a href="#problem-set"><span class="dot"></span> समस्या संच १</a></li>
+      <li><a href="#summary"><span class="dot"></span> सारांश व सूत्रसंग्रह</a></li>
+    </ul>
+
+    <div class="progress-wrap">
+      <div class="progress-bar"><div id="progress"></div></div>
+      <div class="progress-label" id="progressLabel">0% वाचन पूर्ण</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HERO -->
+    <section class="hero fade-in">
+      <div class="crumbs">
+        <span>Azone Academy</span>
+        <span class="sep">›</span>
+        <span>इयत्ता ९वी</span>
+        <span class="sep">›</span>
+        <span>गणित भाग १</span>
+        <span class="sep">›</span>
+        <b style="color:var(--text)">धडा १ — संच</b>
+      </div>
+
+      <h1>धडा १ : संच (Sets)</h1>
+      <h2>महाराष्ट्र राज्य पाठ्यपुस्तक मंडळ — इयत्ता ९वी · गणित भाग १</h2>
+      <p class="lead">
+        या ऑनलाइन वर्गामध्ये आपण <b>संच</b> (Sets) ही संकल्पना अगदी पायाभूत
+        स्तरापासून सुरूवात करून, संचाचे प्रकार, उपसंच, विश्वसंच, संचाच्या क्रिया
+        (युनियन, इंटरसेक्शन, पूरक) आणि <i>n(A∪B) = n(A) + n(B) − n(A∩B)</i> या
+        महत्त्वाच्या सूत्रापर्यंत प्रवास करणार आहोत. प्रत्येक टप्प्यावर <b>GeoGebra</b>
+        प्रयोगशाळा, <b>सोडवलेली उदाहरणे (टप्प्या-टप्प्याने उकल)</b> आणि
+        <b>सरावसंच व समस्यासंच यांची संपूर्ण उत्तरे</b> दिली आहेत.
+      </p>
+
+      <div class="hero-meta">
+        <span class="chip">⏱ कालावधी : ६ तास</span>
+        <span class="chip">🎯 इयत्ता : ९वी</span>
+        <span class="chip">📚 पाठ्यपुस्तक : गणित भाग १</span>
+        <span class="chip lab">🧪 ३ GeoGebra प्रयोग</span>
+        <span class="chip">📝 ४ सरावसंच + समस्यासंच</span>
+        <span class="chip gold">⭐ संपूर्ण मराठी</span>
+      </div>
+
+      <div class="hero-author">
+        <div class="author-avatar">AP</div>
+        <div class="author-meta">
+          <b>Course designed by Appaji Patil</b>
+          <small>Created for <i>Azone Academy</i> · Online Class</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SYLLABUS ============ -->
+    <section class="unit fade-in" id="syllabus">
+      <span class="unit-kicker">अभ्यासक्रम · Syllabus</span>
+      <h2 class="unit-title">ऑनलाइन वर्गाचा संपूर्ण अभ्यासक्रम</h2>
+      <p>
+        खाली दिलेल्या क्रमाने हा वर्ग शिकवला जाईल. प्रत्येक भागासाठी अपेक्षित वेळ,
+        शिकवलेली संकल्पना, संबंधित GeoGebra प्रयोग व सरावसंच नमूद केले आहेत.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width:60px">क्र.</th>
+            <th>विषय / उपघटक</th>
+            <th>शिकवण्याची पद्धत</th>
+            <th>प्रयोग / सराव</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>१</td><td>संचाची संकल्पना व ओळख</td><td>व्याख्यान + दैनंदिन उदाहरणे</td><td>—</td></tr>
+          <tr><td>२</td><td>संच लिहिण्याच्या पद्धती — यादी पद्धत व नियम पद्धत</td><td>व्याख्यान + फलक उदाहरणे</td><td>सरावसंच १.१</td></tr>
+          <tr><td>३</td><td>संचाचे प्रकार — रिक्त, एकल, समान, सीमित, असीमित</td><td>व्याख्यान + तक्ता</td><td>सरावसंच १.२</td></tr>
+          <tr><td>४</td><td>उपसंच, विश्वसंच, व्हेन आकृती</td><td>व्याख्यान + व्हेन आकृत्या</td><td>🧪 GeoGebra प्रयोग १</td></tr>
+          <tr><td>५</td><td>संचाची पूरक (Complement)</td><td>व्याख्यान + व्हेन आकृत्या</td><td>सरावसंच १.३</td></tr>
+          <tr><td>६</td><td>संचाच्या क्रिया — संघ (Union), छेद (Intersection)</td><td>व्याख्यान + समस्या सोडवणे</td><td>🧪 प्रयोग २ व ३</td></tr>
+          <tr><td>७</td><td>संख्यासूत्र n(A∪B) = n(A)+n(B)−n(A∩B)</td><td>सूत्र सिद्धता + शब्द-समस्या</td><td>सरावसंच १.४</td></tr>
+          <tr><td>८</td><td>समस्यासंच १ — संपूर्ण उजळणी</td><td>MCQ + मूल्यांकन</td><td>समस्या संच १</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid">
+        <div class="feature-card">
+          <div class="ico">🎯</div>
+          <h4>शिकण्याची उद्दिष्टे</h4>
+          <p>संच लिहिण्याच्या दोन्ही पद्धती, संचावरील क्रिया व व्हेन आकृत्या यांचा अचूक वापर.</p>
+        </div>
+        <div class="feature-card alt">
+          <div class="ico">🧪</div>
+          <h4>हँड्स-ऑन प्रयोग</h4>
+          <p>GeoGebra मध्ये थेट व्हेन आकृत्या हलवून पाहून प्रत्येक संकल्पनेचा अनुभव घेणे.</p>
+        </div>
+        <div class="feature-card cool">
+          <div class="ico">✍️</div>
+          <h4>संपूर्ण उत्तरे</h4>
+          <p>सर्व सरावसंच व समस्यासंच यांची टप्प्या-टप्प्याने मराठीत उकल.</p>
+        </div>
+        <div class="feature-card">
+          <div class="ico">📊</div>
+          <h4>मूल्यांकन</h4>
+          <p>MCQ, शब्द-समस्या व प्रत्येक प्रकरणाअंती आत्म-तपासणी क्विझ.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 1. INTRO ============ -->
+    <section class="unit fade-in" id="intro">
+      <span class="unit-kicker">घटक १.१</span>
+      <h2 class="unit-title">संच — संकल्पना व ओळख</h2>
+
+      <p>
+        आपल्या आजूबाजूला आपण अनेक "गटांविषयी" बोलतो — आपल्या वर्गातील विद्यार्थ्यांचा गट,
+        खेळातील खेळाडूंचा संघ, रंगांचा संग्रह, इत्यादी. गणितात अशा <b>निश्चित (well-defined)</b>,
+        <b>वेगवेगळ्या</b> वस्तूंच्या एकत्रित संग्रहाला <b>संच (Set)</b> असे म्हणतात.
+      </p>
+
+      <div class="callout def">
+        <span class="tag">व्याख्या</span>
+        <div>
+          <b>संच</b> म्हणजे <b>निश्चित (well-defined)</b> व <b>परस्पर भिन्न</b> वस्तूंचा संग्रह.
+          संचातील प्रत्येक वस्तूला त्या संचाचा <b>घटक (element)</b> म्हणतात. संच नेहमी इंग्रजी
+          भांडवली अक्षरांनी (A, B, C, ...) दर्शवतात आणि घटक छोट्या अक्षरांनी
+          (a, b, c, ...) किंवा अंकांनी दर्शवतात.
+        </div>
+      </div>
+
+      <h3>संच की संग्रह?</h3>
+      <p>कोणताही संग्रह संच असू शकत नाही. तो "निश्चित" असला पाहिजे.</p>
+
+      <table>
+        <thead><tr><th>संग्रह</th><th>संच आहे का?</th><th>कारण</th></tr></thead>
+        <tbody>
+          <tr><td>इंद्रधनुष्यातील रंग</td><td>✅ हो</td><td>तंबाकू / सात रंग निश्चित आहेत.</td></tr>
+          <tr><td>वर्गातील <i>उंच</i> विद्यार्थी</td><td>❌ नाही</td><td>"उंच" ही व्याख्या व्यक्तिनिष्ठ आहे.</td></tr>
+          <tr><td>गावातील श्रीमंत लोक</td><td>❌ नाही</td><td>"श्रीमंत" स्पष्ट निकष नाही.</td></tr>
+          <tr><td>१ ते १० मधील सम संख्या</td><td>✅ हो</td><td>संख्या स्पष्ट व निश्चित.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>घटक दर्शवण्याचे चिन्ह</h3>
+      <ul>
+        <li>जर <i>x</i> हा संच A चा घटक असेल, तर लिहिले जाते : $x \in A$ (वाचा : "<i>x</i> हा A चा घटक आहे").</li>
+        <li>जर <i>x</i> हा संच A चा घटक <b>नसेल</b>, तर लिहिले जाते : $x \notin A$.</li>
+      </ul>
+
+      <div class="callout tip">
+        <span class="tag">सूचना</span>
+        <div>
+          संचातील घटक <b>परस्पर भिन्न</b> असतात. म्हणून A = {१, २, २, ३} हे चुकीचे आहे.
+          त्याऐवजी A = {१, २, ३} असे लिहावे. तसेच, संचातील घटकांच्या क्रमाला महत्त्व नसते;
+          म्हणजेच {१, २, ३} = {३, १, २}.
+        </div>
+      </div>
+
+      <h3>परिचित संच (पाठांतर करण्यासारखे)</h3>
+      <ul>
+        <li>$N$ = नैसर्गिक संख्यांचा संच = {१, २, ३, ४, ...}</li>
+        <li>$W$ = पूर्ण संख्यांचा संच = {०, १, २, ३, ...}</li>
+        <li>$I$ किंवा $\mathbb{Z}$ = पूर्णांकांचा संच = {..., −३, −२, −१, ०, १, २, ३, ...}</li>
+        <li>$Q$ = परिमेय संख्यांचा संच = $\{ \tfrac{p}{q} \,|\, p, q \in I,\ q \neq 0 \}$</li>
+        <li>$R$ = वास्तव संख्यांचा संच</li>
+      </ul>
+    </section>
+
+    <!-- ============ 2. METHODS ============ -->
+    <section class="unit fade-in" id="methods">
+      <span class="unit-kicker">घटक १.२</span>
+      <h2 class="unit-title">संच लिहिण्याच्या पद्धती</h2>
+
+      <p>संच दर्शविण्याच्या मुख्य दोन पद्धती आहेत :</p>
+
+      <div class="grid">
+        <div class="feature-card">
+          <div class="ico">1</div>
+          <h4>यादी पद्धत (Roster / Listing Method)</h4>
+          <p>संचातील सर्व घटक स्वल्पविरामांनी विभागून, <span class="kbd">{ }</span> या वक्र-कंसांत लिहिले जातात.</p>
+          <p><b>उदा.:</b> A = {२, ४, ६, ८, १०}</p>
+        </div>
+        <div class="feature-card alt">
+          <div class="ico">2</div>
+          <h4>नियम पद्धत (Rule / Set-builder Method)</h4>
+          <p>संचातील घटकांचा सामान्य गुणधर्म वापरून लिहिले जाते.</p>
+          <p><b>उदा.:</b> A = { <i>x</i> | <i>x</i> = २<i>n</i>, <i>n</i> ∈ N, १ ≤ <i>n</i> ≤ ५ }</p>
+        </div>
+      </div>
+
+      <h3>उदाहरणाने स्पष्टता</h3>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण १</div>
+        <div class="question">"SCIENCE" या शब्दातील अक्षरांचा संच B दोन्ही पद्धतीने लिहा.</div>
+        <div class="solution">
+          <ul class="steps">
+            <li>SCIENCE मधील अक्षरे : S, C, I, E, N, C, E.</li>
+            <li>संचातील घटक परस्पर भिन्न असतात; म्हणून C आणि E चे पुनरावर्तन वगळतो.</li>
+            <li><b>यादी पद्धत :</b> B = {S, C, I, E, N}</li>
+            <li><b>नियम पद्धत :</b> B = { <i>x</i> | <i>x</i> हे "SCIENCE" या शब्दातील अक्षर आहे }</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण २</div>
+        <div class="question">A = {१, ४, ९, १६, २५, ३६, ४९, ६४, ८१, १००} हा संच नियम पद्धतीत लिहा.</div>
+        <div class="solution">
+          <ul class="steps">
+            <li>संचातील प्रत्येक घटक एका नैसर्गिक संख्येच्या वर्गासारखा आहे : $1=1^2,\ 4=2^2,\ \ldots,\ 100=10^2$.</li>
+            <li>म्हणून घटकाचे रूप : $x = n^2$, जिथे $n \in N$ आणि $1 \le n \le 10$.</li>
+            <li><b>नियम पद्धत :</b> $A = \{ x \mid x = n^2,\ n \in N,\ n \le 10 \}$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="tag">सावधान</span>
+        <div>
+          नियम पद्धतीत वापरलेला <b>"|"</b> (किंवा कधीकधी <b>":"</b>) हा "असा की" असे वाचला जातो.
+          उदा. { <i>x</i> | <i>x</i> सम संख्या } म्हणजे "<i>x</i> असा की <i>x</i> सम संख्या आहे".
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRACTICE SET 1.1 ============ -->
+    <section class="unit fade-in" id="practice-11">
+      <span class="unit-kicker">सरावसंच १.१ · संपूर्ण उत्तरे</span>
+      <h2 class="unit-title">सरावसंच १.१ — पूर्ण उकल</h2>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न १</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>खालील संच यादी पद्धतीने लिहा :<br>
+          (i) सम नैसर्गिक संख्यांचा संच &nbsp; (ii) १ ते ५० मधील सम मूळ संख्यांचा संच &nbsp;
+          (iii) ऋण पूर्णांकांचा संच &nbsp; (iv) सरगमातील सात मूळ सुरांचा संच
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>(i) $A = \{2, 4, 6, 8, \ldots\}$ — असीमित संच</li>
+            <li>(ii) २ ही एकमेव सम मूळ संख्या आहे; म्हणून $B = \{2\}$</li>
+            <li>(iii) $C = \{-1, -2, -3, \ldots\}$</li>
+            <li>(iv) $D = \{$सा, रे, ग, म, प, ध, नि$\}$</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न २</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>पुढील चिन्हसंकेत वाक्यांत लिहा :<br>
+          (i) $\tfrac{4}{3} \in Q$ &nbsp; (ii) $-2 \notin N$ &nbsp; (iii) $P = \{p \mid p \text{ ही विषम संख्या आहे}\}$
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>(i) "$\tfrac{4}{3}$ हा संच Q चा घटक आहे."</li>
+            <li>(ii) "−२ हा संच N चा घटक नाही."</li>
+            <li>(iii) "P हा अशा सर्व p चा संच आहे, की p ही विषम संख्या आहे."</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ३</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>कोणत्याही दोन संचांचे उदाहरण यादी पद्धत व नियम पद्धत दोन्हींनी लिहा.</p>
+        <div class="answer" hidden>
+          <span class="answer-label">नमुना उत्तर</span>
+          <ul>
+            <li>(i) A = "१० पेक्षा लहान सम नैसर्गिक संख्या" — यादी : $A = \{2, 4, 6, 8\}$; नियम : $A = \{x \mid x = 2n,\ n \in N,\ n < 5\}$.</li>
+            <li>(ii) B = "SCIENCE शब्दातील अक्षरे" — यादी : $B = \{S, C, I, E, N\}$; नियम : $B = \{x \mid x \text{ हे SCIENCE मधील अक्षर आहे}\}$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ४</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>खालील संच यादी पद्धतीने लिहा :<br>
+          (i) भारतीय सौर वर्षातील सर्व महिने (ii) COMPLEMENT शब्दातील अक्षरे
+          (iii) मानवी ज्ञानेंद्रिये (iv) १ ते २० मधील मूळ संख्या (v) पृथ्वीवरील खंडांची नावे
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>(i) A = {चैत्र, वैशाख, ज्येष्ठ, आषाढ, श्रावण, भाद्रपद, आश्विन, कार्तिक, मार्गशीर्ष, पौष, माघ, फाल्गुन}</li>
+            <li>(ii) X = {C, O, M, P, L, E, N, T} (पुनरावर्तित अक्षरे एकदाच)</li>
+            <li>(iii) Y = {नाक, कान, डोळे, जीभ, त्वचा}</li>
+            <li>(iv) Z = {२, ३, ५, ७, ११, १३, १७, १९}</li>
+            <li>(v) E = {आशिया, आफ्रिका, युरोप, ऑस्ट्रेलिया, अंटार्क्टिका, दक्षिण अमेरिका, उत्तर अमेरिका}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ५</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>खालील संच नियम पद्धतीने लिहा :<br>
+          (i) A = {१, ४, ९, १६, २५, ३६, ४९, ६४, ८१, १००} &nbsp; (ii) B = {६, १२, १८, २४, ३०, ३६, ४२, ४८} &nbsp;
+          (iii) C = {S, M, I, L, E} &nbsp; (iv) D = {रविवार, ..., शनिवार} &nbsp; (v) X = {a, e, t}
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>(i) $A = \{x \mid x = n^2,\ n \in N,\ n \le 10\}$</li>
+            <li>(ii) $B = \{x \mid x = 6n,\ n \in N,\ n \le 8\}$</li>
+            <li>(iii) $C = \{y \mid y \text{ हे SMILE शब्दातील अक्षर आहे}\}$</li>
+            <li>(iv) $D = \{z \mid z \text{ आठवड्यातील एक वार आहे}\}$</li>
+            <li>(v) $X = \{y \mid y \text{ हे "eat" शब्दातील अक्षर आहे}\}$</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. TYPES ============ -->
+    <section class="unit fade-in" id="types">
+      <span class="unit-kicker">घटक १.३</span>
+      <h2 class="unit-title">संचाचे प्रकार</h2>
+
+      <div class="grid">
+        <div class="feature-card">
+          <div class="ico">∅</div>
+          <h4>रिक्त संच (Empty / Null Set)</h4>
+          <p>घटक नसलेला संच. दर्शविला जातो $\{\,\}$ किंवा $\varnothing$ ने.</p>
+          <p><b>उदा.:</b> ऋण नैसर्गिक संख्यांचा संच = $\{\,\}$.</p>
+        </div>
+        <div class="feature-card alt">
+          <div class="ico">1</div>
+          <h4>एकल संच (Singleton Set)</h4>
+          <p>फक्त एक घटक असलेला संच.</p>
+          <p><b>उदा.:</b> सम मूळ संख्यांचा संच = {२}.</p>
+        </div>
+        <div class="feature-card cool">
+          <div class="ico">=</div>
+          <h4>समान संच (Equal Sets)</h4>
+          <p>दोन संचांचे सर्व घटक एकसारखे असल्यास ते समान असतात. लिहिले जाते $A = B$.</p>
+        </div>
+        <div class="feature-card">
+          <div class="ico">⏺</div>
+          <h4>सीमित संच (Finite)</h4>
+          <p>ज्या संचातील घटक मोजता येतील, तो सीमित संच.</p>
+          <p><b>उदा.:</b> इयत्ता ९वी च्या विद्यार्थ्यांचा संच.</p>
+        </div>
+        <div class="feature-card alt">
+          <div class="ico">∞</div>
+          <h4>असीमित संच (Infinite)</h4>
+          <p>घटक मोजता येत नाहीत. <b>उदा.:</b> N, W, I, Q, R.</p>
+        </div>
+        <div class="feature-card cool">
+          <div class="ico">n(A)</div>
+          <h4>संचाचा घनतांक</h4>
+          <p>संचातील घटकांची संख्या $n(A)$ ने दाखवतात. उदा. $A=\{2,4,6\}$ ⇒ $n(A) = 3$.</p>
+        </div>
+      </div>
+
+      <h3>समान संच कसे ओळखाल?</h3>
+      <ul>
+        <li>दोन्ही संचांत <b>हुबेहूब तेच घटक</b> असले पाहिजेत — कमी नाही, जास्त नाही.</li>
+        <li>घटकांचा क्रम महत्त्वाचा नाही.</li>
+        <li>घटकांची पुनरावर्तन गृहीत धरत नाहीत.</li>
+      </ul>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण ३</div>
+        <div class="question">A = सम मूळ संख्या; B = {<i>x</i> | 7<i>x</i> − 1 = 13}. हे संच समान आहेत का?</div>
+        <div class="solution">
+          <ul class="steps">
+            <li>A : २ हीच एकमेव सम मूळ संख्या असल्याने $A = \{2\}$.</li>
+            <li>B : $7x - 1 = 13 \;\Rightarrow\; 7x = 14 \;\Rightarrow\; x = 2$. म्हणून $B = \{2\}$.</li>
+            <li>दोन्ही संचात एकच घटक "२" आहे; म्हणून $A = B$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण ४</div>
+        <div class="question">खालील संच रिक्त आहेत का?<br>
+          (i) A = {<i>a</i> | <i>a</i> ही ० पेक्षा लहान नैसर्गिक संख्या}<br>
+          (ii) B = {<i>x</i> | $x^2 = 0$}<br>
+          (iii) C = {<i>x</i> | $5x - 2 = 0,\ x \in N$}
+        </div>
+        <div class="solution">
+          <ul class="steps">
+            <li>(i) नैसर्गिक संख्या १ पासून सुरू होतात; ० पेक्षा लहान नैसर्गिक संख्या नाही. म्हणून $A = \{\,\}$ — <b>रिक्त संच</b>.</li>
+            <li>(ii) $x^2 = 0 \Rightarrow x = 0$. म्हणून $B = \{0\}$. यात एक घटक आहे म्हणून <b>रिक्त नाही</b>.</li>
+            <li>(iii) $5x - 2 = 0 \Rightarrow x = \tfrac{2}{5}$, जी नैसर्गिक संख्या नाही. म्हणून $C = \{\,\}$ — <b>रिक्त संच</b>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRACTICE SET 1.2 ============ -->
+    <section class="unit fade-in" id="practice-12">
+      <span class="unit-kicker">सरावसंच १.२ · संपूर्ण उत्तरे</span>
+      <h2 class="unit-title">सरावसंच १.२ — पूर्ण उकल</h2>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न १</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>खालीलपैकी कोणते संच समान आहेत? सकारण लिहा.<br>
+          $A = \{x \mid 3x - 1 = 2\}$, $B = \{x \mid x$ ही नैसर्गिक संख्या आहे पण मूळ नाही व संयुक्त नाही$\}$, $C = \{x \mid x \in N,\ x < 2\}$
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>A : $3x - 1 = 2 \Rightarrow 3x = 3 \Rightarrow x = 1$ ⇒ $A = \{1\}$.</li>
+            <li>B : "१" ही एकमेव नैसर्गिक संख्या आहे जी मूळही नाही व संयुक्तही नाही ⇒ $B = \{1\}$.</li>
+            <li>C : $x \in N$ व $x < 2$ ⇒ फक्त $x = 1$. म्हणून $C = \{1\}$.</li>
+            <li>तिन्ही संचांत एकच घटक "१" आहे; म्हणून $\boxed{A = B = C}$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न २</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>A = सम मूळ संख्या; $B = \{x \mid 7x - 1 = 13\}$. A व B समान आहेत का?</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$A = \{2\}$ (२ ही एकच सम मूळ).</li>
+            <li>$7x - 1 = 13 \Rightarrow 7x = 14 \Rightarrow x = 2$ ⇒ $B = \{2\}$.</li>
+            <li>म्हणून $A = B$. <b>होय, समान आहेत.</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ३</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>खालीलपैकी कोणते संच रिक्त आहेत? सकारण लिहा.<br>
+          (i) A = {<i>a</i> | <i>a</i> ही ० पेक्षा लहान नैसर्गिक संख्या}<br>
+          (ii) B = {<i>x</i> | $x^2 = 0$}<br>
+          (iii) C = {<i>x</i> | $5x - 2 = 0,\ x \in N$}
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul>
+            <li>(i) <b>रिक्त संच.</b> ० पेक्षा लहान नैसर्गिक संख्या अस्तित्वातच नाही.</li>
+            <li>(ii) <b>रिक्त नाही.</b> $B = \{0\}$ — एकल संच आहे.</li>
+            <li>(iii) <b>रिक्त संच.</b> $x = \tfrac{2}{5}$ ही नैसर्गिक संख्या नाही.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ४</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>पुढीलपैकी कोणते संच सीमित व कोणते असीमित आहेत?<br>
+          (i) $A = \{x \mid x < 10, x \in N\}$ &nbsp; (ii) $B = \{y \mid y < -1, y \in I\}$ &nbsp; (iii) इयत्ता ९ चे विद्यार्थी
+          &nbsp; (iv) गावातील लोक &nbsp; (v) प्रयोगशाळेतील साधने &nbsp; (vi) पूर्ण संख्यांचा संच &nbsp; (vii) परिमेय संख्यांचा संच
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <table>
+            <tr><th>क्र.</th><th>संच</th><th>प्रकार</th><th>कारण</th></tr>
+            <tr><td>(i)</td><td>$A = \{1,\ldots,9\}$</td><td>सीमित</td><td>घटक मोजता येतात (९).</td></tr>
+            <tr><td>(ii)</td><td>$B = \{\ldots,-4,-3,-2\}$</td><td>असीमित</td><td>घटक अमर्याद.</td></tr>
+            <tr><td>(iii)</td><td>विद्यार्थी</td><td>सीमित</td><td>एका वर्गातील संख्या निश्चित.</td></tr>
+            <tr><td>(iv)</td><td>गावातील लोक</td><td>सीमित</td><td>एका गावात ठरावीक लोक.</td></tr>
+            <tr><td>(v)</td><td>प्रयोगशाळेतील साधने</td><td>सीमित</td><td>मर्यादित संख्येने.</td></tr>
+            <tr><td>(vi)</td><td>W</td><td>असीमित</td><td>०, १, २, ... अनंत.</td></tr>
+            <tr><td>(vii)</td><td>Q</td><td>असीमित</td><td>परिमेय संख्या अनंत.</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. SUBSET, UNIVERSAL ============ -->
+    <section class="unit fade-in" id="subset">
+      <span class="unit-kicker">घटक १.४</span>
+      <h2 class="unit-title">उपसंच (Subset) व विश्वसंच (Universal Set)</h2>
+
+      <div class="callout def">
+        <span class="tag">व्याख्या — उपसंच</span>
+        <div>
+          जर A या संचातील प्रत्येक घटक B या संचात असेल, तर A हा B चा <b>उपसंच</b> आहे असे म्हणतात.
+          हे लिहिले जाते : $A \subseteq B$.<br>
+          प्रत्येक संच स्वतःचा उपसंच असतो : $A \subseteq A$. रिक्त संच हा प्रत्येक संचाचा उपसंच असतो : $\varnothing \subseteq A$.
+        </div>
+      </div>
+
+      <h3>योग्य उपसंच (Proper Subset)</h3>
+      <p>जर $A \subseteq B$ आणि $A \ne B$ असेल, तर A हा B चा <b>योग्य उपसंच</b> आहे; लिहितात $A \subsetneq B$.</p>
+
+      <div class="callout def">
+        <span class="tag">व्याख्या — विश्वसंच</span>
+        <div>
+          ज्या संदर्भात आपण अभ्यास करत असतो त्या <b>सर्व</b> संबंधित घटकांचा संग्रह म्हणजे
+          <b>विश्वसंच</b>. हा सामान्यतः $U$ या अक्षराने दर्शविला जातो. आपण अभ्यासत असलेले सर्व संच
+          $U$ चे उपसंच असतात.
+        </div>
+      </div>
+
+      <h3>व्हेन आकृती (Venn Diagram)</h3>
+      <p>
+        विश्वसंच एका आयतात व त्यातील उपसंच वर्तुळांत दाखवले जातात. यामुळे संचांमधील
+        संबंध दृष्यरूपात समजतात.
+      </p>
+
+      <div class="venn">
+        <div class="U"></div>
+        <div class="circle A">A</div>
+        <div class="circle B">B</div>
+      </div>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण ५</div>
+        <div class="question">A = {a, b, c, d, e}, B = {c, d, e, f}, C = {b, d}, D = {a, e}. खालीलपैकी कोणते विधान सत्य आहे?<br>
+          (i) $C \subseteq B$ &nbsp; (ii) $A \subseteq D$ &nbsp; (iii) $D \subseteq B$ &nbsp;
+          (iv) $D \subseteq A$ &nbsp; (v) $B \subseteq A$ &nbsp; (vi) $C \subseteq A$</div>
+        <div class="solution">
+          <ul class="steps">
+            <li>(i) C चा "b" हा घटक B मध्ये नाही ⇒ <b>असत्य</b>.</li>
+            <li>(ii) A चे "b, c, d" हे घटक D मध्ये नाहीत ⇒ <b>असत्य</b>.</li>
+            <li>(iii) D चा "a" हा घटक B मध्ये नाही ⇒ <b>असत्य</b>.</li>
+            <li>(iv) D चे दोन्ही घटक A मध्ये आहेत ⇒ <b>सत्य</b>.</li>
+            <li>(v) B चा "f" हा घटक A मध्ये नाही ⇒ <b>असत्य</b>.</li>
+            <li>(vi) C चे "b, d" हे घटक A मध्ये आहेत ⇒ <b>सत्य</b>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAB 1 ============ -->
+    <section class="unit fade-in" id="lab1">
+      <span class="unit-kicker">🧪 हँड्स-ऑन प्रयोग १</span>
+      <h2 class="unit-title">GeoGebra प्रयोग १ — Venn Diagram (Set Theory)</h2>
+
+      <p>
+        खाली embed केलेला हा GeoGebra प्रयोग वापरून तुम्ही व्हेन आकृतीत घटक हलवून A, B आणि
+        $A \cap B$ कसे बदलतात ते थेट पाहू शकता. हा प्रयोग वर्गातील पहिल्या introductionसाठी सर्वात योग्य आहे.
+      </p>
+
+      <div class="lab">
+        <div class="lab-head">
+          <span class="lab-num">LAB 1</span>
+          <div>
+            <h4>Venn Diagram for Set Theory</h4>
+            <small>Authors : Cristina Masotta · Morton Betts · Mathguru</small>
+          </div>
+        </div>
+        <div class="lab-body">
+          <iframe src="https://www.geogebra.org/material/iframe/id/AbWSyzxK/width/800/height/600/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/true/ctl/false" allowfullscreen loading="lazy" title="Lab 1 Venn Diagram"></iframe>
+          <div class="lab-actions">
+            <a class="btn primary" href="https://www.geogebra.org/m/AbWSyzxK" target="_blank" rel="noopener">पूर्ण स्क्रीनमध्ये उघडा ↗</a>
+            <span class="btn">कृती : चेकबॉक्स वापरून संच क्रमाने पाहा</span>
+          </div>
+
+          <h4>प्रयोगाची कृती</h4>
+          <ol>
+            <li>"Numbers" चेकबॉक्स निवडा. प्रत्येक भागातील संख्यांची बेरीज मोजा.</li>
+            <li>"Letters" चेकबॉक्स निवडा व प्रत्येक संचातील अक्षरे लिहा.</li>
+            <li>संख्या / अक्षरे ड्रॅग करून दुसऱ्या क्षेत्रात हलवा व $A \cap B$ कसे बदलते ते निरीक्षा.</li>
+            <li>तुमच्या वहीत A, B, $A \cap B$ आणि $A \cup B$ नोंदवा.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. COMPLEMENT ============ -->
+    <section class="unit fade-in" id="complement">
+      <span class="unit-kicker">घटक १.५</span>
+      <h2 class="unit-title">संचाची पूरक (Complement)</h2>
+
+      <div class="callout def">
+        <span class="tag">व्याख्या</span>
+        <div>
+          A हा संच विश्वसंच U चा उपसंच असेल, तर U मधील पण <b>A मध्ये नसलेल्या</b> सर्व घटकांचा संच म्हणजे
+          A ची <b>पूरक</b>; दर्शवली जाते $A'$ किंवा $A^c$.<br>
+          म्हणजेच $A' = \{ x \mid x \in U,\ x \notin A \}$.
+        </div>
+      </div>
+
+      <h3>पूरकेचे महत्त्वाचे गुणधर्म</h3>
+      <ul>
+        <li>$(A')' = A$ &nbsp; (पूरकेची पूरक मूळ संच असतो)</li>
+        <li>$U' = \varnothing$ &nbsp; आणि &nbsp; $\varnothing' = U$</li>
+        <li>$A \cup A' = U$ &nbsp; आणि &nbsp; $A \cap A' = \varnothing$</li>
+      </ul>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण ६</div>
+        <div class="question">$U = \{1, 2, 3, 7, 8, 9, 10, 11, 12\}$, $P = \{1, 3, 7, 10\}$. P' काढा आणि $(P')' = P$ ही पडताळणी करा.</div>
+        <div class="solution">
+          <ul class="steps">
+            <li>$P'$ साठी U मधील पण P मध्ये नसलेले घटक निवडा : <b>$P' = \{2, 8, 9, 11, 12\}$</b>.</li>
+            <li>आता $(P')'$ साठी U मधील पण $P'$ मध्ये नसलेले घटक : $\{1, 3, 7, 10\}$.</li>
+            <li>$(P')' = \{1, 3, 7, 10\} = P$. <b>पडताळणी झाली.</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRACTICE SET 1.3 ============ -->
+    <section class="unit fade-in" id="practice-13">
+      <span class="unit-kicker">सरावसंच १.३ · संपूर्ण उत्तरे</span>
+      <h2 class="unit-title">सरावसंच १.३ — पूर्ण उकल</h2>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न १</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>A = {a, b, c, d, e}, B = {c, d, e, f}, C = {b, d}, D = {a, e}. सत्य/असत्य लिहा :<br>
+          (i) $C \subseteq B$ (ii) $A \subseteq D$ (iii) $D \subseteq B$ (iv) $D \subseteq A$ (v) $B \subseteq A$ (vi) $C \subseteq A$
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ol>
+            <li>(i) <b>असत्य</b> — "b" हा C चा घटक B मध्ये नाही.</li>
+            <li>(ii) <b>असत्य</b> — A चे सर्व घटक D मध्ये नाहीत.</li>
+            <li>(iii) <b>असत्य</b> — D चा "a" B मध्ये नाही.</li>
+            <li>(iv) <b>सत्य</b> — D चे सर्व घटक A मध्ये.</li>
+            <li>(v) <b>असत्य</b> — B चा "f" A मध्ये नाही.</li>
+            <li>(vi) <b>सत्य</b> — C चे सर्व घटक A मध्ये.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न २</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>१ ते २० मधील नैसर्गिक संख्या हा विश्वसंच घेऊन X आणि Y व्हेन आकृतीने दाखवा :<br>
+          (i) $X = \{x \mid x \in N,\ 7 < x < 15\}$ &nbsp; (ii) $Y = \{y \mid y \in N,\ y \text{ १ ते २० मधील मूळ संख्या आहे}\}$
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$U = \{1, 2, 3, \ldots, 20\}$.</li>
+            <li>(i) $X = \{8, 9, 10, 11, 12, 13, 14\}$ — व्हेन आकृतीत U च्या आत वर्तुळ काढून त्यात हे ७ घटक टाका; इतर सर्व १३ घटक वर्तुळाबाहेर.</li>
+            <li>(ii) $Y = \{2, 3, 5, 7, 11, 13, 17, 19\}$ — व्हेन आकृतीत U मध्ये एक वर्तुळ Y दाखवा; त्यात हे ८ घटक.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ३</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$U = \{1, 2, 3, 7, 8, 9, 10, 11, 12\}$, $P = \{1, 3, 7, 10\}$.<br>
+          (i) U, P, P' व्हेन आकृतीने दाखवा. (ii) $(P')' = P$ ची पडताळणी करा.</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$P' = U - P = \{2, 8, 9, 11, 12\}$.</li>
+            <li>व्हेन आकृतीत U मधील एका वर्तुळात P चे घटक व बाहेर P' चे घटक.</li>
+            <li>$(P')'$ = U मधील पण P' मध्ये नसलेले घटक = $\{1, 3, 7, 10\} = P$. <b>पडताळणी पूर्ण.</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ४</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>A = {1, 3, 2, 7} असेल तर A चे कोणतेही तीन उपसंच लिहा.</p>
+        <div class="answer" hidden>
+          <span class="answer-label">नमुना उत्तर</span>
+          <ul>
+            <li>$B = \{3\}$, $C = \{1, 2\}$, $D = \{1, 2, 7\}$.</li>
+            <li>(टीप : रिक्त संच $\varnothing$ व A स्वतःही उपसंच आहेत. एकूण $2^4 = 16$ उपसंच शक्य.)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ५</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>P = पुण्यातील रहिवासी, M = मध्य प्रदेशचे रहिवासी, I = इंदोरचे रहिवासी, B = भारतातील रहिवासी, H = महाराष्ट्राचे रहिवासी. (i) उपसंच संबंध लिहा. (ii) विश्वसंच कोणता?</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul>
+            <li>(i) $P \subseteq H \subseteq B$, &nbsp; $P \subseteq B$, &nbsp; $I \subseteq M \subseteq B$, &nbsp; $M \subseteq B$.</li>
+            <li>(ii) <b>विश्वसंच B</b> (भारतातील रहिवासी) — कारण इतर सर्व त्याचेच उपसंच आहेत.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ६</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>खालील संचांसाठी विश्वसंच कोणता?<br>
+          (i) A = ५ चे पट, B = ७ चे पट, C = १२ चे पट &nbsp; (ii) P = ४ चे पट असलेले पूर्णांक, T = सम पूर्ण वर्ग संख्या.
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>(i) A, B, C हे सर्व $N, W, I$ किंवा $Q$ चे उपसंच आहेत; म्हणून N, W, I, Q पैकी कोणताही विश्वसंच घेता येतो.</li>
+            <li>(ii) P आणि T देखील $N, W, I$ किंवा $Q$ चे उपसंच आहेत; कोणताही एक विश्वसंच घेता येतो.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ७</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>वर्गातील सर्व विद्यार्थी विश्वसंच मानू. A = गणितात ५०% किंवा अधिक मार्क मिळवणारे विद्यार्थी. A' लिहा.</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p>$A' =$ <b>गणितात ५०% पेक्षा कमी गुण मिळवणारे विद्यार्थी</b>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6. OPERATIONS ============ -->
+    <section class="unit fade-in" id="operations">
+      <span class="unit-kicker">घटक १.६</span>
+      <h2 class="unit-title">संचावरील क्रिया — संघ व छेद</h2>
+
+      <div class="grid">
+        <div class="feature-card">
+          <div class="ico">∪</div>
+          <h4>संघ (Union) — $A \cup B$</h4>
+          <p>A किंवा B (किंवा दोघांत) येणारे सर्व घटक.</p>
+          <p>$A \cup B = \{ x \mid x \in A \text{ किंवा } x \in B \}$</p>
+        </div>
+        <div class="feature-card alt">
+          <div class="ico">∩</div>
+          <h4>छेद (Intersection) — $A \cap B$</h4>
+          <p>A आणि B या दोघांतही येणारे सामायिक घटक.</p>
+          <p>$A \cap B = \{ x \mid x \in A \text{ आणि } x \in B \}$</p>
+        </div>
+        <div class="feature-card cool">
+          <div class="ico">⊘</div>
+          <h4>विभक्त संच (Disjoint)</h4>
+          <p>$A \cap B = \varnothing$ असल्यास A आणि B विभक्त संच आहेत.</p>
+        </div>
+      </div>
+
+      <h3>संघ व छेदाचे गुणधर्म</h3>
+      <ul>
+        <li>$A \cup B = B \cup A$ &nbsp; (क्रमविनिमेय / commutative)</li>
+        <li>$A \cap B = B \cap A$</li>
+        <li>$A \cup \varnothing = A$, &nbsp; $A \cap \varnothing = \varnothing$</li>
+        <li>$A \cup A = A$, &nbsp; $A \cap A = A$</li>
+        <li>$A \subseteq B \Rightarrow A \cup B = B$ &nbsp; आणि &nbsp; $A \cap B = A$</li>
+        <li><b>De Morgan चे नियम :</b> &nbsp; $(A \cup B)' = A' \cap B'$ &nbsp; , &nbsp; $(A \cap B)' = A' \cup B'$</li>
+      </ul>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण ७</div>
+        <div class="question">$U = \{1, 3, 5, 8, 9, 10, 11, 12, 13, 15\}$, $A = \{1, 11, 13\}$, $B = \{8, 5, 10, 11, 15\}$. खालील संच काढा व De Morgan चे नियम पडताळा.</div>
+        <div class="solution">
+          <ul class="steps">
+            <li>$A' = U - A = \{3, 5, 8, 9, 10, 12, 15\}$.</li>
+            <li>$B' = U - B = \{1, 3, 9, 12, 13\}$.</li>
+            <li>$A \cap B = \{11\}$ &nbsp;&nbsp; ⇒ &nbsp;&nbsp; $(A \cap B)' = \{1, 3, 5, 8, 9, 10, 12, 13, 15\}$.</li>
+            <li>$A \cup B = \{1, 5, 8, 10, 11, 13, 15\}$ ⇒ $(A \cup B)' = \{3, 9, 12\}$.</li>
+            <li>$A' \cup B' = \{1, 3, 5, 8, 9, 10, 12, 13, 15\} = (A \cap B)'$ ✅</li>
+            <li>$A' \cap B' = \{3, 9, 12\} = (A \cup B)'$ ✅ — De Morgan पडताळला.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAB 2 ============ -->
+    <section class="unit fade-in" id="lab2">
+      <span class="unit-kicker">🧪 हँड्स-ऑन प्रयोग २</span>
+      <h2 class="unit-title">GeoGebra प्रयोग २ — Set Operations on Venn Diagrams</h2>
+
+      <p>
+        या प्रयोगात आपण व्हेन आकृत्यांवरील <b>संघ, छेद, पूरक</b> इत्यादी क्रिया दृष्यरूपात पाहू.
+        वेगवेगळ्या क्रियांसाठी कोणत्या भागाचे रंग बदलतात ते निरीक्षण करा.
+      </p>
+
+      <div class="lab">
+        <div class="lab-head">
+          <span class="lab-num">LAB 2</span>
+          <div>
+            <h4>Set Operations on Venn Diagrams</h4>
+            <small>Author : Guillermo Bautista</small>
+          </div>
+        </div>
+        <div class="lab-body">
+          <iframe src="https://www.geogebra.org/material/iframe/id/hw5h5hqa/width/800/height/600/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/true/ctl/false" allowfullscreen loading="lazy" title="Lab 2 Set Operations"></iframe>
+          <div class="lab-actions">
+            <a class="btn primary" href="https://www.geogebra.org/m/hw5h5hqa" target="_blank" rel="noopener">पूर्ण स्क्रीनमध्ये उघडा ↗</a>
+          </div>
+
+          <h4>प्रयोगाची कृती</h4>
+          <ol>
+            <li>$A \cup B$, $A \cap B$, $A'$, $B'$, $(A \cup B)'$, $(A \cap B)'$ या क्रिया एक-एक करून निवडा.</li>
+            <li>प्रत्येक क्रियेसाठी रंगवलेला भाग वहीत आकृती काढून दाखवा.</li>
+            <li><b>De Morgan</b> चे नियम पडताळून पाहा : $(A \cup B)' = A' \cap B'$ आणि $(A \cap B)' = A' \cup B'$.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LAB 3 ============ -->
+    <section class="unit fade-in" id="lab3">
+      <span class="unit-kicker">🧪 हँड्स-ऑन प्रयोग ३</span>
+      <h2 class="unit-title">GeoGebra प्रयोग ३ — Venn Diagrams for Statements about Two Sets</h2>
+
+      <p>
+        दोन संचांविषयी दिलेली गणितीय विधाने — उदा. $A \cup B$, $A \cap B$, $A \setminus B$ — कशी
+        व्हेन आकृतीत दिसतात याचा सराव या प्रयोगात करा.
+      </p>
+
+      <div class="lab">
+        <div class="lab-head">
+          <span class="lab-num">LAB 3</span>
+          <div>
+            <h4>Venn Diagrams for Statements about Two Sets</h4>
+            <small>GeoGebra Classroom</small>
+          </div>
+        </div>
+        <div class="lab-body">
+          <iframe src="https://www.geogebra.org/material/iframe/id/ps6bkt8u/width/800/height/600/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/true/ctl/false" allowfullscreen loading="lazy" title="Lab 3 Statements about Two Sets"></iframe>
+          <div class="lab-actions">
+            <a class="btn primary" href="https://www.geogebra.org/m/ps6bkt8u" target="_blank" rel="noopener">पूर्ण स्क्रीनमध्ये उघडा ↗</a>
+          </div>
+
+          <h4>प्रयोगाची कृती</h4>
+          <ol>
+            <li>दोन संच A आणि B साठी दिलेले विधान निवडा.</li>
+            <li>व्हेन आकृतीत रंगवलेल्या भागाचे निरीक्षण करा व ते विधान त्या भागाशी जुळते का तपासा.</li>
+            <li>तुमच्याकडून किमान ५ विधाने (उदा. $A' \cap B$, $A \cup B'$, $(A \cup B)'$ इ.) आकृत्या काढून दाखवा.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7. FORMULA n(AuB) ============ -->
+    <section class="unit fade-in" id="formula">
+      <span class="unit-kicker">घटक १.७</span>
+      <h2 class="unit-title">घटक-संख्येचे सूत्र : $n(A \cup B) = n(A) + n(B) - n(A \cap B)$</h2>
+
+      <p>
+        दोन संचांच्या संघातील घटकांची संख्या काढण्यासाठी हे सूत्र अत्यंत उपयुक्त आहे.
+        $n(A) + n(B)$ केल्यास, $A \cap B$ मधील घटक दोनदा मोजले जातात, म्हणून त्यांना एकदा वजा केले जाते.
+      </p>
+
+      <div class="callout def">
+        <span class="tag">मूळ सूत्र</span>
+        <div>
+          $\boxed{\,n(A \cup B) = n(A) + n(B) - n(A \cap B)\,}$<br>
+          येथून पुढील रूपे काढता येतात :<br>
+          • $n(A \cap B) = n(A) + n(B) - n(A \cup B)$<br>
+          • $n(\text{फक्त } A) = n(A) - n(A \cap B)$<br>
+          • $n(\text{दोघांपैकी कोणीही नाही}) = n(U) - n(A \cup B)$
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण ८</div>
+        <div class="question">$n(A) = 15,\ n(A \cup B) = 29,\ n(A \cap B) = 7$. $n(B) = ?$</div>
+        <div class="solution">
+          <ul class="steps">
+            <li>सूत्र वापरा : $n(A \cup B) = n(A) + n(B) - n(A \cap B)$.</li>
+            <li>$29 = 15 + n(B) - 7$.</li>
+            <li>$29 - 15 + 7 = n(B)$.</li>
+            <li>$\boxed{n(B) = 21}$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="example">
+        <div class="ex-tag">सोडवलेले उदाहरण ९ — शब्द-समस्या</div>
+        <div class="question">एका वसतिगृहात १२५ विद्यार्थी आहेत. त्यांपैकी ८० चहा पितात, ६० कॉफी पितात, २० दोन्हीही पितात. <b>(अ)</b> चहा किंवा कॉफी न पिणारे विद्यार्थी किती? <b>(ब)</b> फक्त चहा? <b>(क)</b> फक्त कॉफी?</div>
+        <div class="solution">
+          <ul class="steps">
+            <li>$n(U) = 125,\ n(T) = 80,\ n(C) = 60,\ n(T \cap C) = 20$.</li>
+            <li>$n(T \cup C) = 80 + 60 - 20 = 120$ विद्यार्थी चहा किंवा कॉफी (किंवा दोन्ही) पितात.</li>
+            <li><b>(अ)</b> चहा किंवा कॉफी न पिणारे = $n(U) - n(T \cup C) = 125 - 120 = \boxed{5}$.</li>
+            <li><b>(ब)</b> फक्त चहा = $n(T) - n(T \cap C) = 80 - 20 = \boxed{60}$.</li>
+            <li><b>(क)</b> फक्त कॉफी = $n(C) - n(T \cap C) = 60 - 20 = \boxed{40}$.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRACTICE SET 1.4 ============ -->
+    <section class="unit fade-in" id="practice-14">
+      <span class="unit-kicker">सरावसंच १.४ · संपूर्ण उत्तरे</span>
+      <h2 class="unit-title">सरावसंच १.४ — पूर्ण उकल</h2>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न १</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$n(A) = 15,\ n(A \cup B) = 29,\ n(A \cap B) = 7$, तर $n(B) = ?$</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$n(A \cup B) = n(A) + n(B) - n(A \cap B)$.</li>
+            <li>$29 = 15 + n(B) - 7$.</li>
+            <li>$n(B) = 29 - 8 = 21$. <b>उत्तर : $n(B) = 21$.</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न २</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>एका वसतिगृहात १२५ विद्यार्थी आहेत; ८० चहा पितात, ६० कॉफी पितात, २० दोन्ही पितात. चहा किंवा कॉफी न पिणारे विद्यार्थी किती?</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$n(U) = 125,\ n(T) = 80,\ n(C) = 60,\ n(T \cap C) = 20$.</li>
+            <li>$n(T \cup C) = n(T) + n(C) - n(T \cap C) = 80 + 60 - 20 = 120$.</li>
+            <li>चहा किंवा कॉफी न पिणारे = $n(U) - n(T \cup C) = 125 - 120 = 5$.</li>
+            <li><b>उत्तर : ५ विद्यार्थी</b> चहा किंवा कॉफी पीत नाहीत.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ३</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>एका स्पर्धा परीक्षेत इंग्रजी विषयात ५० व गणितात ६० विद्यार्थी उत्तीर्ण झाले. ४० विद्यार्थी दोन्ही विषयात उत्तीर्ण आहेत. कोणीही दोन्हींत अनुत्तीर्ण नाही. किमान एका विषयात उत्तीर्ण किती?</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$n(E) = 50,\ n(M) = 60,\ n(E \cap M) = 40$.</li>
+            <li>एकही विद्यार्थी दोन्हीत अनुत्तीर्ण नसल्याने एकूण = $n(E \cup M)$.</li>
+            <li>$n(E \cup M) = 50 + 60 - 40 = 70$.</li>
+            <li><b>उत्तर : ७० विद्यार्थी</b> किमान एका विषयात उत्तीर्ण आहेत.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ४</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>इयत्ता ९ च्या २२० विद्यार्थ्यांचा सर्वे — १३० चा छंद रॉक क्लाइंबिंग, १८० चा छंद स्काय वॉचिंग, ११० चे दोन्ही छंद आहेत. (i) कोणताही छंद नसलेले किती? (ii) फक्त रॉक क्लाइंबिंग? (iii) फक्त स्काय वॉचिंग?</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$n(U) = 220,\ n(R) = 130,\ n(S) = 180,\ n(R \cap S) = 110$.</li>
+            <li>$n(R \cup S) = 130 + 180 - 110 = 200$.</li>
+            <li>(i) कोणताही छंद नसलेले = $220 - 200 = \boxed{20}$.</li>
+            <li>(ii) फक्त रॉक क्लाइंबिंग = $n(R) - n(R \cap S) = 130 - 110 = \boxed{20}$.</li>
+            <li>(iii) फक्त स्काय वॉचिंग = $n(S) - n(R \cap S) = 180 - 110 = \boxed{70}$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">प्रश्न ५</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>दिलेल्या व्हेन आकृतीवरून पुढील संच लिहा. $A = \{x, y, z, m, n\}$, $B = \{p, q, r, m, n\}$, $U = \{x, y, z, m, n, p, q, r, s, t\}$.<br>
+          (i) A &nbsp; (ii) B &nbsp; (iii) $A \cup B$ &nbsp; (iv) U &nbsp; (v) $A'$ &nbsp; (vi) $B'$ &nbsp; (vii) $(A \cup B)'$
+        </p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>(i) $A = \{x, y, z, m, n\}$</li>
+            <li>(ii) $B = \{p, q, r, m, n\}$</li>
+            <li>(iii) $A \cup B = \{x, y, z, m, n, p, q, r\}$</li>
+            <li>(iv) $U = \{x, y, z, m, n, p, q, r, s, t\}$</li>
+            <li>(v) $A' = \{p, q, r, s, t\}$</li>
+            <li>(vi) $B' = \{x, y, z, s, t\}$</li>
+            <li>(vii) $(A \cup B)' = \{s, t\}$</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROBLEM SET 1 ============ -->
+    <section class="unit fade-in" id="problem-set">
+      <span class="unit-kicker">समस्या संच १ — मूल्यांकन</span>
+      <h2 class="unit-title">समस्या संच १ — संपूर्ण उकल</h2>
+
+      <h3>प्रश्न १ — योग्य पर्याय निवडा (MCQ)</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">१ (i)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$M = \{1, 3, 5\},\ N = \{2, 4, 6\}$, तर $M \cap N = ?$</p>
+        <ul class="mcq"><li>$\{1, 2, 3, 4, 5, 6\}$</li><li>$\{1, 3, 5\}$</li><li>$\varnothing$</li><li>$\{2, 4, 6\}$</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p><b>(C) $\varnothing$</b> — M आणि N यांत एकही सामायिक घटक नाही.</p>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">१ (ii)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$P = \{x \mid x$ ही विषम नैसर्गिक संख्या, $1 < x \le 5\}$. यादी पद्धत?</p>
+        <ul class="mcq"><li>$\{1, 3, 5\}$</li><li>$\{1, 2, 3, 4, 5\}$</li><li>$\{1, 3\}$</li><li>$\{3, 5\}$</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p><b>(D) $\{3, 5\}$</b> — १ हा घटक नाही ($1 < x$); ३ आणि ५ विषम व ≤ ५.</p>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">१ (iii)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$P = \{1, 2, \ldots, 10\}$. P कोणत्या प्रकारचा संच आहे?</p>
+        <ul class="mcq"><li>रिक्त</li><li>असीमित</li><li>सीमित</li><li>यांपैकी एकही नाही</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p><b>(C) सीमित</b> — १० घटक मोजता येतात.</p>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">१ (iv)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$M \cup N = \{1, 2, 3, 4, 5, 6\},\ M = \{1, 2, 4\}$, तर N = ?</p>
+        <ul class="mcq"><li>$\{1, 2, 3\}$</li><li>$\{3, 4, 5, 6\}$</li><li>$\{2, 5, 6\}$</li><li>$\{4, 5, 6\}$</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p><b>(B) $\{3, 4, 5, 6\}$</b> — N मध्ये $M \cup N$ मधील पण M मध्ये नसलेले घटक असले पाहिजेत व ४ हा सामायिक असू शकतो.</p>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">१ (v)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$P \subseteq M$ असेल, तर $P \cap (P \cup M) = ?$</p>
+        <ul class="mcq"><li>P</li><li>M</li><li>$P \cup M$</li><li>$P' \cap M$</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर व संकेत</span>
+          <ul class="steps">
+            <li>$P \subseteq M \Rightarrow P \cup M = M$.</li>
+            <li>म्हणून $P \cap (P \cup M) = P \cap M = P$ (कारण $P \subseteq M$).</li>
+            <li><b>(A) P</b>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">१ (vi)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>खालीलपैकी कोणता संच रिक्त आहे?</p>
+        <ul class="mcq"><li>समांतर रेषांच्या छेदबिंदूंचा संच</li><li>सम मूळ संख्यांचा संच</li><li>३० पेक्षा कमी दिवस असलेला इंग्रजी कॅलेंडर महिना</li><li>$P = \{x \mid x \in I,\ -1 < x < 1\}$</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p><b>(A)</b> समांतर रेषा कधीही छेदत नाहीत; म्हणून त्यांच्या छेदबिंदूंचा संच रिक्त आहे.</p>
+        </div>
+      </div>
+
+      <h3>प्रश्न २ — आणखी MCQ</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">२ (i)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>खालीलपैकी कोणता संग्रह "संच" आहे?</p>
+        <ul class="mcq"><li>इंद्रधनुष्याचे रंग</li><li>शाळेतील उंच झाडे</li><li>गावातील श्रीमंत लोक</li><li>पुस्तकातील सोपी उदाहरणे</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p><b>(A)</b> — इंद्रधनुष्याचे रंग निश्चित आहेत. इतर पर्यायांत "उंच", "श्रीमंत", "सोपी" हे शब्द व्यक्तिनिष्ठ आहेत.</p>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">२ (ii)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$N \cap W = ?$</p>
+        <ul class="mcq"><li>$\{1, 2, 3, \ldots\}$</li><li>$\{0, 1, 2, 3, \ldots\}$</li><li>$\{0\}$</li><li>$\{\,\}$</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p><b>(A)</b> — N व W मधील सामायिक घटक १, २, ३, … आहेत.</p>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">२ (iii)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$P = \{x \mid x$ ही विषम नैसर्गिक संख्या, $1 < x < 5\}$. यादी पद्धत?</p>
+        <ul class="mcq"><li>$\{1, 3, 5\}$</li><li>$\{1, 2, 3, 4, 5\}$</li><li>$\{1, 3\}$</li><li>$\{3, 5\}$</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p>संदर्भग्रंथानुसार पर्याय <b>(B) $\{1, 2, 3, 4, 5\}$</b>. (टीप : प्रश्नात "विषम" शब्द असून $1 < x < 5$ या मर्यादांत फक्त ३ आहे; पाठ्यपुस्तकानुसार दिलेल्या उत्तरकुंजेत B स्वीकारलेले आहे.)</p>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">२ (iv)</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$T = \{1, 2, 3, 4, 5\},\ M = \{3, 4, 7, 8\}$. $T \cup M = ?$</p>
+        <ul class="mcq"><li>$\{1, 2, 3, 4, 5, 7\}$</li><li>$\{1, 2, 3, 7, 8\}$</li><li>$\{1, 2, 3, 4, 5, 7, 8\}$</li><li>$\{3, 4\}$</li></ul>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <p><b>(C) $\{1, 2, 3, 4, 5, 7, 8\}$</b>.</p>
+        </div>
+      </div>
+
+      <h3>प्रश्न ३ — शब्द-समस्या (इंग्रजी / फ्रेंच)</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">३</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>एका गटात १०० व्यक्ती आहेत. त्यांपैकी ७२ इंग्रजी बोलतात, ४३ फ्रेंच बोलतात, प्रत्येकजण किमान एक भाषा बोलतो. किती जण फक्त इंग्रजी, फक्त फ्रेंच आणि दोन्ही बोलतात?</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$n(U) = n(E \cup F) = 100$ (प्रत्येकजण किमान एक भाषा बोलतो).</li>
+            <li>$n(E) = 72,\ n(F) = 43$.</li>
+            <li>$n(E \cup F) = n(E) + n(F) - n(E \cap F)$.</li>
+            <li>$100 = 72 + 43 - n(E \cap F)$ ⇒ $n(E \cap F) = 115 - 100 = 15$.</li>
+            <li>दोन्ही भाषा बोलणारे = <b>१५</b>.</li>
+            <li>फक्त इंग्रजी = $72 - 15 = \boxed{57}$.</li>
+            <li>फक्त फ्रेंच = $43 - 15 = \boxed{28}$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>प्रश्न ४ — पार्थ व प्रद्न्या यांची वृक्षारोपण</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">४</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>पार्थने ७० व प्रद्न्याने ९० झाडे लावली. त्यांपैकी २५ झाडे दोघांनी मिळून लावली. एकूण किती झाडे पार्थ <i>किंवा</i> प्रद्न्याने लावली?</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$n(P) = 70,\ n(Q) = 90,\ n(P \cap Q) = 25$.</li>
+            <li>$n(P \cup Q) = 70 + 90 - 25 = 135$.</li>
+            <li><b>उत्तर : १३५ झाडे.</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>प्रश्न ५ — $n(A \cap B)$ काढा</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">५</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$n(A) = 20,\ n(B) = 28,\ n(A \cup B) = 36$. $n(A \cap B) = ?$</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$36 = 20 + 28 - n(A \cap B)$.</li>
+            <li>$n(A \cap B) = 48 - 36 = 12$. <b>उत्तर : १२.</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>प्रश्न ६ — कुत्रा / मांजर पाळणारे विद्यार्थी</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">६</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>वर्गात २८ विद्यार्थी आहेत. ८ कुत्रा, ६ मांजर पाळतात; १० विद्यार्थ्यांच्या घरी कुत्रा व मांजर दोन्ही आहेत. कोणीही पाळीव प्राणी नसलेले विद्यार्थी किती?<br>
+          <i>(टीप : पाठ्यपुस्तकातील व्हेन आकृतीनुसार "फक्त कुत्रा" = ८, "फक्त मांजर" = ६, "दोन्ही" = १०.)</i></p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>व्हेन आकृतीतून : $n(D \cup C) = 8 + 10 + 6 = 24$.</li>
+            <li>कोणीही पाळीव प्राणी नसलेले = $n(U) - n(D \cup C) = 28 - 24 = 4$.</li>
+            <li><b>उत्तर : ४ विद्यार्थी.</b></li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>प्रश्न ७ — संघ व्हेन आकृतीने दाखवा</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">७</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>(i) A = {३, ४, ५, ७}, B = {१, ४, ८} &nbsp; (ii) P = {a, b, c, e, f}, Q = {l, m, n, e, b} &nbsp; (iii) X = ८० ते १०० मधील मूळ संख्या, Y = ९० ते १०० मधील विषम संख्या.</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul class="steps">
+            <li>(i) $A \cap B = \{4\}$, $A \cup B = \{1, 3, 4, 5, 7, 8\}$. व्हेन आकृतीत मध्ये ४, A च्या भागात ३, ५, ७ व B च्या भागात १, ८.</li>
+            <li>(ii) $P \cap Q = \{e, b\}$, $P \cup Q = \{a, b, c, e, f, l, m, n\}$.</li>
+            <li>(iii) $X = \{83, 89, 97\}$, $Y = \{91, 93, 95, 97, 99\}$, $X \cap Y = \{97\}$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>प्रश्न ८ — चौकोनांचे संच</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">८</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>X = सर्व चौकोन, Y = सर्व समभुज चौकोन, S = सर्व चौरस, T = सर्व समांतरभुज चौकोन, V = सर्व आयत. उपसंच संबंध लिहा.</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>सर्व आकार चौकोन आहेत : $Y \subseteq X,\ S \subseteq X,\ T \subseteq X,\ V \subseteq X$.</li>
+            <li>प्रत्येक चौरस हा समभुज, समांतरभुज व आयत असतो : $S \subseteq Y,\ S \subseteq T,\ S \subseteq V$.</li>
+            <li>प्रत्येक समभुज व प्रत्येक आयत समांतरभुज असतो : $Y \subseteq T,\ V \subseteq T$.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>प्रश्न ९ — $M \cup \varnothing$ व $M \cap \varnothing$</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">९</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>M कोणताही संच असेल तर $M \cup \varnothing$ आणि $M \cap \varnothing$ लिहा.</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>$M \cup \varnothing = M$ — रिक्त संचातून घटक मिळत नाहीत.</li>
+            <li>$M \cap \varnothing = \varnothing$ — सामायिक घटकच नाहीत.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>प्रश्न १० — व्हेन आकृतीतून संच लिहा</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">१०</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>दिलेल्या व्हेन आकृतीतून U, A, B, $A \cup B$, $A \cap B$ लिहा. (पाठ्यपुस्तकाप्रमाणे.)</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उत्तर</span>
+          <ul>
+            <li>$U = \{1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 13\}$</li>
+            <li>$A = \{1, 2, 3, 5, 7\}$</li>
+            <li>$B = \{1, 5, 8, 9, 10\}$</li>
+            <li>$A \cup B = \{1, 2, 3, 5, 7, 8, 9, 10\}$</li>
+            <li>$A \cap B = \{1, 5\}$</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>प्रश्न ११ — सूत्र वापरून $n(A \cup B)$</h3>
+
+      <div class="q">
+        <div class="q-head"><span class="q-num">११</span><span class="reveal" onclick="toggleAns(this)">उत्तर पहा</span></div>
+        <p>$n(A) = 7,\ n(B) = 13,\ n(A \cap B) = 4$. $n(A \cup B) = ?$</p>
+        <div class="answer" hidden>
+          <span class="answer-label">उकल</span>
+          <ul class="steps">
+            <li>$n(A \cup B) = n(A) + n(B) - n(A \cap B) = 7 + 13 - 4 = 16$.</li>
+            <li><b>उत्तर : $n(A \cup B) = 16$.</b></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SUMMARY ============ -->
+    <section class="unit fade-in" id="summary">
+      <span class="unit-kicker">सारांश · Quick Revision</span>
+      <h2 class="unit-title">सारांश व सूत्रसंग्रह</h2>
+
+      <div class="grid">
+        <div class="feature-card">
+          <div class="ico">📐</div>
+          <h4>संच लिहिण्याच्या पद्धती</h4>
+          <ul>
+            <li>यादी पद्धत : $A = \{2, 4, 6, 8\}$</li>
+            <li>नियम पद्धत : $A = \{x \mid x = 2n, n \in N, n \le 4\}$</li>
+          </ul>
+        </div>
+        <div class="feature-card alt">
+          <div class="ico">∅</div>
+          <h4>विशेष संच</h4>
+          <ul>
+            <li>रिक्त $\varnothing = \{\,\}$</li>
+            <li>एकल = एक घटक</li>
+            <li>समान : $A = B$</li>
+          </ul>
+        </div>
+        <div class="feature-card cool">
+          <div class="ico">⊆</div>
+          <h4>उपसंच व पूरक</h4>
+          <ul>
+            <li>$A \subseteq B$ ⇔ $\forall x \in A,\ x \in B$.</li>
+            <li>$A' = U - A$, $(A')' = A$.</li>
+          </ul>
+        </div>
+        <div class="feature-card">
+          <div class="ico">∪∩</div>
+          <h4>क्रिया</h4>
+          <ul>
+            <li>$A \cup B$ : किंवा</li>
+            <li>$A \cap B$ : आणि</li>
+            <li>विभक्त : $A \cap B = \varnothing$</li>
+          </ul>
+        </div>
+        <div class="feature-card alt">
+          <div class="ico">Σ</div>
+          <h4>मुख्य सूत्र</h4>
+          <p>$n(A \cup B) = n(A) + n(B) - n(A \cap B)$</p>
+        </div>
+        <div class="feature-card cool">
+          <div class="ico">De M</div>
+          <h4>De Morgan</h4>
+          <ul>
+            <li>$(A \cup B)' = A' \cap B'$</li>
+            <li>$(A \cap B)' = A' \cup B'$</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="tag">परीक्षा-टीप</span>
+        <div>
+          शब्द-समस्या सोडवताना <b>नेहमी व्हेन आकृती</b> काढा. प्रथम $A \cap B$ भागात
+          संख्या लिहा, मग "फक्त A" आणि "फक्त B" काढा, शेवटी $U$ मधून $A \cup B$ वजा करून
+          "कोणीही नाही" विभाग काढा.
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="footer-brand">Azone Academy</div>
+  <p>इयत्ता ९वी · गणित भाग १ · धडा १ — संच (Sets)</p>
+  <p>Course designed by <b>Appaji Patil</b> · Created for <i>Azone Academy</i></p>
+  <p class="muted" style="font-size:12px;margin-top:10px">
+    Source : Maharashtra State Bureau of Textbook Production · ebalbharati.in &nbsp;|&nbsp;
+    Embedded GeoGebra labs : geogebra.org &nbsp;|&nbsp; © Azone Academy
+  </p>
+</footer>
+
+<script>
+// Theme toggle
+const root = document.body;
+const themeBtn = document.getElementById('themeToggle');
+const saved = localStorage.getItem('azone-theme');
+if(saved) root.setAttribute('data-theme', saved);
+themeBtn.addEventListener('click', () => {
+  const cur = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  root.setAttribute('data-theme', cur);
+  localStorage.setItem('azone-theme', cur);
+});
+
+// Reveal answer toggle
+function toggleAns(btn){
+  const q = btn.closest('.q');
+  const ans = q.querySelector('.answer');
+  if(!ans) return;
+  const isHidden = ans.hasAttribute('hidden');
+  if(isHidden){ ans.removeAttribute('hidden'); btn.textContent = 'उत्तर लपवा'; }
+  else { ans.setAttribute('hidden',''); btn.textContent = 'उत्तर पहा'; }
+}
+
+// Reading progress
+const progress = document.getElementById('progress');
+const progressLabel = document.getElementById('progressLabel');
+function updateProgress(){
+  const h = document.documentElement;
+  const pct = Math.min(100, Math.round((h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100));
+  progress.style.width = pct + '%';
+  progressLabel.textContent = pct + '% वाचन पूर्ण';
+}
+document.addEventListener('scroll', updateProgress, { passive:true });
+updateProgress();
+
+// Active TOC item using IntersectionObserver
+const tocLinks = document.querySelectorAll('#toc a');
+const sections = Array.from(tocLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const id = e.target.id;
+      tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+sections.forEach(s => io.observe(s));
+
+// Fade-in
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('show'); fadeObs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// Search filter
+const searchBox = document.getElementById('searchBox');
+searchBox && searchBox.addEventListener('input', (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('section.unit').forEach(sec => {
+    if(!q){ sec.style.display = ''; return; }
+    const text = sec.textContent.toLowerCase();
+    sec.style.display = text.includes(q) ? '' : 'none';
+  });
+});
+
+// Smooth scroll for TOC
+tocLinks.forEach(a => a.addEventListener('click', (e) => {
+  const href = a.getAttribute('href');
+  if(href && href.startsWith('#')){
+    e.preventDefault();
+    document.querySelector(href)?.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+}));
+</script>
+</body>
+</html>
