@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Azone Academy — इयत्ता ९वी गणित भाग १ (मराठी ऑनलाइन कोर्स)</title>
+<meta name="description" content="Azone Academy तर्फे इयत्ता ९वी गणित भाग १ चा संपूर्ण मराठी ऑनलाइन कोर्स. अप्पाजी पाटील यांनी निर्मिती केली." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Noto Sans Devanagari',system-ui,sans-serif;
+  background:
+    radial-gradient(900px 600px at 90% -10%, rgba(124,92,255,.35), transparent 60%),
+    radial-gradient(800px 600px at -10% 30%, rgba(34,211,238,.25), transparent 60%),
+    #070b1a;
+  color:#eef2ff; min-height:100vh; line-height:1.7;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:30px 22px 60px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:30px}
+.brand-mark{
+  width:46px;height:46px;border-radius:14px;
+  background:linear-gradient(135deg,#7c5cff 0%,#22d3ee 50%,#10b981 100%);
+  display:grid;place-items:center;font-family:'Poppins';font-weight:800;color:#fff;
+  box-shadow:0 6px 18px rgba(124,92,255,.5);
+}
+.brand b{font-family:'Poppins',sans-serif;font-size:20px;letter-spacing:.4px}
+.brand small{color:#9aa6d6;display:block;font-size:12px}
+.hero{
+  background: rgba(21,33,77,.6); border:1px solid rgba(255,255,255,.08);
+  border-radius:24px; padding:42px 38px; margin-bottom:30px;
+  position:relative; overflow:hidden;
+}
+.hero::before{
+  content:""; position:absolute; width:280px;height:280px; border-radius:50%;
+  background:#7c5cff; filter:blur(70px); opacity:.35; top:-80px; right:-60px;
+}
+.tag{
+  display:inline-block; background:rgba(124,92,255,.18); border:1px solid rgba(124,92,255,.4);
+  color:#eef2ff; padding:6px 14px; border-radius:999px; font-size:13px; margin-bottom:14px;
+}
+h1{
+  font-family:'Poppins','Noto Sans Devanagari',sans-serif; font-size:clamp(28px,4vw,42px);
+  background:linear-gradient(135deg,#7c5cff,#22d3ee,#10b981);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  margin-bottom:8px;
+}
+.sub{color:#9aa6d6;margin-bottom:20px;max-width:780px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:14px}
+.card{
+  background: rgba(27,42,96,.7); border:1px solid rgba(255,255,255,.08);
+  border-radius:18px; padding:22px; text-decoration:none; color:inherit;
+  transition: transform .2s ease, border-color .2s ease;
+  position:relative; overflow:hidden;
+}
+.card:hover{ transform: translateY(-4px); border-color: rgba(124,92,255,.5) }
+.card .num{
+  font-family:'Poppins',sans-serif; font-weight:800; font-size:32px;
+  background:linear-gradient(135deg,#7c5cff,#22d3ee); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.card h3{font-size:20px;margin:6px 0 4px}
+.card p{color:#9aa6d6;font-size:14.5px}
+.card .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  padding:3px 10px;border-radius:999px;font-size:12px;color:#cdd5ff
+}
+.card.locked{ opacity:.55; pointer-events:none }
+.card.locked::after{
+  content:"लवकरच"; position:absolute; top:14px; right:14px;
+  background:#f59e0b; color:#1a1300; font-weight:700; font-size:11px;
+  padding:3px 10px; border-radius:999px;
+}
+.foot{
+  margin-top:40px; padding-top:20px; border-top:1px solid rgba(255,255,255,.08);
+  color:#9aa6d6; font-size:13px; text-align:center;
+}
+.author{
+  display:inline-flex;align-items:center;gap:10px;margin-top:14px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+  padding:8px 14px; border-radius:14px;
+}
+.avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,#f43f5e,#f59e0b,#fbbf24);
+  display:grid;place-items:center;color:#1a1300;font-family:'Poppins';font-weight:800;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand-mark">A</div>
+    <div class="brand">
+      <b>Azone Academy</b>
+      <small>Online Class · Marathi Medium</small>
+    </div>
+  </div>
+
+  <section class="hero">
+    <span class="tag">Online Class · Marathi Medium</span>
+    <h1>इयत्ता ९वी · गणित भाग १</h1>
+    <p class="sub">
+      महाराष्ट्र राज्य पाठ्यपुस्तक मंडळ (बालभारती) च्या पाठ्यपुस्तकावर आधारित संपूर्ण
+      मराठी ऑनलाइन कोर्स — GeoGebra प्रयोगशाळा, सोडवलेली व न-सोडवलेली उदाहरणे यांच्या
+      टप्प्या-टप्प्याने उकलीसह.
+    </p>
+
+    <div class="author">
+      <div class="avatar">AP</div>
+      <div>
+        <b>Course designed by Appaji Patil</b><br>
+        <small style="color:#9aa6d6">Created for Azone Academy</small>
+      </div>
+    </div>
+  </section>
+
+  <h2 style="font-family:'Poppins';margin:10px 0 14px;color:#eef2ff">पाठ्यक्रम</h2>
+
+  <div class="cards">
+    <a class="card" href="chapter1_sanch.html">
+      <div class="num">01</div>
+      <h3>संच (Sets)</h3>
+      <p>संच, उपसंच, विश्वसंच, पूरक, संघ, छेद आणि $n(A \cup B)$ चे सूत्र.</p>
+      <div class="meta">
+        <span class="chip">३ GeoGebra Labs</span>
+        <span class="chip">४ सरावसंच</span>
+        <span class="chip">समस्या संच</span>
+      </div>
+    </a>
+
+    <a class="card locked">
+      <div class="num">02</div>
+      <h3>वास्तव संख्या</h3>
+      <p>परिमेय, अपरिमेय व वास्तव संख्या, संख्या रेखा, करणी (Surds).</p>
+    </a>
+
+    <a class="card locked">
+      <div class="num">03</div>
+      <h3>बहुपदी</h3>
+      <p>बहुपदीचे प्रकार, संयुगीकरण, शेषफल प्रमेय, अवयव.</p>
+    </a>
+
+    <a class="card locked">
+      <div class="num">04</div>
+      <h3>गुणोत्तर व प्रमाण</h3>
+      <p>गुणोत्तर, समानुपात, k पद्धत.</p>
+    </a>
+
+    <a class="card locked">
+      <div class="num">05</div>
+      <h3>दोन चलांतील रेषीय समीकरणे</h3>
+      <p>निवारण पद्धती, ग्राफ पद्धत, क्रॅमरचे नियम.</p>
+    </a>
+
+    <a class="card locked">
+      <div class="num">06</div>
+      <h3>आर्थिक नियोजन</h3>
+      <p>GST, करपद्धती, गुंतवणूक, शेअर बाजार.</p>
+    </a>
+
+    <a class="card locked">
+      <div class="num">07</div>
+      <h3>सांख्यिकी</h3>
+      <p>वारंवारता तक्ता, स्तंभालेख, मध्य, मध्यक, बहुलक.</p>
+    </a>
+  </div>
+
+  <div class="foot">
+    © Azone Academy &nbsp;·&nbsp; Course by Appaji Patil &nbsp;·&nbsp; पाठ्यपुस्तक स्रोत : <a style="color:#22d3ee" href="https://books.ebalbharati.in/" target="_blank" rel="noopener">books.ebalbharati.in</a>
+  </div>
+</div>
+</body>
+</html>
