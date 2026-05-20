@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प १६: Tilt Sensor (Obstacle ने) — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">मूळ कल्पना</a></li>
+        <li><a href="#parts">लागणारे साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#circuit">सर्किट आकृती</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#explain">कोडचे विश्लेषण</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प १६: Tilt Sensor using Obstacle Sensor</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★☆☆ सोपा</div>
+
+      <section id="goal">
+        <h2>१. ध्येय (Goal)</h2>
+        <p>
+          एक <strong>IR Obstacle sensor</strong> चा वापर करून आपण <em>Tilt detection</em> (झुकाव ओळख) कशी करायची ते शिकू.
+          सर्किट कलले की sensor समोरील वस्तू अदृश्य होते — आणि आपण <strong>LED + Buzzer</strong> ने अलार्म वाजवतो.
+        </p>
+        <div class="callout tip">
+          <strong>उपयोग:</strong> बँकेच्या तिजोरीचा झुकाव अलार्म, मोटारसायकल कलल्यावर सूचना, घरगुती शोपीस पडण्यापासून सतर्कता.
+        </div>
+      </section>
+
+      <section id="concept">
+        <h2>२. मूळ कल्पना</h2>
+        <p>
+          IR sensor समोरच्या वस्तूकडून परावर्तित प्रकाश ओळखतो. आपण सेन्सरसमोर एक स्थिर भिंत/कार्डबोर्ड ठेवू.
+          जोपर्यंत सेन्सर सरळ आहे — भिंत समोर — आउटपुट <code class="inline">LOW</code>. कलले की भिंत कोनातून बाहेर जाते — आउटपुट <code class="inline">HIGH</code>. ह्या बदलावरून आपण झुकाव ओळखतो.
+        </p>
+        <p>हे करण्यासाठी सेन्सरला असे माउंट करा की सरळ स्थितीत त्याच्या समोर ५ – १० cm वर एक भिंत/कोपरा असेल.</p>
+      </section>
+
+      <section id="parts">
+        <h2>३. लागणारे साहित्य</h2>
+        <ul>
+          <li>Arduino UNO + USB केबल</li>
+          <li>IR Obstacle Sensor × १</li>
+          <li>5 mm LED (लाल) × १ + 220 Ω resistor</li>
+          <li>5V Active Buzzer × १</li>
+          <li>ब्रेडबोर्ड + जम्पर वायर्स</li>
+          <li>एक छोटी भिंत (कार्डबोर्ड) IR समोर माउंट करण्यासाठी</li>
+        </ul>
+      </section>
+
+      <section id="pins">
+        <h2>४. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>घटकाचा पिन</th><th>Arduino पिन</th></tr></thead>
+          <tbody>
+            <tr><td>IR Sensor</td><td>VCC</td><td>5V</td></tr>
+            <tr><td>IR Sensor</td><td>GND</td><td>GND</td></tr>
+            <tr><td>IR Sensor</td><td>OUT</td><td><code>D2</code></td></tr>
+            <tr><td>LED</td><td>+ (Anode → 220Ω)</td><td><code>D8</code></td></tr>
+            <tr><td>LED</td><td>− (Cathode)</td><td>GND</td></tr>
+            <tr><td>Buzzer</td><td>+</td><td><code>D9</code></td></tr>
+            <tr><td>Buzzer</td><td>−</td><td>GND</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="circuit">
+        <h2>५. सर्किट आकृती</h2>
+        <pre class="code-block">         ┌─────────────┐
+   5V ───│ VCC         │
+  GND ───│ GND   IR    │
+   D2 ───│ OUT  Sensor │  ← समोर भिंत (5-10 cm)
+         └─────────────┘
+
+   D8 ── [220Ω] ──▶|── GND     (LED)
+
+   D9 ── Buzzer + ── GND</pre>
+      </section>
+
+      <section id="code">
+        <h2>६. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प १६ — Tilt Sensor using Obstacle Sensor
+   Azone Academy • Appaji Patil */
+
+const int IR_PIN     = 2;
+const int LED_PIN    = 8;
+const int BUZZER_PIN = 9;
+
+void setup() {
+  pinMode(IR_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  Serial.begin(9600);
+  Serial.println("Tilt Alarm तयार...");
+}
+
+void loop() {
+  int state = digitalRead(IR_PIN);
+  // सरळ असताना भिंत दिसते -> LOW
+  // कलल्यावर भिंत नाही -> HIGH (झुकाव!)
+
+  if (state == HIGH) {
+    digitalWrite(LED_PIN, HIGH);
+    tone(BUZZER_PIN, 1000);    // 1 kHz बीप
+    Serial.println("⚠ झुकले!");
+  } else {
+    digitalWrite(LED_PIN, LOW);
+    noTone(BUZZER_PIN);
+    Serial.println("✓ स्थिर");
+  }
+  delay(100);
+}</pre>
+      </section>
+
+      <section id="explain">
+        <h2>७. कोडचे विश्लेषण</h2>
+        <table class="syntax-table">
+          <thead><tr><th>ओळ</th><th>स्पष्टीकरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>const int IR_PIN = 2;</code></td><td>स्थिर पिन क्रमांक — नंतर बदलल्यास सोपे.</td></tr>
+            <tr><td><code>pinMode(IR_PIN, INPUT);</code></td><td>IR पिन = इनपुट. सेन्सरचे आउटपुट इथे येते.</td></tr>
+            <tr><td><code>digitalRead(IR_PIN)</code></td><td>HIGH (1) किंवा LOW (0) मूल्य वाचते.</td></tr>
+            <tr><td><code>tone(BUZZER_PIN, 1000);</code></td><td>१ kHz वारंवारतेचा बीप वाजवते. <code>noTone()</code> ने थांबवा.</td></tr>
+            <tr><td><code>delay(100);</code></td><td>१०० ms = सेकंदाला १० वेळा तपासणी (10 Hz polling).</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout warn">
+          <strong>HIGH/LOW उलटे का?</strong>
+          IR sensor मध्ये "Active Low" लॉजिक: <em>अडथळा असेल = LOW, मोकळी जागा = HIGH</em>.
+          म्हणून सरळ स्थितीत समोर भिंत असेल → LOW. कलले की भिंत निसटली → HIGH = झुकाव.
+        </div>
+      </section>
+
+      <section id="sim">
+        <h2>८. हँड्स-ऑन सिम्युलेशन</h2>
+        <p>‘अंतर’ स्लायडर ने सेन्सर आणि भिंत यांतील अंतर बदला (कलल्यावर ते वाढते). थ्रेशोल्ड कमी-जास्त करा.</p>
+
+        <div class="lab" id="lab-tilt">
+          <div class="lab-head">
+            <h4>लॅब १६.१ — Tilt Alarm</h4>
+            <span class="lab-badge">सिम्युलेशन</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+                  <div class="led" data-name="led" style="width:46px;height:46px;"></div>
+                  <div class="text-center mt-2" style="font-weight:600;color:var(--accent);" class="out-status"></div>
+                  <div style="font-size:34px;" class="out-buzz">—</div>
+                  <div class="text-center out-status"></div>
+                </div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>अंतर (cm)</label>
+                  <input type="range" data-name="dist" min="0" max="30" value="5" />
+                  <span class="val" data-for="dist">5</span>
+                </div>
+                <div class="row">
+                  <label>थ्रेशोल्ड (cm)</label>
+                  <input type="range" data-name="th" min="2" max="20" value="10" />
+                  <span class="val" data-for="th">10</span>
+                </div>
+                <div class="pin-state">
+                  <div>IR (D2)</div><div data-pin="IR"></div>
+                  <div>LED (D8)</div><div data-pin="LED"></div>
+                  <div>Buzzer (D9)</div><div data-pin="Buzzer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>९. समस्यानिवारण (Troubleshooting)</h2>
+        <table class="syntax-table">
+          <thead><tr><th>समस्या</th><th>कारण</th><th>उपाय</th></tr></thead>
+          <tbody>
+            <tr><td>LED सतत चालू</td><td>सेन्सर समोर भिंत नाही</td><td>सरळ स्थितीत भिंत 5–10 cm वर ठेवा.</td></tr>
+            <tr><td>Buzzer आवाजच नाही</td><td>Active vs Passive फरक</td><td>Active असेल तर <code>digitalWrite(HIGH)</code> पुरेसे.</td></tr>
+            <tr><td>थोडासा कोन तरीही अलार्म</td><td>Sensor पोटेन्शिओमीटर खूप संवेदनशील</td><td>स्क्रू ड्रायव्हरने तो थोडा कमी करा.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="extend">
+        <h2>१०. अधिक करा</h2>
+        <ul>
+          <li>SMS notification — SIM800L मॉड्यूल जोडून, झुकाव होताच फोनला SMS पाठवा.</li>
+          <li>दोन IR sensors वापरून <em>उजवीकडे की डावीकडे झुकले</em> ओळखा.</li>
+          <li>१० सेकंदात ३ झुकाव झाले तरच अलार्म — खोटे अलार्म टाळण्यासाठी.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>११. चाचणी</h2>
+        <div class="quiz" id="quiz-8">
+          <div class="q" data-answer="b" data-answer-text="ब. अडथळा असल्यास LOW, नसल्यास HIGH">
+            <p>१) IR Obstacle Sensor चा आउटपुट कसा वर्तन करतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. नेहमी HIGH</label>
+              <label><input type="radio" name="q1" value="b" /> ब. अडथळा असल्यास LOW, नसल्यास HIGH</label>
+              <label><input type="radio" name="q1" value="c" /> क. 0 ते 1023 अ‍ॅनालॉग</label>
+              <label><input type="radio" name="q1" value="d" /> ड. कोणतेही मूल्य देत नाही</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. tone(pin, freq)">
+            <p>२) Buzzer ला विशिष्ट वारंवारता द्यायला कोणते फंक्शन?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. analogWrite</label>
+              <label><input type="radio" name="q2" value="b" /> ब. digitalWrite</label>
+              <label><input type="radio" name="q2" value="c" /> क. tone(pin, freq)</label>
+              <label><input type="radio" name="q2" value="d" /> ड. play()</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="d" data-answer-text="ड. वरील सर्व">
+            <p>३) हा अलार्म कुठे वापरता येईल?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. तिजोरीचा झुकाव अलार्म</label>
+              <label><input type="radio" name="q3" value="b" /> ब. मोटारसायकल कलल्यावर सूचना</label>
+              <label><input type="radio" name="q3" value="c" /> क. घरगुती शोपीस पडण्यापासून सतर्कता</label>
+              <label><input type="radio" name="q3" value="d" /> ड. वरील सर्व</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-8')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch08')">✓ प्रकल्प १ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter07.html"><small>← मागे</small>धडा ७: Arduino</a>
+        <a href="chapter09.html"><small>पुढे →</small>प्रकल्प १७: Light Controlled Machine</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initTiltObstacleLab("lab-tilt"));</script>
+</body>
+</html>

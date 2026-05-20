@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प १९: Line Follower Robot — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">मूळ कल्पना</a></li>
+        <li><a href="#truth">तर्क-तक्ता (Truth Table)</a></li>
+        <li><a href="#parts">साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#circuit">सर्किट आकृती</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प १९: Line Follower Robot</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★★★ मध्यम-कठीण</div>
+
+      <section id="goal">
+        <h2>१. ध्येय</h2>
+        <p>
+          एका पांढऱ्या फरशीवर काळ्या टेपची रेषा काढा. रोबो ती रेषा स्वतःहून ओळखून त्यावरून सरळ चालेल —
+          हा "रोबोटिक्सचा Hello World" आहे आणि बहुतेक स्पर्धांचा (Robowars, TechFest) पहिला event असतो.
+        </p>
+      </section>
+
+      <section id="concept">
+        <h2>२. मूळ कल्पना</h2>
+        <p>
+          रोबोच्या तळाला (खाली) दोन IR sensors — डावा आणि उजवा. काळी टेप IR शोषून घेते (no reflection = HIGH); पांढरी फरशी परावर्तन करते (LOW).
+        </p>
+        <p>दोन्ही सेन्सर्स पांढऱ्यावर असतील = रोबो रेषेच्या मध्यभागी = सरळ चाला. एक सेन्सर काळ्यावर पडला = त्या बाजूला रोबो भरकटला = त्या बाजूला वळा.</p>
+      </section>
+
+      <section id="truth">
+        <h2>३. तर्क-तक्ता (Truth Table)</h2>
+        <table class="syntax-table">
+          <thead><tr><th>डावा IR</th><th>उजवा IR</th><th>स्थिती</th><th>कृती</th></tr></thead>
+          <tbody>
+            <tr><td>0 (पांढरे)</td><td>0 (पांढरे)</td><td>रेषेच्या मध्यभागी</td><td>दोन्ही मोटर पुढे — सरळ</td></tr>
+            <tr><td>1 (काळे)</td><td>0 (पांढरे)</td><td>डावीकडे भरकटला</td><td>डावी मोटर थांब, उजवी पुढे — डावीकडे वळ</td></tr>
+            <tr><td>0 (पांढरे)</td><td>1 (काळे)</td><td>उजवीकडे भरकटला</td><td>डावी पुढे, उजवी थांब — उजवीकडे वळ</td></tr>
+            <tr><td>1 (काळे)</td><td>1 (काळे)</td><td>क्रॉसिंग / लाइन संपली</td><td>थांब (किंवा सरळ ठेव)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="parts">
+        <h2>४. साहित्य</h2>
+        <ul>
+          <li>Arduino UNO</li>
+          <li>२-व्हील रोबो चेसिस + 2 BO गिअर मोटर्स</li>
+          <li>L293D मोटर ड्रायव्हर IC</li>
+          <li>IR Obstacle/Line sensor × २</li>
+          <li>4 × AA बॅटरी पॅक (6V)</li>
+          <li>काळी इलेक्ट्रिकल टेप (२० mm रुंदी) — पांढऱ्या ट्रॅकसाठी</li>
+        </ul>
+      </section>
+
+      <section id="pins">
+        <h2>५. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>पिन</th><th>Arduino</th></tr></thead>
+          <tbody>
+            <tr><td>डावा IR</td><td>OUT</td><td><code>D2</code></td></tr>
+            <tr><td>उजवा IR</td><td>OUT</td><td><code>D4</code></td></tr>
+            <tr><td>L293D डावी मोटर</td><td>IN1, IN2</td><td><code>D5, D6</code></td></tr>
+            <tr><td>L293D उजवी मोटर</td><td>IN3, IN4</td><td><code>D9, D10</code></td></tr>
+            <tr><td>L293D Enables</td><td>EN1, EN2</td><td><code>D3, D11</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="circuit">
+        <h2>६. सर्किट आकृती (साधी)</h2>
+        <pre class="code-block">             [रोबो खालून पाहता]
+
+         ┌───────────────┐
+   D2 ←──┤ डावा IR    ●  │ 
+         │               │
+   D4 ←──┤ उजवा IR    ●  │
+         └───────────────┘
+             |       |
+        डावी मोटर  उजवी मोटर
+        (L293D OUT1/2)  (L293D OUT3/4)</pre>
+      </section>
+
+      <section id="code">
+        <h2>७. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प १९ — Line Follower Robot
+   Azone Academy • Appaji Patil */
+
+const int LEFT_IR  = 2;
+const int RIGHT_IR = 4;
+const int EN1 = 3, IN1 = 5, IN2 = 6;     // डावी मोटर
+const int EN2 = 11, IN3 = 9, IN4 = 10;   // उजवी मोटर
+const int SPEED = 170;
+
+void setMotors(int l1, int l2, int r1, int r2) {
+  digitalWrite(IN1, l1); digitalWrite(IN2, l2);
+  digitalWrite(IN3, r1); digitalWrite(IN4, r2);
+}
+
+void setup() {
+  pinMode(LEFT_IR, INPUT); pinMode(RIGHT_IR, INPUT);
+  int outs[] = {EN1, IN1, IN2, EN2, IN3, IN4};
+  for (int p : outs) pinMode(p, OUTPUT);
+  analogWrite(EN1, SPEED);
+  analogWrite(EN2, SPEED);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int L = digitalRead(LEFT_IR);   // 1 = काळ्यावर
+  int R = digitalRead(RIGHT_IR);
+
+  if (L == 0 && R == 0) {              // सरळ
+    setMotors(HIGH, LOW, HIGH, LOW);
+    Serial.println("↑ सरळ");
+  } else if (L == 1 && R == 0) {       // डावीकडे वळ
+    setMotors(LOW, LOW, HIGH, LOW);
+    Serial.println("← डावीकडे");
+  } else if (L == 0 && R == 1) {       // उजवीकडे वळ
+    setMotors(HIGH, LOW, LOW, LOW);
+    Serial.println("→ उजवीकडे");
+  } else {                              // क्रॉसिंग / दोन्ही काळे
+    setMotors(LOW, LOW, LOW, LOW);
+    Serial.println("⏹ थांब");
+  }
+}</pre>
+      </section>
+
+      <section id="sim">
+        <h2>८. हँड्स-ऑन सिम्युलेशन</h2>
+        <p>डावा/उजवा सेन्सर "काळ्यावर" चेकबॉक्सने टॉगल करा. truth-table नुसार रोबोची प्रतिक्रिया पाहा.</p>
+
+        <div class="lab" id="lab-line">
+          <div class="lab-head"><h4>लॅब १९.१ — Line Follower</h4><span class="lab-badge">सिम्युलेशन</span></div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div style="font-size:64px;">🤖</div>
+                <div class="out-status mt-2" style="font-weight:600;color:var(--accent);"></div>
+              </div>
+              <div class="controls">
+                <h5>सेन्सर इनपुट</h5>
+                <div class="row"><label>डावा IR काळ्यावर</label><input type="checkbox" data-name="left" /></div>
+                <div class="row"><label>उजवा IR काळ्यावर</label><input type="checkbox" data-name="right" /></div>
+                <div class="pin-state">
+                  <div>L sensor (D2)</div><div data-pin="L sensor"></div>
+                  <div>R sensor (D4)</div><div data-pin="R sensor"></div>
+                  <div>L-motor</div><div data-pin="Left motor"></div>
+                  <div>R-motor</div><div data-pin="Right motor"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>९. समस्यानिवारण</h2>
+        <ul>
+          <li>रोबो रेषा सोडतो — दोन सेन्सर्समधले अंतर रेषेच्या रुंदीइतकेच ठेवा.</li>
+          <li>थोडासाच वळ हवा पण रोबो पूर्ण फिरतो — मोटर वेग कमी करा (SPEED 120 करा).</li>
+          <li>एक मोटर वेगवान — मोटर्सच्या वेगांत स्वाभाविक फरक. कोडमध्ये दोन वेगळे SPEED वापरा.</li>
+        </ul>
+      </section>
+
+      <section id="extend">
+        <h2>१०. अधिक करा</h2>
+        <ul>
+          <li><strong>PID controller</strong> — गुळगुळीत वळण, उच्च गती; तीन analog IR sensors वापरून.</li>
+          <li>५ sensor array — खूप अचूक follow.</li>
+          <li>Maze runner — डाव्या-उजव्या क्रॉसवर निर्णय घेणे (left-hand rule).</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>११. चाचणी</h2>
+        <div class="quiz" id="quiz-11">
+          <div class="q" data-answer="c" data-answer-text="क. IR शोषून घेतो — परावर्तन कमी → आउटपुट 1">
+            <p>१) काळी टेप IR वर कशी प्रतिक्रिया देते?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. IR प्रकाश तयार करते</label>
+              <label><input type="radio" name="q1" value="b" /> ब. IR वाढवते</label>
+              <label><input type="radio" name="q1" value="c" /> क. IR शोषून घेतो — परावर्तन कमी → आउटपुट 1</label>
+              <label><input type="radio" name="q1" value="d" /> ड. IR ला उलटवते</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="b" data-answer-text="ब. डावी मोटर थांब, उजवी पुढे — डावीकडे वळ">
+            <p>२) डावा IR काळ्यावर, उजवा पांढऱ्यावर असेल तर रोबोने काय करावे?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. सरळ चाला</label>
+              <label><input type="radio" name="q2" value="b" /> ब. डावी मोटर थांब, उजवी पुढे — डावीकडे वळ</label>
+              <label><input type="radio" name="q2" value="c" /> क. थांब</label>
+              <label><input type="radio" name="q2" value="d" /> ड. मागे चाला</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="d" data-answer-text="ड. दोन्ही सेन्सर्स काळ्यावर म्हणजे क्रॉसिंग किंवा लाइन संपली">
+            <p>३) दोन्ही IR HIGH (काळ्यावर) झाले — काय अर्थ?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. रोबो हवेत आहे</label>
+              <label><input type="radio" name="q3" value="b" /> ब. सर्किट तुटले</label>
+              <label><input type="radio" name="q3" value="c" /> क. रोबो पडला</label>
+              <label><input type="radio" name="q3" value="d" /> ड. दोन्ही सेन्सर्स काळ्यावर — क्रॉसिंग / लाइन संपली</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-11')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch11')">✓ प्रकल्प ४ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter10.html"><small>← मागे</small>प्रकल्प १८</a>
+        <a href="chapter12.html"><small>पुढे →</small>प्रकल्प २०: Touch Me Not</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initLineFollowerLab("lab-line"));</script>
+</body>
+</html>

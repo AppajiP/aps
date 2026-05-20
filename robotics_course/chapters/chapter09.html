@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प १७: Light Controlled Machine — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">मूळ कल्पना</a></li>
+        <li><a href="#parts">साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#circuit">सर्किट आकृती</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#explain">कोडचे विश्लेषण</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प १७: Light Controlled Machine</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★★☆ मध्यम</div>
+
+      <section id="goal">
+        <h2>१. ध्येय</h2>
+        <p>
+          वातावरणातील <strong>उजेड</strong> मोजून, अंधार पडताच <strong>यंत्र (पंखा / दिवा)</strong> स्वतःहून चालू करायचे
+          आणि उजेड येताच बंद. — एक छोटा automatic on/off स्विच.
+        </p>
+        <div class="callout tip">
+          <strong>उपयोग:</strong> स्वयंचलित night lamp, दूधाच्या भांड्यावर झाकण उघडल्यावर पंखा/मोटर सुरू, गोदामात light-trigger conveyor.
+        </div>
+      </section>
+
+      <section id="concept">
+        <h2>२. मूळ कल्पना</h2>
+        <p>
+          <strong>LDR</strong> चा रेझिस्टन्स उजेडाच्या तीव्रतेनुसार बदलतो — अंधारात जास्त (~१ MΩ), उजेडात कमी (~१ kΩ). LDR ला 10 kΩ रेझिस्टरसह व्होल्टेज डिव्हायडर बनवून A0 शी जोडतो. analogRead(A0) ची संख्या एक थ्रेशोल्डपेक्षा कमी झाली = "अंधार" = आउटपुट चालू.
+        </p>
+      </section>
+
+      <section id="parts">
+        <h2>३. साहित्य</h2>
+        <ul>
+          <li>Arduino UNO</li>
+          <li>LDR + 10 kΩ resistor</li>
+          <li>5V Relay मॉड्यूल (किंवा NPN ट्रांझिस्टर BC547 + dual ओव्हर रिले)</li>
+          <li>लोड (5V DC fan किंवा LED ‘बल्ब’)</li>
+          <li>ब्रेडबोर्ड + जम्पर वायर्स</li>
+        </ul>
+        <div class="callout danger">
+          <strong>सुरक्षा</strong>
+          230V मेन्ससह कधीही प्रयोग करू नका. सरावासाठी 5V DC fan किंवा एक मोठा LED वापरा.
+        </div>
+      </section>
+
+      <section id="pins">
+        <h2>४. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>घटकाचा पिन</th><th>Arduino पिन</th></tr></thead>
+          <tbody>
+            <tr><td>LDR</td><td>एक टोक → 5V; दुसरे → A0 आणि 10 kΩ → GND</td><td><code>A0</code></td></tr>
+            <tr><td>Relay मॉड्यूल</td><td>VCC</td><td>5V</td></tr>
+            <tr><td>Relay मॉड्यूल</td><td>GND</td><td>GND</td></tr>
+            <tr><td>Relay मॉड्यूल</td><td>IN</td><td><code>D7</code></td></tr>
+            <tr><td>LED indicator</td><td>+ (220Ω)</td><td><code>D13</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="circuit">
+        <h2>५. सर्किट आकृती</h2>
+        <pre class="code-block">5V ── LDR ──┬── A0
+            │
+          10 kΩ
+            │
+          GND
+
+D7 ── Relay IN ─┐
+                ├─→ 5V DC fan / लोड चालू-बंद
+D13 ── [220Ω] ──▶|── GND   (स्थिती LED)</pre>
+      </section>
+
+      <section id="code">
+        <h2>६. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प १७ — Light Controlled Machine
+   Azone Academy • Appaji Patil */
+
+const int LDR_PIN   = A0;
+const int RELAY_PIN = 7;
+const int LED_PIN   = 13;
+const int THRESHOLD = 400;   // ह्या खाली = अंधार
+const bool DARK_ON  = true;  // true = अंधारात लोड चालू
+
+void setup() {
+  pinMode(RELAY_PIN, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int light = analogRead(LDR_PIN);   // 0 – 1023
+  Serial.print("उजेड: ");
+  Serial.println(light);
+
+  bool dark = (light < THRESHOLD);
+  bool turnOn = DARK_ON ? dark : !dark;
+
+  digitalWrite(RELAY_PIN, turnOn ? HIGH : LOW);
+  digitalWrite(LED_PIN,   turnOn ? HIGH : LOW);
+  delay(200);
+}</pre>
+      </section>
+
+      <section id="explain">
+        <h2>७. कोडचे विश्लेषण</h2>
+        <ul>
+          <li><code>analogRead(A0)</code> — व्होल्टेज डिव्हायडरचे मूल्य ० ते १०२३ मध्ये मिळते. अंधारात कमी, उजेडात जास्त (आपल्या सर्किट प्रमाणे).</li>
+          <li><code>THRESHOLD</code> — ही सीमा. Serial Monitor मधून आपल्या खोलीचे "अंधार-उजेड" मूल्ये पाहून ती ठरवा.</li>
+          <li><code>DARK_ON</code> — true = अंधारात चालू (night lamp). false = उजेडात चालू (दिवसा कुलर).</li>
+          <li><code>delay(200)</code> — दर ०.२ सेकंदाला तपासणी. खूप वारंवार स्विच ऑफ-ऑन होणे टाळते.</li>
+        </ul>
+      </section>
+
+      <section id="sim">
+        <h2>८. हँड्स-ऑन सिम्युलेशन</h2>
+        <div class="lab" id="lab-light">
+          <div class="lab-head">
+            <h4>लॅब १७.१ — Light Controlled Machine</h4>
+            <span class="lab-badge">सिम्युलेशन</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+                  <div class="led" data-name="led" style="width:46px;height:46px;"></div>
+                  <div class="fan">⚙</div>
+                  <div class="out-status text-center mt-2" style="font-weight:600;color:var(--accent);"></div>
+                </div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>उजेड (LDR)</label>
+                  <input type="range" data-name="light" min="0" max="100" value="80" />
+                  <span class="val" data-for="light">80</span>
+                </div>
+                <div class="row">
+                  <label>थ्रेशोल्ड</label>
+                  <input type="range" data-name="th" min="0" max="100" value="40" />
+                  <span class="val" data-for="th">40</span>
+                </div>
+                <div class="row">
+                  <label>मोड</label>
+                  <select data-name="mode">
+                    <option value="dark-on" selected>अंधारात चालू</option>
+                    <option value="light-on">उजेडात चालू</option>
+                  </select>
+                </div>
+                <div class="pin-state">
+                  <div>LDR (A0)</div><div data-pin="LDR"></div>
+                  <div>Relay (D7)</div><div data-pin="Relay"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>९. समस्यानिवारण</h2>
+        <table class="syntax-table">
+          <thead><tr><th>समस्या</th><th>उपाय</th></tr></thead>
+          <tbody>
+            <tr><td>Relay सतत क्लिक</td><td>हिस्टेरेसिस लावा — चालू थ्रेशोल्ड वेगळा, बंद थ्रेशोल्ड वेगळा.</td></tr>
+            <tr><td>analogRead नेहमी 0 किंवा 1023</td><td>LDR आणि 10 kΩ रिव्हर्स झाले आहेत — जोडणी तपासा.</td></tr>
+            <tr><td>उजेडात पण लोड चालू</td><td>THRESHOLD खूप जास्त — कमी करा.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="extend">
+        <h2>१०. अधिक करा</h2>
+        <ul>
+          <li>दोन थ्रेशोल्ड — चालू ३५० च्या खाली, बंद ५०० च्या वर (हिस्टेरेसिस).</li>
+          <li>PWM ने आपोआप dim/bright — अंधार जास्त = LED अधिक उजळ.</li>
+          <li>Serial Monitor मध्ये दिवस/रात्र मोजणी ठेवा.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>११. चाचणी</h2>
+        <div class="quiz" id="quiz-9">
+          <div class="q" data-answer="b" data-answer-text="ब. analogRead(A0)">
+            <p>१) LDR चे मूल्य Arduino मध्ये कसे वाचाल?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. digitalRead(7)</label>
+              <label><input type="radio" name="q1" value="b" /> ब. analogRead(A0)</label>
+              <label><input type="radio" name="q1" value="c" /> क. tone(A0)</label>
+              <label><input type="radio" name="q1" value="d" /> ड. delay(A0)</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. व्होल्टेज डिव्हायडर तयार करण्यासाठी">
+            <p>२) LDR शेजारी 10 kΩ रेझिस्टर का जोडतात?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. LDR ला सुरक्षित ठेवण्यासाठी</label>
+              <label><input type="radio" name="q2" value="b" /> ब. विद्युत वाचवण्यासाठी</label>
+              <label><input type="radio" name="q2" value="c" /> क. व्होल्टेज डिव्हायडर तयार करण्यासाठी (analogRead साठी)</label>
+              <label><input type="radio" name="q2" value="d" /> ड. केवळ अलंकारासाठी</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="d" data-answer-text="ड. Relay मॉड्यूलमार्गे">
+            <p>३) Arduino ने 230V चा बल्ब कसा नियंत्रित करता येतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. थेट D7 ला बल्ब जोडून</label>
+              <label><input type="radio" name="q3" value="b" /> ब. USB मार्फत</label>
+              <label><input type="radio" name="q3" value="c" /> क. analogWrite ने</label>
+              <label><input type="radio" name="q3" value="d" /> ड. Relay मॉड्यूलमार्गे (सुरक्षित स्विचिंग)</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-9')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch09')">✓ प्रकल्प २ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter08.html"><small>← मागे</small>प्रकल्प १६</a>
+        <a href="chapter10.html"><small>पुढे →</small>प्रकल्प १८: Cliff Avoiding Robot</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initLightMachineLab("lab-light"));</script>
+</body>
+</html>
