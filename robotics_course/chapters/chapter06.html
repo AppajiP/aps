@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ६: अ‍ॅक्ट्युएटर्स — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#what">अ‍ॅक्ट्युएटर म्हणजे काय?</a></li>
+        <li><a href="#led">LED + Buzzer</a></li>
+        <li><a href="#dcmotor">DC मोटर</a></li>
+        <li><a href="#l293d">L293D मोटर ड्रायव्हर</a></li>
+        <li><a href="#pwm">PWM — वेग नियंत्रण</a></li>
+        <li><a href="#servo">Servo मोटर</a></li>
+        <li><a href="#relay">Relay</a></li>
+        <li><a href="#lab">लॅब: मोटर नियंत्रण</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ६: अ‍ॅक्ट्युएटर्स</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil</div>
+
+      <section id="what">
+        <h2>१. अ‍ॅक्ट्युएटर म्हणजे काय?</h2>
+        <p>
+          <strong>अ‍ॅक्ट्युएटर</strong> म्हणजे रोबोचा <em>आउटपुट</em> घटक. प्रोसेसरने ठरवलेला निर्णय भौतिक कृतीत बदलणारे साधन.
+        </p>
+        <p>उदाहरणे:</p>
+        <ul>
+          <li>हालचाल — DC motor, Servo motor, Stepper motor</li>
+          <li>उजेड — LED, बल्ब</li>
+          <li>आवाज — Buzzer, स्पीकर</li>
+          <li>स्विचिंग — Relay (मेन्स ऍप्लायन्ससाठी)</li>
+        </ul>
+      </section>
+
+      <section id="led">
+        <h2>२. LED आणि Buzzer</h2>
+        <p>दोघेही Arduino च्या डिजिटल पिनला डायरेक्ट जोडता येतात — फक्त ⚠ <strong>रेझिस्टर लावा</strong>!</p>
+
+        <pre class="code-block">int LED = 13;
+void setup() { pinMode(LED, OUTPUT); }
+void loop() {
+  digitalWrite(LED, HIGH);  // LED चालू
+  delay(500);
+  digitalWrite(LED, LOW);   // LED बंद
+  delay(500);
+}</pre>
+
+        <p>Buzzer सुद्धा अगदी हाच कोड वापरून बीप-बीप करेल.</p>
+      </section>
+
+      <section id="dcmotor">
+        <h2>३. DC मोटर</h2>
+        <p>
+          DC मोटरला + आणि − व्होल्टेज लावले की ती फिरते. ध्रुव उलटे केले की दुसऱ्या दिशेने फिरते.
+          पण <strong>Arduino डायरेक्ट मोटर चालवू शकत नाही</strong> — कारण मोटर ला जास्त प्रवाह (~250 mA – 1 A) हवा असतो, तर Arduino च्या पिनला फक्त 20 mA मिळतो.
+        </p>
+        <div class="callout danger">
+          <strong>लक्षात ठेवा</strong>
+          Arduino पिनला थेट मोटर लावल्यास Arduino जळतो. मध्ये <strong>मोटर ड्रायव्हर</strong> लागतो.
+        </div>
+      </section>
+
+      <section id="l293d">
+        <h2>४. L293D मोटर ड्रायव्हर</h2>
+        <p>दोन DC मोटर्स पुढे/मागे + वेगाने नियंत्रित करण्यासाठी आदर्श IC. १६ पिन्स.</p>
+
+        <table class="syntax-table">
+          <thead><tr><th>पिन</th><th>कार्य</th></tr></thead>
+          <tbody>
+            <tr><td>1 (EN1)</td><td>डाव्या मोटरचा Enable (PWM साठी)</td></tr>
+            <tr><td>2, 7 (IN1, IN2)</td><td>डाव्या मोटरची दिशा</td></tr>
+            <tr><td>3, 6</td><td>डाव्या मोटरच्या + व − तारा</td></tr>
+            <tr><td>4, 5, 12, 13</td><td>GND</td></tr>
+            <tr><td>8 (VCC2)</td><td>मोटर पुरवठा (6 – 9V)</td></tr>
+            <tr><td>9 (EN2)</td><td>उजव्या मोटरचा Enable</td></tr>
+            <tr><td>10, 15 (IN3, IN4)</td><td>उजव्या मोटरची दिशा</td></tr>
+            <tr><td>11, 14</td><td>उजव्या मोटरच्या तारा</td></tr>
+            <tr><td>16 (VCC1)</td><td>5V (Arduino कडून — IC लॉजिक)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>दिशा-तक्ता</h3>
+        <table class="syntax-table">
+          <thead><tr><th>IN1</th><th>IN2</th><th>मोटर</th></tr></thead>
+          <tbody>
+            <tr><td>HIGH</td><td>LOW</td><td>पुढे →</td></tr>
+            <tr><td>LOW</td><td>HIGH</td><td>← मागे</td></tr>
+            <tr><td>LOW</td><td>LOW</td><td>थांब</td></tr>
+            <tr><td>HIGH</td><td>HIGH</td><td>थांब (ब्रेक)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="pwm">
+        <h2>५. PWM — Pulse Width Modulation</h2>
+        <p>
+          मोटरचा वेग बदलण्यासाठी आपण <strong>analogWrite(pin, value)</strong> वापरतो. <code class="inline">value</code> 0 ते 255 दरम्यान असते.
+          ० = बंद, १२७ = अर्धा वेग, २५५ = पूर्ण वेग.
+        </p>
+        <p>
+          प्रत्यक्षात Arduino पिन HIGH आणि LOW दरम्यान वेगाने स्विच करतो — HIGH चे ‘रुंदी’ बदलून सरासरी व्होल्टेज बदलते.
+        </p>
+
+        <pre class="code-block">analogWrite(5, 0);    // बंद
+analogWrite(5, 128);  // ~50% वेग
+analogWrite(5, 255);  // पूर्ण वेग</pre>
+
+        <p>Arduino UNO वर PWM पिन्स: <code class="inline">3, 5, 6, 9, 10, 11</code> (तरंगिकेच्या ~ चिन्हाने ओळखले जातात).</p>
+      </section>
+
+      <section id="servo">
+        <h2>६. Servo मोटर</h2>
+        <p>0° ते 180° ह्या कोनात अचूक फिरते. ३ तारा: VCC (5V), GND, Signal (PWM).</p>
+        <pre class="code-block">#include &lt;Servo.h&gt;
+Servo myServo;
+
+void setup() { myServo.attach(9); }
+void loop() {
+  myServo.write(0);    delay(1000);  // 0 अंश
+  myServo.write(90);   delay(1000);  // 90 अंश
+  myServo.write(180);  delay(1000);  // 180 अंश
+}</pre>
+      </section>
+
+      <section id="relay">
+        <h2>७. Relay — मेन्स ऍप्लायन्स नियंत्रण</h2>
+        <p>
+          Arduino 5V सिग्नल देऊन Relay च्या आत असलेला विद्युतचुंबक चालू करतो, ज्यामुळे 230V चे स्विच जोडले जाते. मग आपण घरगुती दिवा, पंखा, मोटर — काहीही नियंत्रित करू शकतो.
+        </p>
+        <div class="callout danger">
+          <strong>सुरक्षा</strong>
+          230V सोबत प्रयोग करताना तज्ज्ञ शिक्षकाच्या उपस्थितीतच करा. कोर्समध्ये आपण 5V LED किंवा 5V DC fan ने सिम्युलेट करू.
+        </div>
+      </section>
+
+      <section id="lab">
+        <h2>८. हँड्स-ऑन लॅब: DC मोटर नियंत्रण</h2>
+        <p>PWM आणि दिशा बदला — पंखा (मोटर) कसा प्रतिसाद देतो ते पाहा.</p>
+
+        <div class="lab" id="lab-actuator">
+          <div class="lab-head">
+            <h4>लॅब ६.१ — मोटर सिम्युलेटर</h4>
+            <span class="lab-badge">सिम्युलेशन</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div class="fan">⚙</div>
+                <div class="text-center mt-2" style="font-size:13px;color:var(--muted);">
+                  गती: <b class="out-speed-mark">—</b>
+                </div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>PWM मूल्य (0–255)</label>
+                  <input type="range" data-name="pwm" min="0" max="100" value="0" />
+                  <span class="val" data-for="pwm">0</span>
+                </div>
+                <div class="row">
+                  <label>दिशा</label>
+                  <select data-name="dir">
+                    <option value="stop">थांब</option>
+                    <option value="fwd" selected>पुढे →</option>
+                    <option value="rev">← मागे</option>
+                  </select>
+                </div>
+                <div class="pin-state">
+                  <div>analogWrite</div><div><b><span class="out-pwm">0</span></b></div>
+                  <div>दिशा</div><div><b><span class="out-dir">—</span></b></div>
+                </div>
+                <pre class="code-block" style="margin-top:10px;font-size:12px;">// L293D पिन सेट
+digitalWrite(IN1, HIGH);
+digitalWrite(IN2, LOW);
+analogWrite(EN1, pwm); // 0–255</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li>PWM ५० असेल तर सरासरी व्होल्टेज किती? (5V बॅटरीसाठी)</li>
+          <li>IN1=HIGH, IN2=HIGH म्हणजे काय?</li>
+          <li>L293D ला किती मोटर एकाच वेळी चालवता येतात?</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>९. चाचणी</h2>
+        <div class="quiz" id="quiz-6">
+          <div class="q" data-answer="c" data-answer-text="क. मोटर ड्रायव्हर (L293D)">
+            <p>१) Arduino पिनवर थेट DC मोटर का जोडत नाही?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. कारण मोटरला AC लागते</label>
+              <label><input type="radio" name="q1" value="b" /> ब. कारण मोटर खूप लहान असते</label>
+              <label><input type="radio" name="q1" value="c" /> क. कारण Arduino जास्त करंट देऊ शकत नाही — मोटर ड्रायव्हर (L293D) हवा</label>
+              <label><input type="radio" name="q1" value="d" /> ड. कारण मोटर डिजिटल आहे</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="b" data-answer-text="ब. analogWrite()">
+            <p>२) मोटरचा वेग कमी-जास्त करण्यासाठी Arduino चे कोणते फंक्शन?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. digitalWrite()</label>
+              <label><input type="radio" name="q2" value="b" /> ब. analogWrite()</label>
+              <label><input type="radio" name="q2" value="c" /> क. delay()</label>
+              <label><input type="radio" name="q2" value="d" /> ड. Serial.print()</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="d" data-answer-text="ड. ० ते १८० अंशांत फिरणारी मोटर">
+            <p>३) Servo मोटर म्हणजे?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. मोठी DC मोटर</label>
+              <label><input type="radio" name="q3" value="b" /> ब. केवळ १ दिशेने फिरणारी मोटर</label>
+              <label><input type="radio" name="q3" value="c" /> क. AC वर चालणारी मोटर</label>
+              <label><input type="radio" name="q3" value="d" /> ड. ० ते १८० अंशांत अचूक फिरणारी, स्थान-नियंत्रित मोटर</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-6')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>१०. सारांश</h2>
+        <ul>
+          <li>अ‍ॅक्ट्युएटर — रोबोचे आउटपुट साधन (हालचाल, उजेड, आवाज).</li>
+          <li>DC मोटर — L293D ड्रायव्हरसह वापरा.</li>
+          <li>PWM — analogWrite() (0–255) ने मोटर वेग / LED उजळपणा.</li>
+          <li>Servo — 0°–180° कोनात अचूक स्थान.</li>
+          <li>Relay — मेन्स ऍप्लायन्स नियंत्रण (तज्ज्ञ देखरेखीखाली).</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch06')">✓ धडा ६ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter05.html"><small>← मागे</small>धडा ५</a>
+        <a href="chapter07.html"><small>पुढे →</small>धडा ७: Arduino</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initActuatorLab("lab-actuator"));</script>
+</body>
+</html>

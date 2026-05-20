@@ -78,6 +78,7 @@
       const v = getV(), r = getR();
       const i = r > 0 ? (v / r) : 0;
       const p = v * i;
+      setText(root, ".out-v", v + " V");
       setText(root, ".out-i", i.toFixed(3) + " A");
       setText(root, ".out-i-ma", (i * 1000).toFixed(1) + " mA");
       setText(root, ".out-p", p.toFixed(3) + " W");

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा २: रोबोचे प्रकार व उपयोग — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#types">रोबोचे प्रमुख प्रकार</a></li>
+        <li><a href="#industrial">औद्योगिक रोबो</a></li>
+        <li><a href="#mobile">मोबाईल रोबो</a></li>
+        <li><a href="#service">सेवा रोबो</a></li>
+        <li><a href="#india">भारतातील उदाहरणे</a></li>
+        <li><a href="#choose">आपण कोणता बनवू?</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा २: रोबोचे प्रकार व उपयोग</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil</div>
+
+      <section id="types">
+        <h2>१. रोबोचे प्रमुख प्रकार</h2>
+        <p>रोबो विविध आकार, उद्देश आणि वातावरणासाठी बनवले जातात. खाली त्यांचे मुख्य वर्गीकरण:</p>
+
+        <table class="syntax-table">
+          <thead><tr><th>प्रकार</th><th>उदाहरण</th><th>विशेषता</th></tr></thead>
+          <tbody>
+            <tr><td>औद्योगिक रोबो (Industrial)</td><td>कारखान्यातील रोबोटिक आर्म</td><td>जागी स्थिर, खूप टॉर्क, अचूकता</td></tr>
+            <tr><td>मोबाईल रोबो (Mobile)</td><td>Line Follower, Mars Rover</td><td>चाक/पाय; जागा बदलणारे</td></tr>
+            <tr><td>ह्यूमनॉइड (Humanoid)</td><td>ASIMO, Sophia, Optimus</td><td>माणसासारखी रचना</td></tr>
+            <tr><td>सेवा रोबो (Service)</td><td>Roomba, हॉटेल मित्रा</td><td>घर/कार्यालयात मदत</td></tr>
+            <tr><td>हवाई रोबो (Aerial / Drones)</td><td>DJI ड्रोन, कृषी ड्रोन</td><td>आकाशात उड्डाण</td></tr>
+            <tr><td>जलचर रोबो (Underwater)</td><td>ROV — पाण्याखालचे संशोधन</td><td>दबाव-प्रतिकारक</td></tr>
+            <tr><td>वैद्यकीय रोबो</td><td>da Vinci Surgical</td><td>शस्त्रक्रियेसाठी अति-अचूक</td></tr>
+            <tr><td>शैक्षणिक रोबो</td><td>LEGO Mindstorms, Arduino-bot</td><td>शिकण्यासाठी सोपे</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="industrial">
+        <h2>२. औद्योगिक रोबो (Industrial Robot)</h2>
+        <p>हे कारखान्यांत वस्तू उचलणे, वेल्डिंग, पेंटिंग, असेंब्ली अशी कामे करतात.</p>
+        <ul>
+          <li><strong>SCARA रोबो</strong> — मोबाईल/PCB असेंब्लीसाठी</li>
+          <li><strong>6-axis रोबो</strong> — कार उद्योगात वेल्डिंगसाठी</li>
+          <li><strong>Cartesian (XYZ) रोबो</strong> — 3D प्रिंटर, CNC मशीन</li>
+          <li><strong>Cobot (Collaborative Robot)</strong> — माणसासोबत सुरक्षितपणे काम करणारा. उदा. Universal Robots UR5.</li>
+        </ul>
+      </section>
+
+      <section id="mobile">
+        <h2>३. मोबाईल रोबो (Mobile Robot)</h2>
+        <p>हे जागा बदलणारे रोबो आहेत. आपल्या अभ्यासक्रमातील <strong>Line Follower</strong>, <strong>Cliff Avoiding</strong>, <strong>Light Seeking</strong> सर्व मोबाईल रोबो आहेत.</p>
+        <p>चाकांच्या रचनेनुसार प्रकार:</p>
+        <ul>
+          <li><strong>2-wheel differential drive</strong> — दोन चाके पुढे-मागे; तिसरे फ्री व्हील (आपण याच प्रकाराचे रोबो बनवू).</li>
+          <li><strong>4-wheel drive</strong> — कारसारखी रचना; अधिक स्थिर.</li>
+          <li><strong>Tracked (chain) robot</strong> — टँकसारखे चाक; खडतर भूभागासाठी.</li>
+          <li><strong>Legged robot</strong> — Boston Dynamics Spot, BigDog.</li>
+        </ul>
+      </section>
+
+      <section id="service">
+        <h2>४. सेवा रोबो (Service Robot)</h2>
+        <p>घर, हॉटेल, हॉस्पिटल, शाळेत मदत करणारे रोबो:</p>
+        <ul>
+          <li>Roomba — फरशी स्वच्छ करणारा.</li>
+          <li>Pepper / Mitra — रिसेप्शन, स्वागत.</li>
+          <li>हॉस्पिटल-डिलिव्हरी रोबो — औषधे वार्ड पर्यंत पोचवणे.</li>
+          <li>शेती रोबो — झाडांना पाणी, फवारणी.</li>
+        </ul>
+      </section>
+
+      <section id="india">
+        <h2>५. भारतातील रोबो</h2>
+        <table class="syntax-table">
+          <thead><tr><th>रोबो</th><th>विकसक</th><th>कार्य</th></tr></thead>
+          <tbody>
+            <tr><td>Mitra</td><td>Invento Robotics</td><td>हॉटेल, बँक रिसेप्शन</td></tr>
+            <tr><td>Daksh</td><td>DRDO</td><td>बॉम्ब निष्क्रिय करणारा</td></tr>
+            <tr><td>Vyommitra</td><td>ISRO</td><td>Gaganyaan मिशनसाठी ह्यूमनॉइड</td></tr>
+            <tr><td>RoBoHaat</td><td>IIT</td><td>कृषी रोबो — फवारणी, कापणी</td></tr>
+            <tr><td>Manav</td><td>A-SET Training</td><td>३D-प्रिंटेड शैक्षणिक ह्यूमनॉइड</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="choose">
+        <h2>६. आपण कोणता रोबो बनवू?</h2>
+        <p>
+          ह्या अभ्यासक्रमात आपण <strong>मोबाईल आणि साधे सेवा रोबो</strong> बनवू. विशेषतः:
+        </p>
+        <ul>
+          <li><strong>Line Follower</strong> — सर्वात लोकप्रिय शैक्षणिक रोबो.</li>
+          <li><strong>Cliff Avoiding</strong> — टेबलवरून पडत नाही.</li>
+          <li><strong>Light Seeking</strong> — सूर्यफुलासारखा उजेडाकडे जातो.</li>
+          <li><strong>Remote Controlled</strong> — आपण कंट्रोल करू शकतो.</li>
+        </ul>
+        <div class="callout tip">
+          <strong>का हीच निवड?</strong>
+          हे रोबो — Arduino + काही सेन्सर्स + मोटर ड्रायव्हर — ह्या सहज मिळणाऱ्या साधनांत बनतात. खर्च ₹१,५०० – ₹३,००० दरम्यान.
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>७. चाचणी</h2>
+        <div class="quiz" id="quiz-2">
+          <div class="q" data-answer="b" data-answer-text="ब. कारखान्यात वेल्डिंग करणारा रोबोटिक आर्म">
+            <p>१) पुढीलपैकी कोणता औद्योगिक रोबो आहे?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. Roomba</label>
+              <label><input type="radio" name="q1" value="b" /> ब. कारखान्यात वेल्डिंग करणारा रोबोटिक आर्म</label>
+              <label><input type="radio" name="q1" value="c" /> क. DJI ड्रोन</label>
+              <label><input type="radio" name="q1" value="d" /> ड. Line Follower</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. Vyommitra">
+            <p>२) ISRO च्या Gaganyaan मिशनसाठी कोणता रोबो आहे?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. Daksh</label>
+              <label><input type="radio" name="q2" value="b" /> ब. Mitra</label>
+              <label><input type="radio" name="q2" value="c" /> क. Vyommitra</label>
+              <label><input type="radio" name="q2" value="d" /> ड. Sophia</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="a" data-answer-text="अ. मोबाईल रोबो">
+            <p>३) Line Follower रोबो हा कोणत्या प्रकारचा आहे?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. मोबाईल रोबो</label>
+              <label><input type="radio" name="q3" value="b" /> ब. औद्योगिक रोबो</label>
+              <label><input type="radio" name="q3" value="c" /> क. ह्यूमनॉइड रोबो</label>
+              <label><input type="radio" name="q3" value="d" /> ड. हवाई रोबो</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-2')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>८. सारांश</h2>
+        <ul>
+          <li>रोबो — औद्योगिक, मोबाईल, ह्यूमनॉइड, सेवा, हवाई, जलचर, वैद्यकीय इ. विविध प्रकार.</li>
+          <li>आपण मुख्यतः <strong>मोबाईल रोबो</strong> (२-व्हील differential drive) बनवणार.</li>
+          <li>भारतात Daksh, Mitra, Vyommitra असे प्रसिद्ध रोबो आहेत.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch02')">✓ धडा २ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter01.html"><small>← मागे</small>धडा १</a>
+        <a href="chapter03.html"><small>पुढे →</small>धडा ३: विद्युत मूलतत्त्वे</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>
