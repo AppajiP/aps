@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा १: रोबोटिक्सची ओळख — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#intro">रोबो म्हणजे काय?</a></li>
+        <li><a href="#history">थोडा इतिहास</a></li>
+        <li><a href="#parts">रोबोचे ३ मुख्य भाग</a></li>
+        <li><a href="#examples">आजूबाजूचे रोबो</a></li>
+        <li><a href="#laws">असिमॉव्हचे ३ नियम</a></li>
+        <li><a href="#lab">हँड्स-ऑन क्रिया</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा १: रोबोटिक्सची ओळख</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • वाचनवेळ: ~१५ मिनिटे</div>
+
+      <section id="intro">
+        <h2>१. रोबो (Robot) म्हणजे काय?</h2>
+        <p>
+          <strong>रोबो</strong> म्हणजे असे एक यंत्र जे <em>आजूबाजूचा परिसर समजून घेऊ शकते</em>,
+          <em>विचार करू शकते</em> (किंवा कमीतकमी आपण दिलेल्या प्रोग्रामनुसार निर्णय घेते)
+          आणि <em>स्वतः काही कृती करू शकते</em>.
+        </p>
+
+        <div class="callout tip">
+          <strong>सोपी व्याख्या</strong>
+          सेन्सरने माहिती घेणारे, प्रोसेसरने विचार करणारे आणि अ‍ॅक्ट्युएटरने कृती करणारे यंत्र म्हणजे रोबो.
+        </div>
+
+        <p>
+          <strong>रोबोटिक्स (Robotics)</strong> म्हणजे रोबो डिझाईन करणे, बनवणे आणि प्रोग्राम करणे
+          ह्या तीन गोष्टींचे शास्त्र.
+        </p>
+      </section>
+
+      <section id="history">
+        <h2>२. थोडा इतिहास</h2>
+        <table class="syntax-table">
+          <thead><tr><th>वर्ष</th><th>घटना</th></tr></thead>
+          <tbody>
+            <tr><td>१९२१</td><td>Karel Čapek (झेक नाटककार) यांनी पहिल्यांदा "Robota" शब्द वापरला — झेक भाषेत म्हणजे ‘कष्टाचे काम’.</td></tr>
+            <tr><td>१९४२</td><td>Isaac Asimov ने "Robotics" शब्द लोकप्रिय केला आणि रोबोचे ३ नियम मांडले.</td></tr>
+            <tr><td>१९६१</td><td>Unimate — पहिला औद्योगिक रोबो जनरल मोटर्सच्या कारखान्यात बसवला.</td></tr>
+            <tr><td>१९९७</td><td>NASA चा Sojourner रोबो मंगळावर उतरला.</td></tr>
+            <tr><td>आज</td><td>Boston Dynamics चा Spot, Atlas; Tesla Optimus; भारतातील Mitra रोबो — सर्व आपल्यासमोर.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="parts">
+        <h2>३. रोबोचे ३ मुख्य भाग</h2>
+        <p>कोणताही रोबो — एक खेळणी असो वा मंगळावरचा Rover — ह्या ३ भागांवर चालतो:</p>
+
+        <div class="grid cols-3" style="margin:14px 0;">
+          <div class="card">
+            <h3 style="margin-top:0;">👁 इनपुट (Sensors)</h3>
+            <p class="text-muted">परिसरातून माहिती गोळा करतात. उदा. IR (अडथळा), LDR (उजेड), Touch (स्पर्श), Ultrasonic (अंतर).</p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">🧠 प्रोसेसर (Controller)</h3>
+            <p class="text-muted">सेन्सरकडून मिळणारी माहिती तपासून निर्णय घेते. उदा. <em>Arduino</em>, Raspberry Pi.</p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;">💪 आउटपुट (Actuators)</h3>
+            <p class="text-muted">निर्णयानुसार कृती करतात. उदा. DC motor (हालचाल), Servo (कोन), LED, Buzzer, Relay.</p>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <strong>स्मरण-सूत्र: SPA</strong>
+          <strong>S</strong>ense → <strong>P</strong>rocess → <strong>A</strong>ct. प्रत्येक रोबो हे चक्र अब्जावधी वेळा करत असतो.
+        </div>
+      </section>
+
+      <section id="examples">
+        <h2>४. आपल्या आजूबाजूचे रोबो</h2>
+        <table class="syntax-table">
+          <thead><tr><th>उदाहरण</th><th>कुठे?</th><th>कोणते सेन्सर?</th></tr></thead>
+          <tbody>
+            <tr><td>स्वयंचलित दरवाजे</td><td>मॉल, बँक</td><td>PIR (हालचाल)</td></tr>
+            <tr><td>वॉशिंग मशीन</td><td>घर</td><td>वेळ, पाणी पातळी</td></tr>
+            <tr><td>ATM मशीन</td><td>बँक</td><td>कीपॅड, कार्ड रीडर</td></tr>
+            <tr><td>Roomba व्हॅक्यूम</td><td>घर</td><td>IR, टक्कर, बंपर</td></tr>
+            <tr><td>Mars Rover</td><td>मंगळ ग्रह</td><td>कॅमेरा, स्पेक्ट्रोमीटर</td></tr>
+            <tr><td>Auto-pilot विमान</td><td>आकाश</td><td>GPS, gyro, सेन्सर्स</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="laws">
+        <h2>५. असिमॉव्हचे रोबोचे ३ नियम (१९४२)</h2>
+        <ol>
+          <li><strong>नियम १:</strong> रोबो माणसाला इजा करणार नाही, किंवा निष्क्रियतेने माणसाला इजा होऊ देणार नाही.</li>
+          <li><strong>नियम २:</strong> रोबो माणसाने दिलेल्या आज्ञांचे पालन करेल, फक्त त्या नियम १ चे उल्लंघन करत नसतील तरच.</li>
+          <li><strong>नियम ३:</strong> रोबो स्वतःचे संरक्षण करेल, फक्त त्यामुळे नियम १ वा २ चे उल्लंघन होत नसेल तरच.</li>
+        </ol>
+        <div class="callout warn">
+          <strong>आजच्या युगात</strong>
+          हे नियम कथेसाठी होते. पण आज AI रोबो बनवताना <em>नीतिमत्ता (Ethics)</em> आणि <em>सुरक्षितता</em> ह्या मुख्य गोष्टींवर भर असतो.
+        </div>
+      </section>
+
+      <section id="lab">
+        <h2>६. हँड्स-ऑन क्रिया: तुमच्या घरातला रोबो शोधा</h2>
+        <p>
+          खालील तक्ता तुमच्या वहीत बनवा. घरातील किमान ५ "रोबो-सदृश" यंत्रे शोधा आणि त्यांचा सेन्सर–प्रोसेसर–अ‍ॅक्ट्युएटर असे विश्लेषण करा.
+        </p>
+
+        <div class="lab">
+          <div class="lab-head">
+            <h4>लॅब १.१ — रोबो विश्लेषण तक्ता (नमुना)</h4>
+            <span class="lab-badge">वहीतील क्रिया</span>
+          </div>
+          <div class="lab-body">
+            <table class="syntax-table">
+              <thead><tr><th>यंत्र</th><th>सेन्सर</th><th>प्रोसेसर</th><th>अ‍ॅक्ट्युएटर</th></tr></thead>
+              <tbody>
+                <tr><td>Microwave Oven</td><td>कीपॅड, टायमर</td><td>आतील चिप</td><td>हीटर, फिरणारी प्लेट</td></tr>
+                <tr><td>Smart TV</td><td>रिमोट (IR)</td><td>SoC</td><td>स्क्रीन, स्पीकर</td></tr>
+                <tr><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+                <tr><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li>आपण घडवू शकलेला सर्वात पहिला रोबो कोणता असू शकतो? — का?</li>
+          <li>रोबो आणि सामान्य यंत्र (उदा. पंखा) ह्यांत फरक कशात आहे?</li>
+          <li>तुमच्या मनातील एका रोबोचे ३ भाग ओळखा.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>७. चाचणी</h2>
+        <div class="quiz" id="quiz-1">
+          <h4>स्वयं-मूल्यमापन</h4>
+
+          <div class="q" data-answer="b" data-answer-text="ब. सेन्सर, प्रोसेसर आणि अ‍ॅक्ट्युएटर ह्या तीन भागांचे यंत्र">
+            <p>१) रोबोची सर्वात योग्य व्याख्या कोणती?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. फक्त माणसासारखे दिसणारे यंत्र</label>
+              <label><input type="radio" name="q1" value="b" /> ब. सेन्सर, प्रोसेसर आणि अ‍ॅक्ट्युएटर ह्या तीन भागांचे यंत्र</label>
+              <label><input type="radio" name="q1" value="c" /> क. केवळ संगणकाने नियंत्रित खेळणे</label>
+              <label><input type="radio" name="q1" value="d" /> ड. इंटरनेटवर चालणारा app</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. Karel Čapek (१९२१)">
+            <p>२) "Robot" हा शब्द सर्वप्रथम कोणी वापरला?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. Isaac Asimov</label>
+              <label><input type="radio" name="q2" value="b" /> ब. Alan Turing</label>
+              <label><input type="radio" name="q2" value="c" /> क. Karel Čapek (१९२१)</label>
+              <label><input type="radio" name="q2" value="d" /> ड. Nikola Tesla</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="d" data-answer-text="ड. वरील सर्व">
+            <p>३) पुढीलपैकी रोबोचा भाग कोणता?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. सेन्सर (Input)</label>
+              <label><input type="radio" name="q3" value="b" /> ब. प्रोसेसर (Brain)</label>
+              <label><input type="radio" name="q3" value="c" /> क. अ‍ॅक्ट्युएटर (Output)</label>
+              <label><input type="radio" name="q3" value="d" /> ड. वरील सर्व</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-1')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>८. सारांश</h2>
+        <ul>
+          <li>रोबो म्हणजे = सेन्सर + प्रोसेसर + अ‍ॅक्ट्युएटर ह्या तीन भागांचे यंत्र.</li>
+          <li>प्रत्येक रोबो <strong>SPA</strong> (Sense → Process → Act) चक्र वारंवार करत असतो.</li>
+          <li>"Robot" शब्द Karel Čapek (१९२१) ने वापरला; Asimov ने नियम मांडले.</li>
+          <li>आपल्या आसपास Microwave, स्मार्ट TV, ATM सारखे "अर्ध-रोबो" अनेक आहेत.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch01')">✓ धडा १ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="../index.html"><small>← मागे</small>मुख्यपृष्ठ</a>
+        <a href="chapter02.html"><small>पुढे →</small>धडा २: रोबोचे प्रकार</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+</body>
+</html>

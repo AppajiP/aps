@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प २४: Remote Controlled Fan — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">कार्यतत्त्व</a></li>
+        <li><a href="#table">गती-तक्ता</a></li>
+        <li><a href="#parts">साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#final">अंतिम प्रकल्प</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प २४: Remote Controlled Fan</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★★★ मध्यम-कठीण</div>
+
+      <section id="goal">
+        <h2>१. ध्येय</h2>
+        <p>
+          रिमोटच्या बटणाने 5V/12V DC पंख्याचा वेग बदलणे — <strong>OFF / SLOW / MEDIUM / FAST</strong> — PWM वापरून.
+          ह्या अभ्यासक्रमातला हा शेवटचा अधिकृत प्रकल्प आहे, आणि सर्व मागील संकल्पनांचा संगम आहे.
+        </p>
+      </section>
+
+      <section id="concept">
+        <h2>२. कार्यतत्त्व</h2>
+        <p>
+          IR remote कडून मिळणाऱ्या प्रत्येक बटणासाठी आपण एक PWM मूल्य ठरवतो आणि <code>analogWrite()</code> ने मोटरला देतो.
+          मोटर ड्रायव्हर (L293D किंवा NPN ट्रांझिस्टर) तो PWM मोटरच्या पुरवठ्यापर्यंत वाढवतो.
+        </p>
+      </section>
+
+      <section id="table">
+        <h2>३. गती-तक्ता</h2>
+        <table class="syntax-table">
+          <thead><tr><th>बटण</th><th>स्थिती</th><th>analogWrite मूल्य</th></tr></thead>
+          <tbody>
+            <tr><td>OFF (0 / Power)</td><td>बंद</td><td>0</td></tr>
+            <tr><td>1</td><td>मंद</td><td>80 (~30%)</td></tr>
+            <tr><td>2</td><td>मध्यम</td><td>170 (~65%)</td></tr>
+            <tr><td>3</td><td>जलद</td><td>255 (पूर्ण)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="parts">
+        <h2>४. साहित्य</h2>
+        <ul>
+          <li>Arduino UNO</li>
+          <li>TSOP1738 IR Receiver + IR रिमोट</li>
+          <li>5V – 12V DC पंखा / मोटर</li>
+          <li>L293D (किंवा NPN ट्रांझिस्टर + Diode)</li>
+          <li>9V बॅटरी पंख्यासाठी</li>
+        </ul>
+      </section>
+
+      <section id="pins">
+        <h2>५. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>पिन</th><th>Arduino</th></tr></thead>
+          <tbody>
+            <tr><td>TSOP1738</td><td>OUT</td><td><code>D2</code></td></tr>
+            <tr><td>L293D</td><td>IN1 / IN2</td><td><code>D7 / D8</code></td></tr>
+            <tr><td>L293D</td><td>EN1 (PWM)</td><td><code>D9</code></td></tr>
+            <tr><td>L293D</td><td>VCC2 (पंखा पुरवठा)</td><td>9V बॅटरी</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="code">
+        <h2>६. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प २४ — Remote Controlled Fan
+   Azone Academy • Appaji Patil */
+
+#include &lt;IRremote.h&gt;
+
+const int IR_PIN = 2;
+const int IN1 = 7, IN2 = 8, EN = 9;
+
+const uint32_t BTN_0 = 0x16;   // OFF
+const uint32_t BTN_1 = 0x0C;   // SLOW
+const uint32_t BTN_2 = 0x18;   // MEDIUM
+const uint32_t BTN_3 = 0x5E;   // FAST
+
+int speed = 0;
+
+void setup() {
+  Serial.begin(9600);
+  IrReceiver.begin(IR_PIN);
+  pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT); pinMode(EN, OUTPUT);
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);  // एका दिशेने
+}
+
+void loop() {
+  if (IrReceiver.decode()) {
+    uint32_t c = IrReceiver.decodedIRData.command;
+    Serial.print("कोड: 0x"); Serial.println(c, HEX);
+    if      (c == BTN_0) speed = 0;
+    else if (c == BTN_1) speed = 80;
+    else if (c == BTN_2) speed = 170;
+    else if (c == BTN_3) speed = 255;
+    analogWrite(EN, speed);
+    Serial.print("नवीन गती: "); Serial.println(speed);
+    IrReceiver.resume();
+  }
+}</pre>
+      </section>
+
+      <section id="sim">
+        <h2>७. हँड्स-ऑन सिम्युलेशन</h2>
+
+        <div class="lab" id="lab-fan">
+          <div class="lab-head"><h4>लॅब २४.१ — Remote Fan</h4><span class="lab-badge">सिम्युलेशन</span></div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div class="fan">✾</div>
+                <div class="out-status mt-2" style="font-weight:600;color:var(--accent);text-align:center;"></div>
+              </div>
+              <div class="controls">
+                <h5>रिमोट</h5>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                  <button class="btn small" data-key="off">0 · OFF</button>
+                  <button class="btn small" data-key="1">1 · मंद</button>
+                  <button class="btn small" data-key="2">2 · मध्यम</button>
+                  <button class="btn small" data-key="3">3 · जलद</button>
+                </div>
+                <div class="pin-state mt-2">
+                  <div>Speed level</div><div data-pin="Speed"></div>
+                  <div>PWM (EN, D9)</div><div data-pin="PWM"></div>
+                </div>
+              </div>
+            </div>
+            <pre class="lab-output">रिमोट लॉग...
+</pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>८. समस्यानिवारण</h2>
+        <ul>
+          <li>पंखा फक्त चालू/बंदच होतो — EN पिन PWM पिनला (D3/5/6/9/10/11) जोडले आहे का?</li>
+          <li>मंद गतीवर पंखा सुरूच होत नाही — DC मोटरला प्रत्येकीचा ‘start torque’ असतो; PWM ८० ऐवजी १००-१२० करा.</li>
+          <li>Arduino रिसेट होतो — पंखा आणि Arduino एकाच बॅटरीवर असू नये; वेगळी बॅटरी द्या.</li>
+        </ul>
+      </section>
+
+      <section id="extend">
+        <h2>९. अधिक करा</h2>
+        <ul>
+          <li>Up/Down बटणाने सतत गती वाढ/कमी (continuous PWM).</li>
+          <li>तापमान सेन्सर (LM35) + ऑटो मोड — खोलीचे तापमान वाढले की गती वाढव.</li>
+          <li>OLED display वर सध्याची गती दाखव.</li>
+          <li>Blynk / Wi-Fi (ESP8266) ने मोबाईल अ‍ॅपवरून पंखा.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>१०. चाचणी</h2>
+        <div class="quiz" id="quiz-16">
+          <div class="q" data-answer="b" data-answer-text="ब. analogWrite(EN, value)">
+            <p>१) पंख्याची गती बदलण्यासाठी कोणते Arduino फंक्शन?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. digitalWrite(EN, HIGH)</label>
+              <label><input type="radio" name="q1" value="b" /> ब. analogWrite(EN, value)</label>
+              <label><input type="radio" name="q1" value="c" /> क. tone(EN, value)</label>
+              <label><input type="radio" name="q1" value="d" /> ड. Serial.print(value)</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. PWM (Pulse Width Modulation)">
+            <p>२) DC मोटरचा वेग कशाने नियंत्रित होतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. AC ने</label>
+              <label><input type="radio" name="q2" value="b" /> ब. व्होल्टेज वाढवून</label>
+              <label><input type="radio" name="q2" value="c" /> क. PWM (Pulse Width Modulation) ने</label>
+              <label><input type="radio" name="q2" value="d" /> ड. delay() ने</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="d" data-answer-text="ड. 3, 5, 6, 9, 10, 11">
+            <p>३) Arduino UNO चे PWM पिन्स कोणते?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. सर्व पिन्स</label>
+              <label><input type="radio" name="q3" value="b" /> ब. फक्त 13</label>
+              <label><input type="radio" name="q3" value="c" /> क. A0 ते A5</label>
+              <label><input type="radio" name="q3" value="d" /> ड. 3, 5, 6, 9, 10, 11</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-16')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="final">
+        <h2>११. अंतिम प्रकल्प — स्वतःचे काही बनवा! 🎉</h2>
+        <p>तुम्ही आता रोबोटिक्सच्या जगातील सर्व प्रमुख घटक शिकले:</p>
+        <ul>
+          <li>✓ सेन्सर्स — IR, LDR, Touch, Tilt, PIR, Ultrasonic</li>
+          <li>✓ अ‍ॅक्ट्युएटर्स — LED, Buzzer, DC motor, Servo, Relay</li>
+          <li>✓ नियंत्रण — Arduino, PWM, IR remote</li>
+          <li>✓ रोबो — Line follower, Cliff avoider, Light seeker, Touch-me-not</li>
+        </ul>
+        <p>आता तुमचा स्वतःचा प्रकल्प कल्पा! काही सूचना:</p>
+        <ol>
+          <li>स्मार्ट डस्टबिन — झाकण आपोआप उघडणारा (Ultrasonic + Servo).</li>
+          <li>Plant watering bot — मातीच्या ओलाव्यानुसार पाणी देणारा.</li>
+          <li>Maze solving bot — Line follower + IR भिंत-सेन्सर.</li>
+          <li>Voice activated robot — ESP32 + Google Assistant.</li>
+        </ol>
+
+        <div class="callout tip">
+          <strong>तुमचा प्रकल्प आम्हाला पाठवा!</strong>
+          Azone Academy च्या <em>हॉल ऑफ फेम</em> साठी सर्वोत्तम विद्यार्थी प्रकल्प निवडले जातात.
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch16')">✓ अभ्यासक्रम पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter15.html"><small>← मागे</small>प्रकल्प २३</a>
+        <a href="../index.html"><small>पुढे →</small>मुख्यपृष्ठावर परत</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initRemoteFanLab("lab-fan"));</script>
+</body>
+</html>

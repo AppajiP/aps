@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प २२: Light Seeking Robot — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">मूळ कल्पना</a></li>
+        <li><a href="#bio">जैविक प्रेरणा</a></li>
+        <li><a href="#parts">साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प २२: Light Seeking Robot</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★★★ मध्यम-कठीण</div>
+
+      <section id="goal">
+        <h2>१. ध्येय</h2>
+        <p>
+          एक रोबो जो टॉर्च/सूर्यप्रकाशाच्या दिशेने स्वतःहून जातो — सूर्यफुलासारखा.
+          ह्याला <em>Photo-tropism</em> असे म्हणतात (वनस्पतीशास्त्र).
+        </p>
+      </section>
+
+      <section id="concept">
+        <h2>२. मूळ कल्पना</h2>
+        <p>दोन LDR — डावी आणि उजवी — रोबोच्या समोरील भागाला थोड्या कोनात लावलेले.</p>
+        <ul>
+          <li>दोन्ही LDR सारखे = सरळ.</li>
+          <li>डाव्या LDR वर जास्त उजेड = प्रकाश डावीकडे आहे → डावीकडे वळ.</li>
+          <li>उजव्या LDR वर जास्त उजेड = उजवीकडे वळ.</li>
+        </ul>
+
+        <pre class="code-block">if (leftLDR &gt; rightLDR + tol)        turnLeft();
+else if (rightLDR &gt; leftLDR + tol)    turnRight();
+else                                   forward();</pre>
+      </section>
+
+      <section id="bio">
+        <h2>३. जैविक प्रेरणा</h2>
+        <p>
+          सूर्यफूल (Sunflower) दिवसभर सूर्याच्या दिशेने आपले डोके फिरवते. ह्या साध्या रोबोमध्ये आपण ती कल्पना यांत्रिक पद्धतीने उतरवली आहे. हे रोबोटिक्समधील <strong>biomimicry</strong> चे उदाहरण.
+        </p>
+      </section>
+
+      <section id="parts">
+        <h2>४. साहित्य</h2>
+        <ul>
+          <li>Arduino UNO</li>
+          <li>२-व्हील चेसिस + 2 मोटर्स + L293D</li>
+          <li>२ × LDR + प्रत्येकी 10 kΩ resistor</li>
+          <li>बॅटरी पॅक (6V)</li>
+          <li>एक टॉर्च — चाचणीसाठी 🔦</li>
+        </ul>
+      </section>
+
+      <section id="pins">
+        <h2>५. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>पिन</th><th>Arduino</th></tr></thead>
+          <tbody>
+            <tr><td>डावा LDR</td><td>—</td><td><code>A0</code></td></tr>
+            <tr><td>उजवा LDR</td><td>—</td><td><code>A1</code></td></tr>
+            <tr><td>L293D डावी मोटर</td><td>IN1, IN2, EN1</td><td><code>D5, D6, D3</code></td></tr>
+            <tr><td>L293D उजवी मोटर</td><td>IN3, IN4, EN2</td><td><code>D9, D10, D11</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="code">
+        <h2>६. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प २२ — Light Seeking Robot
+   Azone Academy • Appaji Patil */
+
+const int L_LDR = A0;
+const int R_LDR = A1;
+const int EN1=3, IN1=5, IN2=6;
+const int EN2=11, IN3=9, IN4=10;
+const int SPEED = 160;
+const int TOL = 50;     // सहनशीलता
+
+void setMotors(int l1,int l2,int r1,int r2) {
+  digitalWrite(IN1,l1); digitalWrite(IN2,l2);
+  digitalWrite(IN3,r1); digitalWrite(IN4,r2);
+}
+
+void setup() {
+  int outs[] = {EN1, IN1, IN2, EN2, IN3, IN4};
+  for (int p : outs) pinMode(p, OUTPUT);
+  analogWrite(EN1, SPEED); analogWrite(EN2, SPEED);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int L = analogRead(L_LDR);
+  int R = analogRead(R_LDR);
+  int diff = L - R;
+
+  if (abs(diff) < TOL) {
+    setMotors(HIGH, LOW, HIGH, LOW);          // सरळ
+    Serial.println("↑ सरळ");
+  } else if (L > R) {                          // प्रकाश डावीकडे
+    setMotors(LOW, LOW, HIGH, LOW);            // डावीकडे वळ
+    Serial.println("← डावीकडे");
+  } else {
+    setMotors(HIGH, LOW, LOW, LOW);            // उजवीकडे
+    Serial.println("→ उजवीकडे");
+  }
+  delay(80);
+}</pre>
+      </section>
+
+      <section id="sim">
+        <h2>७. हँड्स-ऑन सिम्युलेशन</h2>
+        <div class="lab" id="lab-seek">
+          <div class="lab-head"><h4>लॅब २२.१ — Light Seeking</h4><span class="lab-badge">सिम्युलेशन</span></div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div class="bot" style="font-size:64px;transition:transform .3s;">🤖</div>
+                <div class="out-status mt-2" style="font-weight:600;color:var(--accent);"></div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>डाव्या LDR</label>
+                  <input type="range" data-name="left" min="0" max="100" value="50" />
+                  <span class="val" data-for="left">50</span>
+                </div>
+                <div class="row">
+                  <label>उजव्या LDR</label>
+                  <input type="range" data-name="right" min="0" max="100" value="50" />
+                  <span class="val" data-for="right">50</span>
+                </div>
+                <div class="pin-state">
+                  <div>L-LDR (A0)</div><div data-pin="L-LDR"></div>
+                  <div>R-LDR (A1)</div><div data-pin="R-LDR"></div>
+                  <div>L-motor</div><div data-pin="Left motor"></div>
+                  <div>R-motor</div><div data-pin="Right motor"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>८. समस्यानिवारण</h2>
+        <ul>
+          <li>रोबो सतत डाव्या-उजव्या मारतोय — TOL वाढवा (५० → १००).</li>
+          <li>एका LDR मध्ये भलताच आकडा — व्होल्टेज डिव्हायडर तपासा.</li>
+          <li>खोली खूप उजेडात — दोघांचे मूल्य उच्च होते, फरक कमी होतो → कमी प्रकाशात चाचणी करा.</li>
+        </ul>
+      </section>
+
+      <section id="extend">
+        <h2>९. अधिक करा</h2>
+        <ul>
+          <li><strong>Calibration</strong> — सुरुवातीच्या ३ सेकंदात दोन्ही LDR ची सरासरी काढून, ती बेसलाइन.</li>
+          <li>३ किंवा ४ LDR — ३६०° प्रकाश शोध.</li>
+          <li>Light avoiding mode — असमान asymetric इन्व्हर्स लॉजिक (वंदी रोबो जो उजेडापासून पळतो).</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>१०. चाचणी</h2>
+        <div class="quiz" id="quiz-14">
+          <div class="q" data-answer="c" data-answer-text="क. Photo-tropism">
+            <p>१) सूर्यफुलाची सूर्याकडे झुकण्याची सवय — हिचे शास्त्रीय नाव?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. Hydrotropism</label>
+              <label><input type="radio" name="q1" value="b" /> ब. Geotropism</label>
+              <label><input type="radio" name="q1" value="c" /> क. Photo-tropism</label>
+              <label><input type="radio" name="q1" value="d" /> ड. Photosynthesis</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="b" data-answer-text="ब. दोन LDR — डावा/उजवा">
+            <p>२) रोबोला प्रकाशाची दिशा कशी कळते?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. एक IR sensor ने</label>
+              <label><input type="radio" name="q2" value="b" /> ब. दोन LDR — डावा/उजवा अनुक्रमे</label>
+              <label><input type="radio" name="q2" value="c" /> क. कॅमेरा ने</label>
+              <label><input type="radio" name="q2" value="d" /> ड. ती कळतच नाही</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="a" data-answer-text="अ. abs(L − R) < tolerance असेल तर">
+            <p>३) कोडमध्ये रोबो ‘सरळ’ कधी चालतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. abs(L − R) < tolerance असेल तर</label>
+              <label><input type="radio" name="q3" value="b" /> ब. L > R असेल तर</label>
+              <label><input type="radio" name="q3" value="c" /> क. R > L असेल तर</label>
+              <label><input type="radio" name="q3" value="d" /> ड. कधीच नाही</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-14')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch14')">✓ प्रकल्प ७ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter13.html"><small>← मागे</small>प्रकल्प २१</a>
+        <a href="chapter15.html"><small>पुढे →</small>प्रकल्प २३: Remote Lamp</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initLightSeekerLab("lab-seek"));</script>
+</body>
+</html>

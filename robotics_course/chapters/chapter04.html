@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ४: घटक व ब्रेडबोर्ड — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#resistor">Resistor (रोधक)</a></li>
+        <li><a href="#color">रंगकोड वाचणे</a></li>
+        <li><a href="#led">LED</a></li>
+        <li><a href="#switch">स्विच</a></li>
+        <li><a href="#capacitor">Capacitor</a></li>
+        <li><a href="#breadboard">ब्रेडबोर्ड</a></li>
+        <li><a href="#first-circuit">पहिले सर्किट</a></li>
+        <li><a href="#lab">लॅब: रंगकोड वाचक</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ४: इलेक्ट्रॉनिक घटक व ब्रेडबोर्ड</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil</div>
+
+      <section id="resistor">
+        <h2>१. Resistor (रोधक)</h2>
+        <p>
+          विद्युतप्रवाह मर्यादित ठेवण्यासाठी रेझिस्टर वापरला जातो. ओहम (Ω) मध्ये मोजला जातो.
+          बहुतेक प्रोजेक्ट्समध्ये <strong>220 Ω, 330 Ω, 1 kΩ, 10 kΩ</strong> हे चार सर्वाधिक वापरले जातात.
+        </p>
+        <ul>
+          <li><strong>220 Ω – 330 Ω</strong> — LED सोबत</li>
+          <li><strong>1 kΩ</strong> — ट्रांझिस्टर बेस</li>
+          <li><strong>10 kΩ</strong> — LDR सोबत pull-down / voltage divider</li>
+        </ul>
+      </section>
+
+      <section id="color">
+        <h2>२. रंगकोड कसा वाचावा?</h2>
+        <p>रेझिस्टर खूप लहान असल्याने त्यावर थेट संख्या लिहिता येत नाही. म्हणून रंगाच्या ४ पट्ट्या (Bands) वापरतात.</p>
+
+        <table class="syntax-table">
+          <thead><tr><th>रंग</th><th>आकडा</th><th>गुणक</th></tr></thead>
+          <tbody>
+            <tr><td>काळा (Black)</td><td>0</td><td>×1</td></tr>
+            <tr><td>तपकिरी (Brown)</td><td>1</td><td>×10</td></tr>
+            <tr><td>लाल (Red)</td><td>2</td><td>×100</td></tr>
+            <tr><td>नारिंगी (Orange)</td><td>3</td><td>×1k</td></tr>
+            <tr><td>पिवळा (Yellow)</td><td>4</td><td>×10k</td></tr>
+            <tr><td>हिरवा (Green)</td><td>5</td><td>×100k</td></tr>
+            <tr><td>निळा (Blue)</td><td>6</td><td>×1M</td></tr>
+            <tr><td>जांभळा (Violet)</td><td>7</td><td>×10M</td></tr>
+            <tr><td>करडा (Grey)</td><td>8</td><td>—</td></tr>
+            <tr><td>पांढरा (White)</td><td>9</td><td>—</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout tip">
+          <strong>स्मरण-वाक्य</strong>
+          <em>“काले तंबाखूचे लाल नारिंग पिवळे हिरवे निळे जांभळे करडे पांढरे”</em> — असेच रंगांचा क्रम 0-9.
+        </div>
+
+        <h3>उदाहरण</h3>
+        <p>लाल – लाल – तपकिरी – सोनेरी = <code class="inline">2 2 × 10 = 220 Ω ± 5%</code></p>
+      </section>
+
+      <section id="led">
+        <h2>३. LED (Light Emitting Diode)</h2>
+        <p>एका दिशेनेच विद्युतप्रवाह घेणारा छोटा दिवा.</p>
+        <ul>
+          <li><strong>लांब पाय (Anode, +)</strong> — VCC कडे</li>
+          <li><strong>लहान पाय (Cathode, −)</strong> — GND कडे (किंवा रेझिस्टरमार्गे)</li>
+          <li>थेट 5V लावल्यास LED जळतो — <strong>नेहमी रेझिस्टर लावा</strong>!</li>
+        </ul>
+
+        <pre class="code-block">+5V ─┬── [220 Ω] ──▶|── GND
+              |          LED
+        Arduino pin</pre>
+      </section>
+
+      <section id="switch">
+        <h2>४. स्विच (Switch / Push Button)</h2>
+        <p>दोन प्रकार:</p>
+        <ul>
+          <li><strong>Push Button</strong> — दाबल्यावरच कनेक्शन होते.</li>
+          <li><strong>Slide / Toggle switch</strong> — दोन स्थिर अवस्था (ON/OFF).</li>
+        </ul>
+        <p>Arduino शी जोडताना <strong>Pull-down (10 kΩ)</strong> रेझिस्टर लागतो किंवा अंतर्गत <code class="inline">INPUT_PULLUP</code> वापरतात.</p>
+      </section>
+
+      <section id="capacitor">
+        <h2>५. Capacitor</h2>
+        <p>विद्युत साठवणारा घटक. <strong>µF</strong> (मायक्रोफॅरॅड) मध्ये मोजला जातो.</p>
+        <ul>
+          <li><strong>Ceramic (0.1 µF)</strong> — सिग्नल फिल्टरिंग, IC च्या VCC पासली.</li>
+          <li><strong>Electrolytic (100 µF, 470 µF)</strong> — पॉवर सप्लाय स्थिर करण्यासाठी. ⚠ <strong>polarity</strong> असते.</li>
+        </ul>
+      </section>
+
+      <section id="breadboard">
+        <h2>६. ब्रेडबोर्ड — सर्किटची ‘खेळणी वही’</h2>
+        <p>सोल्डर न करता पटकन सर्किट बनवण्यासाठी छिद्र असलेली प्लास्टिक पटी.</p>
+        <ul>
+          <li><strong>लाल/निळ्या रेषा (Power rails)</strong> — संपूर्ण लांबीला आडव्या जोडलेल्या. + आणि − पुरवठ्यासाठी.</li>
+          <li><strong>मधले छिद्र</strong> — उभ्या ५ छिद्रांचे गट. प्रत्येक गट आतून जोडलेला.</li>
+          <li><strong>मध्यभागी फट</strong> — IC ठेवण्यासाठी; डाव्या आणि उजव्या बाजू वेगवेगळ्या.</li>
+        </ul>
+
+        <div class="callout warn">
+          <strong>नियम</strong>
+          एका वेळी एका छिद्रात एकच तार/पिन. कधीही चाचणीशिवाय 9V आधी लावू नका.
+        </div>
+      </section>
+
+      <section id="first-circuit">
+        <h2>७. आपले पहिले सर्किट — LED चालू करणे</h2>
+        <p><strong>लागणारे साहित्य:</strong> ब्रेडबोर्ड, LED, 220 Ω रेझिस्टर, 9V बॅटरी + क्लिप, २ जम्पर वायर्स.</p>
+
+        <ol>
+          <li>9V बॅटरी क्लिपची लाल तार ब्रेडबोर्डच्या <strong>+</strong> रेलवर लावा.</li>
+          <li>काळी तार <strong>−</strong> रेलवर लावा.</li>
+          <li>+ रेल पासून <strong>220 Ω</strong> रेझिस्टर मधल्या ओळीत लावा.</li>
+          <li>रेझिस्टरच्या पुढच्या टोकाला LED चा <strong>लांब पाय</strong> लावा.</li>
+          <li>LED चा <strong>लहान पाय</strong> − रेलला जोडा.</li>
+          <li>बघा — LED उजळला! 🎉</li>
+        </ol>
+
+        <p>हेच आपण रोबोटिक्सच्या प्रत्येक प्रकल्पात पुन्हा पुन्हा करणार आहोत — फक्त LED ऐवजी मोटर, बझर, सेन्सर असतील.</p>
+      </section>
+
+      <section id="lab">
+        <h2>८. हँड्स-ऑन लॅब: Resistor रंगकोड वाचक</h2>
+        <p>४ बँडची मूल्ये निवडा आणि रेझिस्टरचे मूल्य पाहा.</p>
+
+        <div class="lab" id="lab-rc">
+          <div class="lab-head">
+            <h4>लॅब ४.१ — रंगकोड कॅल्क्युलेटर</h4>
+            <span class="lab-badge">इंटरॅक्टिव्ह</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage" style="background:linear-gradient(180deg,#e7c896,#c8a06a); border-radius:14px;">
+                <div style="display:flex;align-items:center;gap:6px;height:60px;background:#d8b58a;border-radius:30px;padding:0 30px;width:300px;justify-content:space-around;">
+                  <div class="band" data-name="b1" style="width:14px;height:60px;background:#c0392b;"></div>
+                  <div class="band" data-name="b2" style="width:14px;height:60px;background:#c0392b;"></div>
+                  <div class="band" data-name="b3" style="width:14px;height:60px;background:#c0392b;"></div>
+                  <div class="band" data-name="b4" style="width:14px;height:60px;background:#d4af37;"></div>
+                </div>
+                <div class="mt-2" style="text-align:center;">
+                  <div style="font-size:24px;font-weight:700;color:var(--primary-2);" class="out-r">— Ω</div>
+                  <div style="color:var(--muted);font-size:13px;" class="out-tol">±</div>
+                </div>
+              </div>
+              <div class="controls">
+                <h5>बँड निवडा</h5>
+                <div class="row"><label>बँड १ (पहिला आकडा)</label><select data-name="b1"></select></div>
+                <div class="row"><label>बँड २ (दुसरा आकडा)</label><select data-name="b2"></select></div>
+                <div class="row"><label>बँड ३ (गुणक)</label><select data-name="b3"></select></div>
+                <div class="row"><label>बँड ४ (Tolerance)</label><select data-name="b4"></select></div>
+                <p class="text-muted" style="font-size:12px;margin-top:8px;">डिफॉल्ट: लाल–लाल–लाल–सोनेरी = 2.2 kΩ ± 5%</p>
+              </div>
+            </div>
+            <span class="run-status"></span>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li>तपकिरी – काळा – लाल – सोनेरी म्हणजे किती ओहम?</li>
+          <li>10 kΩ ± 5% साठी बँड्सचे रंग कोणते?</li>
+          <li>तुमच्या प्रोजेक्ट किटमधील ५ रेझिस्टर्सचे रंग बघून मूल्य ओळखा.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>९. चाचणी</h2>
+        <div class="quiz" id="quiz-4">
+          <div class="q" data-answer="b" data-answer-text="ब. विद्युतप्रवाह मर्यादित ठेवणे">
+            <p>१) रेझिस्टरचे प्रमुख कार्य काय?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. व्होल्टेज वाढवणे</label>
+              <label><input type="radio" name="q1" value="b" /> ब. विद्युतप्रवाह मर्यादित ठेवणे</label>
+              <label><input type="radio" name="q1" value="c" /> क. प्रकाश तयार करणे</label>
+              <label><input type="radio" name="q1" value="d" /> ड. आवाज करणे</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="a" data-answer-text="अ. LED च्या लांब पायाकडे जातो (Anode → Cathode)">
+            <p>२) LED मधून प्रवाह कोणत्या दिशेने जातो?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. LED च्या लांब पायाकडे जातो (Anode → Cathode)</label>
+              <label><input type="radio" name="q2" value="b" /> ब. कोणत्याही दिशेने जातो</label>
+              <label><input type="radio" name="q2" value="c" /> क. लहान पायाकडून लांब पायाकडे</label>
+              <label><input type="radio" name="q2" value="d" /> ड. LED ला प्रवाह लागत नाही</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. आडव्या लांब रेषा (Rails)">
+            <p>३) ब्रेडबोर्डवरील लाल/निळ्या रेषा कशासाठी असतात?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. फक्त दाखवण्यासाठी</label>
+              <label><input type="radio" name="q3" value="b" /> ब. IC ठेवण्यासाठी</label>
+              <label><input type="radio" name="q3" value="c" /> क. आडव्या लांब रेषा (Rails) — पॉवर वितरणासाठी</label>
+              <label><input type="radio" name="q3" value="d" /> ड. केवळ ग्राउंडसाठी</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-4')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>१०. सारांश</h2>
+        <ul>
+          <li>Resistor — विद्युतप्रवाह नियंत्रण. रंगकोडाने मूल्य ओळखा.</li>
+          <li>LED — फक्त एका दिशेने उजळणारा डायोड. नेहमी रेझिस्टर लावा.</li>
+          <li>ब्रेडबोर्ड — सोल्डर न करता सर्किट बनवण्याची सोय.</li>
+          <li>Capacitor — विद्युत साठवणारा घटक; पॉवर सप्लाय स्थिरीकरणासाठी.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch04')">✓ धडा ४ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter03.html"><small>← मागे</small>धडा ३</a>
+        <a href="chapter05.html"><small>पुढे →</small>धडा ५: सेन्सर्स</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initResistorColorLab("lab-rc"));</script>
+</body>
+</html>

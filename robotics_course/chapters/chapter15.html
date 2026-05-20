@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प २३: Remote Lamp & Buzzer — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">IR रिमोट कसा चालतो?</a></li>
+        <li><a href="#irlib">IRremote लायब्ररी</a></li>
+        <li><a href="#parts">साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प २३: Remote Controlled Lamp & Buzzer</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★★☆ मध्यम</div>
+
+      <section id="goal">
+        <h2>१. ध्येय</h2>
+        <p>
+          तुमच्या TV / set-top box च्या रिमोटच्या बटणाने <strong>एक दिवा</strong> चालू-बंद आणि <strong>बझर</strong> चालू-बंद करा.
+          हा प्रकल्प पुढच्या प्रकल्पाचा (पंखा गती नियंत्रण) पाया आहे.
+        </p>
+      </section>
+
+      <section id="concept">
+        <h2>२. IR रिमोट कसा चालतो?</h2>
+        <p>
+          टीव्ही रिमोटमधील LED ३८ kHz च्या वारंवारतेने इन्फ्रारेड डाळी (pulses) पाठवते. प्रत्येक बटणाला एक वेगळा code (binary number) नियुक्त असतो.
+          <strong>TSOP1738 / VS1838B</strong> हा रिसीव्हर ती पल्स पकडतो आणि Arduino ला डिजिटल सिग्नल देतो.
+        </p>
+        <div class="callout info">
+          <strong>NEC प्रोटोकॉल</strong>
+          भारतात बहुतेक रिमोट NEC प्रोटोकॉल वापरतात — प्रत्येक बटणाचा 32-bit हेक्साडेसिमल कोड.
+        </div>
+      </section>
+
+      <section id="irlib">
+        <h2>३. IRremote लायब्ररी</h2>
+        <p>Arduino IDE मध्ये <code class="inline">Sketch → Include Library → Manage Libraries → IRremote</code> शोधा आणि स्थापित करा (Ken Shirriff ची लायब्ररी).</p>
+        <pre class="code-block">#include &lt;IRremote.h&gt;
+IRrecv ir(2);     // pin 2
+
+void setup() {
+  Serial.begin(9600);
+  ir.enableIRIn();
+}
+
+void loop() {
+  if (ir.decode()) {
+    Serial.println(ir.decodedIRData.command, HEX);
+    ir.resume();
+  }
+}</pre>
+        <p>हा प्रोग्राम चालवून तुमच्या रिमोटच्या प्रत्येक बटणाचा कोड Serial Monitor मध्ये पाहा. ते कोड पुढच्या कोडमध्ये वापरा.</p>
+      </section>
+
+      <section id="parts">
+        <h2>४. साहित्य</h2>
+        <ul>
+          <li>Arduino UNO</li>
+          <li>TSOP1738 IR Receiver</li>
+          <li>कोणताही IR remote (TV/set-top box/AC)</li>
+          <li>5V Relay मॉड्यूल (दिव्यासाठी)</li>
+          <li>5V Active Buzzer</li>
+          <li>LED bulb / DC bulb (पर्यायी)</li>
+        </ul>
+      </section>
+
+      <section id="pins">
+        <h2>५. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>पिन</th><th>Arduino</th></tr></thead>
+          <tbody>
+            <tr><td>TSOP1738</td><td>OUT</td><td><code>D2</code></td></tr>
+            <tr><td>TSOP1738</td><td>VCC / GND</td><td>5V / GND</td></tr>
+            <tr><td>Relay मॉड्यूल</td><td>IN</td><td><code>D7</code></td></tr>
+            <tr><td>Buzzer</td><td>+</td><td><code>D8</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="code">
+        <h2>६. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प २३ — Remote Controlled Lamp & Buzzer
+   Azone Academy • Appaji Patil */
+
+#include &lt;IRremote.h&gt;
+
+const int IR_PIN  = 2;
+const int LAMP    = 7;
+const int BUZZER  = 8;
+
+// तुमच्या रिमोटच्या कोडसह बदला (Serial वरून पहा)
+const uint32_t BTN_1 = 0x45;   // लॅम्प चालू
+const uint32_t BTN_2 = 0x46;   // लॅम्प बंद
+const uint32_t BTN_3 = 0x47;   // बझर चालू
+const uint32_t BTN_4 = 0x44;   // बझर बंद
+
+bool lampOn = false;
+bool buzOn  = false;
+
+void setup() {
+  Serial.begin(9600);
+  IrReceiver.begin(IR_PIN);
+  pinMode(LAMP, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+}
+
+void loop() {
+  if (IrReceiver.decode()) {
+    uint32_t cmd = IrReceiver.decodedIRData.command;
+    Serial.print("कोड: 0x"); Serial.println(cmd, HEX);
+
+    if      (cmd == BTN_1) lampOn = true;
+    else if (cmd == BTN_2) lampOn = false;
+    else if (cmd == BTN_3) buzOn  = true;
+    else if (cmd == BTN_4) buzOn  = false;
+
+    digitalWrite(LAMP,   lampOn ? HIGH : LOW);
+    digitalWrite(BUZZER, buzOn  ? HIGH : LOW);
+
+    IrReceiver.resume();
+  }
+}</pre>
+      </section>
+
+      <section id="sim">
+        <h2>७. हँड्स-ऑन सिम्युलेशन</h2>
+        <p>खालील ‘रिमोट’ ची बटणे दाबा — दिवा/बझर ची स्थिती बदलते आणि लॉग दिसतो.</p>
+
+        <div class="lab" id="lab-remote">
+          <div class="lab-head"><h4>लॅब २३.१ — IR Remote Lamp/Buzzer</h4><span class="lab-badge">सिम्युलेशन</span></div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div class="led" data-name="lamp" style="width:54px;height:54px;"></div>
+                <div style="font-size:34px;" class="out-buzz">—</div>
+                <div class="out-status mt-2" style="font-weight:600;color:var(--accent);text-align:center;"></div>
+              </div>
+              <div class="controls">
+                <h5>रिमोट</h5>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                  <button class="btn small" data-key="1">1 · लॅम्प चालू</button>
+                  <button class="btn small" data-key="2">2 · लॅम्प बंद</button>
+                  <button class="btn small" data-key="3">3 · बझर चालू</button>
+                  <button class="btn small" data-key="4">4 · बझर बंद</button>
+                </div>
+                <div class="pin-state mt-2">
+                  <div>Lamp (D7)</div><div data-pin="Lamp"></div>
+                  <div>Buzzer (D8)</div><div data-pin="Buzzer"></div>
+                </div>
+              </div>
+            </div>
+            <pre class="lab-output">रिमोट लॉग...
+</pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>८. समस्यानिवारण</h2>
+        <ul>
+          <li>कोणताच कोड Serial वर येत नाही — TSOP च्या VCC/GND/OUT उलट जोडले असू शकतात (datasheet तपासा).</li>
+          <li>दर वेळी वेगळा कोड येतो — रिमोट "रिपीट" सिग्नल पाठवतो; आपण <code>command</code> फील्डच वापरतो, address नाही.</li>
+          <li>लाँग प्रेस झाला तरी प्रत्येक frame ला toggle — कोडमध्ये previous-state check ठेवा.</li>
+        </ul>
+      </section>
+
+      <section id="extend">
+        <h2>९. अधिक करा</h2>
+        <ul>
+          <li>Power बटण = ‘all toggle’ (दिवा + बझर एकाच क्लिकवर).</li>
+          <li>RGB LED + 3 बटणे = रंग बदल.</li>
+          <li>Mode बटण — समान बटणे वेगवेगळ्या मोडमध्ये वेगळी कामं.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>१०. चाचणी</h2>
+        <div class="quiz" id="quiz-15">
+          <div class="q" data-answer="c" data-answer-text="क. ३८ kHz IR pulses">
+            <p>१) टीव्ही रिमोट कोणत्या प्रकारचा सिग्नल पाठवतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. Wi-Fi</label>
+              <label><input type="radio" name="q1" value="b" /> ब. Bluetooth</label>
+              <label><input type="radio" name="q1" value="c" /> क. ३८ kHz IR pulses</label>
+              <label><input type="radio" name="q1" value="d" /> ड. FM रेडिओ</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="b" data-answer-text="ब. TSOP1738 (IR Receiver)">
+            <p>२) IR सिग्नल पकडण्यासाठी कोणता मॉड्यूल वापरतात?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. LDR</label>
+              <label><input type="radio" name="q2" value="b" /> ब. TSOP1738 (IR Receiver)</label>
+              <label><input type="radio" name="q2" value="c" /> क. PIR</label>
+              <label><input type="radio" name="q2" value="d" /> ड. ESP8266</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="a" data-answer-text="अ. IRremote लायब्ररी">
+            <p>३) Arduino IDE मध्ये कोणती लायब्ररी वापरतात?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. IRremote (Ken Shirriff)</label>
+              <label><input type="radio" name="q3" value="b" /> ब. Servo</label>
+              <label><input type="radio" name="q3" value="c" /> क. WiFi</label>
+              <label><input type="radio" name="q3" value="d" /> ड. LiquidCrystal</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-15')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch15')">✓ प्रकल्प ८ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter14.html"><small>← मागे</small>प्रकल्प २२</a>
+        <a href="chapter16.html"><small>पुढे →</small>प्रकल्प २४: Remote Fan</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initRemoteLampLab("lab-remote"));</script>
+</body>
+</html>

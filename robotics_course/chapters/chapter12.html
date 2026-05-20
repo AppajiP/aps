@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प २०: Touch Me Not Robot — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">मूळ कल्पना</a></li>
+        <li><a href="#parts">साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प २०: Touch Me Not Robot</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★☆☆ सोपा</div>
+
+      <section id="goal">
+        <h2>१. ध्येय</h2>
+        <p>
+          ‘<em>Mimosa pudica</em>’ (लाजाळू) रोपासारखा — कोणीतरी स्पर्श केला की रोबो <strong>थोडा मागे जातो आणि बझर वाजवतो</strong>.
+          टच सोडला की पुन्हा शांत होतो.
+        </p>
+      </section>
+
+      <section id="concept">
+        <h2>२. मूळ कल्पना</h2>
+        <p>
+          रोबोच्या वरच्या बाजूला एक <strong>TTP223 Capacitive Touch sensor</strong> लावलेला आहे.
+          स्पर्श झाला की त्याचा OUT पिन <code class="inline">HIGH</code> होतो; नाहीतर LOW. ह्या एका पिनवरून आपण रोबोला reverse करतो.
+        </p>
+      </section>
+
+      <section id="parts">
+        <h2>३. साहित्य</h2>
+        <ul>
+          <li>Arduino UNO</li>
+          <li>२-व्हील रोबो चेसिस + 2 मोटर्स</li>
+          <li>L293D मोटर ड्रायव्हर</li>
+          <li>TTP223 Touch Sensor मॉड्यूल</li>
+          <li>5V Active Buzzer</li>
+          <li>लाल LED + 220Ω</li>
+          <li>बॅटरी पॅक (6V)</li>
+        </ul>
+      </section>
+
+      <section id="pins">
+        <h2>४. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>पिन</th><th>Arduino</th></tr></thead>
+          <tbody>
+            <tr><td>Touch</td><td>OUT</td><td><code>D2</code></td></tr>
+            <tr><td>Buzzer</td><td>+</td><td><code>D8</code></td></tr>
+            <tr><td>LED</td><td>+ (220Ω)</td><td><code>D9</code></td></tr>
+            <tr><td>L293D डावी</td><td>IN1, IN2, EN1</td><td><code>D5, D6, D3</code></td></tr>
+            <tr><td>L293D उजवी</td><td>IN3, IN4, EN2</td><td><code>D10, D11, D12</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="code">
+        <h2>५. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प २० — Touch Me Not Robot
+   Azone Academy • Appaji Patil */
+
+const int TOUCH = 2;
+const int BUZ = 8, LED = 9;
+const int EN1=3, IN1=5, IN2=6;
+const int EN2=12, IN3=10, IN4=11;
+const int SPEED = 180;
+
+void backward() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);
+}
+void stopBot() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, LOW);
+}
+
+void setup() {
+  pinMode(TOUCH, INPUT);
+  pinMode(BUZ, OUTPUT);  pinMode(LED, OUTPUT);
+  int outs[] = {EN1, IN1, IN2, EN2, IN3, IN4};
+  for (int p : outs) pinMode(p, OUTPUT);
+  analogWrite(EN1, SPEED); analogWrite(EN2, SPEED);
+}
+
+void loop() {
+  if (digitalRead(TOUCH) == HIGH) {
+    // स्पर्श!
+    digitalWrite(LED, HIGH);
+    tone(BUZ, 1500);
+    backward();
+    delay(800);
+    stopBot();
+    delay(300);
+    noTone(BUZ);
+    digitalWrite(LED, LOW);
+  } else {
+    stopBot();
+  }
+}</pre>
+      </section>
+
+      <section id="sim">
+        <h2>६. हँड्स-ऑन सिम्युलेशन</h2>
+        <div class="lab" id="lab-touch">
+          <div class="lab-head"><h4>लॅब २०.१ — Touch Me Not</h4><span class="lab-badge">सिम्युलेशन</span></div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div style="font-size:64px;">🌿</div>
+                <div class="led" data-name="led" style="width:32px;height:32px;margin-top:8px;"></div>
+                <div class="out-status mt-2" style="font-weight:600;color:var(--accent);"></div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>हाताने स्पर्श</label>
+                  <input type="checkbox" data-name="touch" />
+                </div>
+                <div class="pin-state">
+                  <div>Touch (D2)</div><div data-pin="Touch"></div>
+                  <div>Motors</div><div data-pin="Motors"></div>
+                  <div>Buzzer (D8)</div><div data-pin="Buzzer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>७. समस्यानिवारण</h2>
+        <ul>
+          <li>स्पर्श न करताच LED चालू — TTP223 चे जम्पर "A" / "B" मोड तपासा (toggle vs direct).</li>
+          <li>Buzzer आवाजच नाही — Active Buzzer हवा (बारकोडवर ‘+’ चिन्ह असलेला).</li>
+          <li>रोबो मागेच जात नाही — L293D ची VCC2 ला बॅटरी जोडलेली का? IN1/IN2 ची polarity बघा.</li>
+        </ul>
+      </section>
+
+      <section id="extend">
+        <h2>८. अधिक करा</h2>
+        <ul>
+          <li>स्पर्शाने रोबो ९०° वळून पुढे जाऊ देणे (escape behaviour).</li>
+          <li>3 touch pads — डावा/मध्य/उजवा — कोणत्या बाजूला स्पर्श झाला त्यानुसार वळणे.</li>
+          <li>संगीत वाजवणे (tone() च्या वेगवेगळ्या वारंवारतांनी).</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>९. चाचणी</h2>
+        <div class="quiz" id="quiz-12">
+          <div class="q" data-answer="b" data-answer-text="ब. TTP223 Touch Sensor">
+            <p>१) कोणता सेन्सर ह्या प्रकल्पात मध्यवर्ती आहे?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. LDR</label>
+              <label><input type="radio" name="q1" value="b" /> ब. TTP223 Touch Sensor</label>
+              <label><input type="radio" name="q1" value="c" /> क. PIR</label>
+              <label><input type="radio" name="q1" value="d" /> ड. HC-SR04</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="a" data-answer-text="अ. capacitance बदल">
+            <p>२) Capacitive touch sensor कशाने स्पर्श ओळखतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. capacitance बदल</label>
+              <label><input type="radio" name="q2" value="b" /> ब. तापमान बदल</label>
+              <label><input type="radio" name="q2" value="c" /> क. आवाज</label>
+              <label><input type="radio" name="q2" value="d" /> ड. प्रकाश</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. IN1=LOW IN2=HIGH (मागे)">
+            <p>३) टच होताच मोटर्स reverse करायच्या असतील तर L293D ला?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. IN1=HIGH IN2=HIGH</label>
+              <label><input type="radio" name="q3" value="b" /> ब. IN1=LOW IN2=LOW</label>
+              <label><input type="radio" name="q3" value="c" /> क. IN1=LOW IN2=HIGH (मागे)</label>
+              <label><input type="radio" name="q3" value="d" /> ड. EN1=LOW EN2=LOW</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-12')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch12')">✓ प्रकल्प ५ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter11.html"><small>← मागे</small>प्रकल्प १९</a>
+        <a href="chapter13.html"><small>पुढे →</small>प्रकल्प २१: Smart Street Light</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initTouchNotLab("lab-touch"));</script>
+</body>
+</html>

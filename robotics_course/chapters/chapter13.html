@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प २१: Smart Street Light — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">मूळ कल्पना</a></li>
+        <li><a href="#savings">ऊर्जा बचतीचे गणित</a></li>
+        <li><a href="#parts">साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प २१: Advanced Automation — Smart Street Light</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★★★ मध्यम-कठीण</div>
+
+      <section id="goal">
+        <h2>१. ध्येय</h2>
+        <p>
+          रस्त्यावरचे दिवे — दिवसा बंद, रात्री पूर्ण उजेड? — किती <em>वीज वाया</em> जाते!
+          आपण एक स्मार्ट दिवा बनवू: <strong>(१)</strong> दिवसा बंद, <strong>(२)</strong> रात्री कुणीही नसताना मंद, <strong>(३)</strong> रात्री हालचाल झाल्यास <em>पूर्ण उजळ</em>.
+        </p>
+      </section>
+
+      <section id="concept">
+        <h2>२. मूळ कल्पना</h2>
+        <ul>
+          <li><strong>LDR</strong> — दिवस की रात्र ओळखतो.</li>
+          <li><strong>PIR sensor</strong> — माणूस/वाहन जवळ आल्यास HIGH.</li>
+          <li><strong>PWM (analogWrite)</strong> — LED ची तीव्रता ० / २५ / १००% मध्ये बदलणे.</li>
+        </ul>
+
+        <table class="syntax-table">
+          <thead><tr><th>LDR (अंधार?)</th><th>PIR (हालचाल?)</th><th>LED ची तीव्रता</th></tr></thead>
+          <tbody>
+            <tr><td>नाही (उजेड)</td><td>—</td><td>० (बंद)</td></tr>
+            <tr><td>हो (अंधार)</td><td>नाही</td><td>२५% (मंद)</td></tr>
+            <tr><td>हो</td><td>हो</td><td>१००% (पूर्ण उजेड)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="savings">
+        <h2>३. ऊर्जा बचत — का महत्त्वाची?</h2>
+        <p>एका रस्त्यावर साधारणपणे २०० दिवे, प्रत्येक ७० W = एकूण १४ kW. रात्रभर सुरू =</p>
+        <pre class="code-block">14 kW × 12 तास = 168 kWh प्रत्येक दिवस
+                  × ३०      = 5040 kWh दर महिना
+                  × ₹८/kWh = ₹४०,३२० वीज बिल</pre>
+        <p>स्मार्ट दिव्यांनी सरासरी <strong>५०% बचत</strong> शक्य. ही नुसती पैशांची नाही — कोळसा/कार्बन बचत.</p>
+      </section>
+
+      <section id="parts">
+        <h2>४. साहित्य</h2>
+        <ul>
+          <li>Arduino UNO</li>
+          <li>LDR + 10 kΩ resistor</li>
+          <li>PIR sensor (HC-SR501)</li>
+          <li>उच्च-शक्तीचा LED (1 W) + 220Ω; किंवा LED स्ट्रिप</li>
+          <li>NPN ट्रांझिस्टर (2N2222) — LED स्ट्रिप साठी</li>
+        </ul>
+      </section>
+
+      <section id="pins">
+        <h2>५. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>पिन</th><th>Arduino</th></tr></thead>
+          <tbody>
+            <tr><td>LDR Divider</td><td>—</td><td><code>A0</code></td></tr>
+            <tr><td>PIR</td><td>OUT</td><td><code>D2</code></td></tr>
+            <tr><td>LED (PWM)</td><td>+ (220Ω)</td><td><code>D9</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="code">
+        <h2>६. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प २१ — Smart Street Light
+   Azone Academy • Appaji Patil */
+
+const int LDR = A0;
+const int PIR = 2;
+const int LED = 9;
+const int DARK_THRESHOLD = 400;
+
+void setup() {
+  pinMode(PIR, INPUT);
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int light  = analogRead(LDR);
+  int motion = digitalRead(PIR);
+  bool dark  = light < DARK_THRESHOLD;
+
+  int brightness = 0;
+  if (dark && motion == HIGH) brightness = 255;    // पूर्ण उजेड
+  else if (dark)               brightness = 60;     // मंद (~25%)
+  else                         brightness = 0;      // दिवस
+
+  analogWrite(LED, brightness);
+
+  Serial.print("Light:"); Serial.print(light);
+  Serial.print(" PIR:"); Serial.print(motion);
+  Serial.print(" PWM:"); Serial.println(brightness);
+  delay(100);
+}</pre>
+      </section>
+
+      <section id="sim">
+        <h2>७. हँड्स-ऑन सिम्युलेशन</h2>
+        <div class="lab" id="lab-street">
+          <div class="lab-head"><h4>लॅब २१.१ — Smart Street Light</h4><span class="lab-badge">सिम्युलेशन</span></div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div style="font-size:48px;">🏮</div>
+                <div class="led" data-name="led" style="width:54px;height:54px;margin-top:6px;"></div>
+                <div class="out-status mt-2" style="font-weight:600;color:var(--accent);"></div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>उजेड (LDR)</label>
+                  <input type="range" data-name="light" min="0" max="100" value="20" />
+                  <span class="val" data-for="light">20</span>
+                </div>
+                <div class="row">
+                  <label>हालचाल (PIR)</label>
+                  <input type="checkbox" data-name="motion" />
+                </div>
+                <div class="pin-state">
+                  <div>LDR (A0)</div><div data-pin="LDR"></div>
+                  <div>PIR (D2)</div><div data-pin="PIR"></div>
+                  <div>PWM (D9)</div><div data-pin="PWM out"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>८. समस्यानिवारण</h2>
+        <ul>
+          <li>PIR सतत HIGH — सेन्सर "warm-up" साठी पहिल्या ३० सेकंदांचा calibration period लागतो. <code>delay(30000)</code> setup मध्ये जोडा.</li>
+          <li>LED मंद होतच नाही — PWM पिन (3,5,6,9,10,11) वापरला आहे का?</li>
+          <li>दिवसा LED चालू — DARK_THRESHOLD खूप जास्त; तो कमी करा.</li>
+        </ul>
+      </section>
+
+      <section id="extend">
+        <h2>९. अधिक करा</h2>
+        <ul>
+          <li>अनेक दिवे — एकाने हालचाल पकडली तर ३ शेजारच्या दिव्यांना सिग्नल पाठवणे (mesh).</li>
+          <li>दर तासाची वीज वापर मोजून ऊर्जा बचतीचा ग्राफ.</li>
+          <li>Solar panel + battery — पूर्णतः off-grid दिवा.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>१०. चाचणी</h2>
+        <div class="quiz" id="quiz-13">
+          <div class="q" data-answer="b" data-answer-text="ब. analogWrite (PWM)">
+            <p>१) LED ची तीव्रता कमी-जास्त करायला कोणते Arduino फंक्शन?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. digitalWrite</label>
+              <label><input type="radio" name="q1" value="b" /> ब. analogWrite (PWM)</label>
+              <label><input type="radio" name="q1" value="c" /> क. delay</label>
+              <label><input type="radio" name="q1" value="d" /> ड. tone</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. PIR (Passive Infrared)">
+            <p>२) माणसाची हालचाल ओळखणारा सेन्सर कोणता?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. LDR</label>
+              <label><input type="radio" name="q2" value="b" /> ब. Touch</label>
+              <label><input type="radio" name="q2" value="c" /> क. PIR (Passive Infrared)</label>
+              <label><input type="radio" name="q2" value="d" /> ड. Tilt</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="a" data-answer-text="अ. ऊर्जा बचत, खर्च कमी, पर्यावरण संरक्षण">
+            <p>३) Smart Street Light चा सर्वात महत्त्वाचा फायदा?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. ऊर्जा बचत, खर्च कमी, पर्यावरण संरक्षण</label>
+              <label><input type="radio" name="q3" value="b" /> ब. सुंदर दिसते</label>
+              <label><input type="radio" name="q3" value="c" /> क. कमी आवाज</label>
+              <label><input type="radio" name="q3" value="d" /> ड. वायरलेस</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-13')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch13')">✓ प्रकल्प ६ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter12.html"><small>← मागे</small>प्रकल्प २०</a>
+        <a href="chapter14.html"><small>पुढे →</small>प्रकल्प २२: Light Seeking</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initStreetLightLab("lab-street"));</script>
+</body>
+</html>

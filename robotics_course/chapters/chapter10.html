@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>प्रकल्प १८: Cliff Avoiding Robot — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या प्रकल्पात</h4>
+      <ol>
+        <li><a href="#goal">ध्येय</a></li>
+        <li><a href="#concept">मूळ कल्पना</a></li>
+        <li><a href="#parts">साहित्य</a></li>
+        <li><a href="#pins">पिन कनेक्शन</a></li>
+        <li><a href="#circuit">सर्किट आकृती</a></li>
+        <li><a href="#code">Arduino कोड</a></li>
+        <li><a href="#explain">कोडचे विश्लेषण</a></li>
+        <li><a href="#sim">सिम्युलेशन</a></li>
+        <li><a href="#trouble">समस्यानिवारण</a></li>
+        <li><a href="#extend">अधिक करा</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>प्रकल्प १८: Cliff Avoiding Robot</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil • अडचण: ★★☆ मध्यम</div>
+
+      <section id="goal">
+        <h2>१. ध्येय</h2>
+        <p>
+          एक रोबो ज्याला <strong>टेबलवरून किंवा कड्यावरून पडायचे नाही</strong>. खाली एक IR sensor बसवू —
+          जोपर्यंत खाली जमीन आहे, IR ची किरण परत येते (अडथळा) → रोबो पुढे चालत राहतो. जागा संपली (कडा) → IR ची किरण कुठेच आदळत नाही → रोबो थांबतो/वळतो.
+        </p>
+      </section>
+
+      <section id="concept">
+        <h2>२. मूळ कल्पना</h2>
+        <ul>
+          <li>रोबोच्या समोरील भागाला खाली पाहणारा IR Obstacle sensor लावा (4-5 cm उंचीवर).</li>
+          <li>जमीन = अडथळा = OUT पिन LOW.</li>
+          <li>कडा / खाली जागा नाही = OUT पिन HIGH → रोबो थांबा / मागे वळा.</li>
+        </ul>
+        <div class="callout info">
+          <strong>‘Cliff’ म्हणजे?</strong>
+          टेबलचा कडा, पायऱ्यांची सुरुवात, गच्चीचा कडा — कोणतीही जागा जिथे पुढे खोली आहे.
+        </div>
+      </section>
+
+      <section id="parts">
+        <h2>३. साहित्य</h2>
+        <ul>
+          <li>Arduino UNO</li>
+          <li>2-व्हील रोबो चेसिस (बॅटरी होल्डर सहित)</li>
+          <li>L293D मोटर ड्रायव्हर IC (किंवा L298N मॉड्यूल)</li>
+          <li>IR Obstacle Sensor × १ (खाली पाहणारा)</li>
+          <li>4 × AA बॅटरी (6V)</li>
+          <li>लाल LED + 220Ω (वार्निंग)</li>
+        </ul>
+      </section>
+
+      <section id="pins">
+        <h2>४. पिन कनेक्शन</h2>
+        <table class="syntax-table pin-table">
+          <thead><tr><th>घटक</th><th>घटकाचा पिन</th><th>Arduino पिन</th></tr></thead>
+          <tbody>
+            <tr><td>IR (खाली)</td><td>OUT</td><td><code>D2</code></td></tr>
+            <tr><td>L293D</td><td>IN1, IN2</td><td><code>D5, D6</code></td></tr>
+            <tr><td>L293D</td><td>IN3, IN4</td><td><code>D9, D10</code></td></tr>
+            <tr><td>L293D</td><td>EN1, EN2</td><td><code>D3, D11</code> (PWM)</td></tr>
+            <tr><td>Warning LED</td><td>+ (220Ω)</td><td><code>D13</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="circuit">
+        <h2>५. सर्किट आकृती</h2>
+        <pre class="code-block">         Arduino                  L293D
+       ┌─────────┐             ┌──────────┐
+   D3 ─┤EN1      │             │       OUT1├── Left motor +
+   D5 ─┤IN1      │   ───────►  │       OUT2├── Left motor -
+   D6 ─┤IN2      │             │       OUT3├── Right motor +
+   D9 ─┤IN3      │             │       OUT4├── Right motor -
+  D10 ─┤IN4      │             │           │
+  D11 ─┤EN2      │             │ VCC2 (6V) ←── बॅटरी
+       └─────────┘             └──────────┘
+
+   D2  ←── IR (खाली पाहणारा) OUT</pre>
+      </section>
+
+      <section id="code">
+        <h2>६. Arduino कोड</h2>
+        <pre class="code-block">/* प्रकल्प १८ — Cliff Avoiding Robot
+   Azone Academy • Appaji Patil */
+
+const int IR_DOWN = 2;
+const int EN1=3, IN1=5, IN2=6;     // डावी मोटर
+const int EN2=11, IN3=9, IN4=10;   // उजवी मोटर
+const int LED = 13;
+const int SPEED = 180;             // 0 – 255
+
+void setup() {
+  pinMode(IR_DOWN, INPUT);
+  pinMode(LED, OUTPUT);
+  int outs[] = {EN1, IN1, IN2, EN2, IN3, IN4};
+  for (int p : outs) pinMode(p, OUTPUT);
+  analogWrite(EN1, SPEED);
+  analogWrite(EN2, SPEED);
+  Serial.begin(9600);
+}
+
+void forward() {
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
+}
+void stopBot() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, LOW);
+}
+void backward() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);
+}
+void turnLeft() {
+  digitalWrite(IN1, LOW);  digitalWrite(IN2, HIGH);
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
+}
+
+void loop() {
+  int cliff = digitalRead(IR_DOWN);
+
+  if (cliff == HIGH) {       // खाली जमीन नाही = कडा!
+    digitalWrite(LED, HIGH);
+    Serial.println("⚠ कडा!");
+    stopBot();      delay(200);
+    backward();     delay(500);
+    turnLeft();     delay(500);
+  } else {
+    digitalWrite(LED, LOW);
+    forward();
+  }
+}</pre>
+      </section>
+
+      <section id="explain">
+        <h2>७. कोडचे विश्लेषण</h2>
+        <ul>
+          <li><code>forward / stopBot / backward / turnLeft</code> — चार लहान फंक्शन्स; पुनःवापर सोपा होतो.</li>
+          <li><code>analogWrite(EN1, SPEED)</code> — मोटरचा वेग; EN पिन PWM साठी आहे.</li>
+          <li><code>cliff == HIGH</code> — IR ने अडथळा (जमीन) दिसत नाही म्हणजे कडा.</li>
+          <li><code>delay()</code> सोबत reverse + turn — कडा पासून दूर हलते.</li>
+        </ul>
+      </section>
+
+      <section id="sim">
+        <h2>८. हँड्स-ऑन सिम्युलेशन</h2>
+        <p>"उंची" स्लायडर — रोबोखालील जमिनीपासूनचे अंतर. उंची थ्रेशोल्डपेक्षा जास्त = कडा.</p>
+
+        <div class="lab" id="lab-cliff">
+          <div class="lab-head"><h4>लॅब १८.१ — Cliff Avoiding</h4><span class="lab-badge">सिम्युलेशन</span></div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div class="bot" style="font-size:64px;transition:transform .3s;">🤖</div>
+                <div class="led" data-name="led" style="width:24px;height:24px;margin-top:6px;"></div>
+                <div class="out-status mt-2" style="font-weight:600;color:var(--accent);"></div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>खाली अंतर (cm)</label>
+                  <input type="range" data-name="height" min="0" max="30" value="5" />
+                  <span class="val" data-for="height">5</span>
+                </div>
+                <div class="row">
+                  <label>थ्रेशोल्ड (cm)</label>
+                  <input type="range" data-name="th" min="3" max="20" value="10" />
+                  <span class="val" data-for="th">10</span>
+                </div>
+                <div class="pin-state">
+                  <div>IR-down (D2)</div><div data-pin="IR-down"></div>
+                  <div>L-motor</div><div data-pin="Left motor"></div>
+                  <div>R-motor</div><div data-pin="Right motor"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trouble">
+        <h2>९. समस्यानिवारण</h2>
+        <ul>
+          <li>रोबो थांबतच नाही — IR sensor खाली नाही, समोर लागलेला आहे. <em>खाली</em> 4-5 cm वर fix करा.</li>
+          <li>हलक्या/कागदी रंगाच्या टेबलवर खोटे "कडा" — IR ची संवेदनशीलता कमी करा.</li>
+          <li>मोटर्स फिरत नाहीत — बॅटरी कमी असू शकते (4 AA = 6V हवे, ‘used’ नकोत).</li>
+        </ul>
+      </section>
+
+      <section id="extend">
+        <h2>१०. अधिक करा</h2>
+        <ul>
+          <li>२ IR sensors (डावा/उजवा) — कोणत्या बाजूचा कडा आहे ते ओळखून त्या उलट दिशेने वळा.</li>
+          <li>Ultrasonic + Cliff दोन्ही जोडून पूर्ण obstacle avoiding रोबो.</li>
+          <li>Buzzer सहित ‘चेतावणी’ संगीत.</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>११. चाचणी</h2>
+        <div class="quiz" id="quiz-10">
+          <div class="q" data-answer="b" data-answer-text="ब. IR ची किरण परावर्तित होत नाही म्हणून OUT = HIGH">
+            <p>१) कडा आल्यावर IR sensor काय करतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. आवाज करतो</label>
+              <label><input type="radio" name="q1" value="b" /> ब. IR ची किरण परावर्तित होत नाही म्हणून OUT = HIGH</label>
+              <label><input type="radio" name="q1" value="c" /> क. analog मूल्य देतो</label>
+              <label><input type="radio" name="q1" value="d" /> ड. analogWrite वापरतो</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. EN1, EN2">
+            <p>२) L293D चे कोणते पिन PWM (वेग) साठी आहेत?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. IN1, IN2</label>
+              <label><input type="radio" name="q2" value="b" /> ब. VCC1, VCC2</label>
+              <label><input type="radio" name="q2" value="c" /> क. EN1, EN2</label>
+              <label><input type="radio" name="q2" value="d" /> ड. GND, OUT</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="a" data-answer-text="अ. IN1=LOW, IN2=HIGH, IN3=LOW, IN4=HIGH">
+            <p>३) रोबो मागे न्यायचा असेल तर पिन्स कशा सेट कराव्यात?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. IN1=LOW, IN2=HIGH, IN3=LOW, IN4=HIGH</label>
+              <label><input type="radio" name="q3" value="b" /> ब. IN1=HIGH, IN2=HIGH, IN3=HIGH, IN4=HIGH</label>
+              <label><input type="radio" name="q3" value="c" /> क. EN1=LOW, EN2=LOW</label>
+              <label><input type="radio" name="q3" value="d" /> ड. सर्व पिन्स LOW</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-10')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+
+        <button id="doneBtn" class="btn mt-3" onclick="markChapterDone('ch10')">✓ प्रकल्प ३ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter09.html"><small>← मागे</small>प्रकल्प १७</a>
+        <a href="chapter11.html"><small>पुढे →</small>प्रकल्प १९: Line Follower</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initCliffLab("lab-cliff"));</script>
+</body>
+</html>

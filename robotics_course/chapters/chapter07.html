@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ७: Arduino — पहिले पाऊल | Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#what">Arduino म्हणजे काय?</a></li>
+        <li><a href="#board">UNO बोर्डची ओळख</a></li>
+        <li><a href="#ide">Arduino IDE</a></li>
+        <li><a href="#structure">प्रोग्रामची रचना</a></li>
+        <li><a href="#funcs">मूलभूत फंक्शन्स</a></li>
+        <li><a href="#serial">Serial Monitor</a></li>
+        <li><a href="#blink">पहिला प्रोग्राम: Blink</a></li>
+        <li><a href="#lab">लॅब: Blink ट्रेस</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ७: Arduino — पहिले पाऊल</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil</div>
+
+      <section id="what">
+        <h2>१. Arduino म्हणजे काय?</h2>
+        <p>
+          <strong>Arduino</strong> ही एक मुक्त-स्रोत (Open Source) इलेक्ट्रॉनिक प्रोटोटाइप प्लॅटफॉर्म आहे. एका छोट्या PCB बोर्डवर मायक्रोकंट्रोलर बसवलेला असतो. विद्यार्थी, हौशी आणि उद्योग — सर्व ह्याचा वापर करतात कारण:
+        </p>
+        <ul>
+          <li>स्वस्त (₹५०० पासून)</li>
+          <li>शिकायला सोपी भाषा (C/C++ आधारित, पण सरल)</li>
+          <li>हजारो लायब्ररी मोफत</li>
+          <li>USB ने थेट प्रोग्राम अपलोड</li>
+        </ul>
+      </section>
+
+      <section id="board">
+        <h2>२. Arduino UNO ची ओळख</h2>
+        <p>आपण कोर्समध्ये <strong>Arduino UNO R3</strong> वापरणार आहोत.</p>
+
+        <table class="syntax-table">
+          <thead><tr><th>भाग</th><th>वर्णन</th></tr></thead>
+          <tbody>
+            <tr><td>मायक्रोकंट्रोलर</td><td>ATmega328P (८-बिट, १६ MHz)</td></tr>
+            <tr><td>डिजिटल पिन्स</td><td>0 – 13 (एकूण १४); पैकी 3, 5, 6, 9, 10, 11 PWM</td></tr>
+            <tr><td>अ‍ॅनालॉग पिन्स</td><td>A0 – A5 (एकूण ६)</td></tr>
+            <tr><td>व्होल्टेज</td><td>5V लॉजिक</td></tr>
+            <tr><td>USB</td><td>संगणकाशी जोडण्यासाठी (टाइप B)</td></tr>
+            <tr><td>DC जॅक</td><td>7V – 12V बॅटरी / अ‍ॅडॉप्टर</td></tr>
+            <tr><td>RESET बटण</td><td>प्रोग्राम परत सुरूवातीपासून चालू करते</td></tr>
+            <tr><td>L बटण</td><td>पिन 13 शी जोडलेला LED (Blink साठी आदर्श)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="ide">
+        <h2>३. Arduino IDE (Integrated Development Environment)</h2>
+        <p>
+          Arduino साठी कोड लिहायचा सॉफ्टवेअर — <strong>arduino.cc</strong> वरून मोफत डाउनलोड करा.
+          स्थापना नंतर:
+        </p>
+        <ol>
+          <li>Arduino USB ने जोडा.</li>
+          <li>मेनू: <code class="inline">Tools → Board → Arduino UNO</code>.</li>
+          <li>मेनू: <code class="inline">Tools → Port → COM3 (किंवा जो दिसेल)</code>.</li>
+          <li>कोड लिहा → ✓ Verify (कंपाइल) → → Upload.</li>
+        </ol>
+        <div class="callout tip">
+          <strong>पर्याय: Online IDE</strong>
+          ब्राउझरमध्ये थेट चालणारी <a href="https://www.tinkercad.com/circuits" target="_blank">Tinkercad Circuits</a> — Arduino + सर्किट दोन्ही ऑनलाइन सिम्युलेट करता येतात.
+        </div>
+      </section>
+
+      <section id="structure">
+        <h2>४. Arduino प्रोग्रामची रचना</h2>
+        <p>प्रत्येक Arduino प्रोग्राम (sketch) मध्ये २ अनिवार्य फंक्शन्स असतात:</p>
+        <pre class="code-block">void setup() {
+  // एकदाच चालते — सुरुवातीला
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  // सतत पुनःपुन्हा चालते
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+}</pre>
+
+        <ul>
+          <li><code class="inline">setup()</code> — पिन्स कोणते इनपुट/आउटपुट, सिरीयल सुरू करणे, इ.</li>
+          <li><code class="inline">loop()</code> — मुख्य काम जे रोबोला सतत करायचे आहे.</li>
+        </ul>
+      </section>
+
+      <section id="funcs">
+        <h2>५. मूलभूत फंक्शन्स</h2>
+        <table class="syntax-table">
+          <thead><tr><th>फंक्शन</th><th>काम</th><th>उदाहरण</th></tr></thead>
+          <tbody>
+            <tr><td><code>pinMode(p, mode)</code></td><td>पिन INPUT / OUTPUT / INPUT_PULLUP</td><td><code>pinMode(13, OUTPUT);</code></td></tr>
+            <tr><td><code>digitalWrite(p, v)</code></td><td>पिनला HIGH किंवा LOW</td><td><code>digitalWrite(13, HIGH);</code></td></tr>
+            <tr><td><code>digitalRead(p)</code></td><td>पिनवरील डिजिटल मूल्य</td><td><code>int s = digitalRead(2);</code></td></tr>
+            <tr><td><code>analogWrite(p, v)</code></td><td>PWM 0–255</td><td><code>analogWrite(5, 128);</code></td></tr>
+            <tr><td><code>analogRead(p)</code></td><td>0–1023</td><td><code>int v = analogRead(A0);</code></td></tr>
+            <tr><td><code>delay(ms)</code></td><td>एवढी मिलिसेकंद थांबा</td><td><code>delay(500);</code></td></tr>
+            <tr><td><code>Serial.begin(b)</code></td><td>सिरीयल कम्युनिकेशन सुरू</td><td><code>Serial.begin(9600);</code></td></tr>
+            <tr><td><code>Serial.println(x)</code></td><td>मूल्य Serial Monitor वर पाठवा</td><td><code>Serial.println(v);</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="serial">
+        <h2>६. Serial Monitor — डीबग करण्याचा मित्र</h2>
+        <p>तुमचा सेन्सर काय मूल्य देतोय हे डोळ्यांनी पाहायचे असेल तर Serial Monitor वापरा.</p>
+        <pre class="code-block">void setup() {
+  Serial.begin(9600);
+}
+void loop() {
+  int v = analogRead(A0);
+  Serial.print("LDR मूल्य: ");
+  Serial.println(v);
+  delay(500);
+}</pre>
+        <p>Arduino IDE मध्ये <code class="inline">Tools → Serial Monitor</code> (Ctrl + Shift + M) उघडा. ९६०० baud निवडा.</p>
+      </section>
+
+      <section id="blink">
+        <h2>७. पहिला प्रोग्राम: Blink</h2>
+        <p>Arduino च्या प्रत्येक प्रोग्रामरचा <em>Hello World</em>.</p>
+        <pre class="code-block">// Blink — LED चालू-बंद
+// Azone Academy / Appaji Patil
+
+int LED = 13;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(LED, HIGH);  // चालू
+  delay(500);               // ०.५ सेकंद
+  digitalWrite(LED, LOW);   // बंद
+  delay(500);
+}</pre>
+      </section>
+
+      <section id="lab">
+        <h2>८. हँड्स-ऑन लॅब: Blink ट्रेस</h2>
+        <p>delay बदला, Start दाबा — आणि Serial Monitor सारखा आउटपुट कसा दिसेल ते पाहा.</p>
+
+        <div class="lab" id="lab-blink">
+          <div class="lab-head">
+            <h4>लॅब ७.१ — Blink सिम्युलेटर</h4>
+            <span class="lab-badge">Arduino ट्रेस</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div class="led" data-name="led" style="width:64px;height:64px;"></div>
+                <div class="mt-2 text-muted" style="font-size:13px;">pin 13 — onboard LED</div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>delay (ms)</label>
+                  <input type="number" data-name="delay" min="50" max="2000" step="50" value="500" />
+                </div>
+                <div class="lab-toolbar">
+                  <button class="btn primary" data-act="start">▶ सुरू</button>
+                  <button class="btn" data-act="stop">⏹ थांब</button>
+                  <span class="run-status"></span>
+                </div>
+                <pre class="code-block" style="margin-top:10px;font-size:12px;">void loop() {
+  digitalWrite(13, HIGH);
+  delay(<i>?</i>);
+  digitalWrite(13, LOW);
+  delay(<i>?</i>);
+}</pre>
+              </div>
+            </div>
+            <pre class="lab-output"></pre>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li>delay = 100 ms असेल तर LED मानवी डोळ्याला कसे दिसते?</li>
+          <li>delay = 1000 आणि delay = 200 असे विषम वेळ ठेवले तर?</li>
+          <li>analogWrite(13, 128) ने काय होईल?</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>९. चाचणी</h2>
+        <div class="quiz" id="quiz-7">
+          <div class="q" data-answer="b" data-answer-text="ब. setup() आणि loop()">
+            <p>१) Arduino प्रोग्रामची मुख्य दोन फंक्शन्स कोणती?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. main() आणि exit()</label>
+              <label><input type="radio" name="q1" value="b" /> ब. setup() आणि loop()</label>
+              <label><input type="radio" name="q1" value="c" /> क. start() आणि end()</label>
+              <label><input type="radio" name="q1" value="d" /> ड. begin() आणि finish()</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. pinMode(13, OUTPUT);">
+            <p>२) पिन १३ ला आउटपुट म्हणून सेट करायचे असेल तर?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. digitalWrite(13, OUTPUT);</label>
+              <label><input type="radio" name="q2" value="b" /> ब. setPin(13, OUTPUT);</label>
+              <label><input type="radio" name="q2" value="c" /> क. pinMode(13, OUTPUT);</label>
+              <label><input type="radio" name="q2" value="d" /> ड. mode(13) = OUTPUT;</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="d" data-answer-text="ड. १,००० मिलिसेकंद = १ सेकंद थांबते">
+            <p>३) <code>delay(1000)</code> चे काम काय?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. 1000 सेकंद थांबते</label>
+              <label><input type="radio" name="q3" value="b" /> ब. 1000 मायक्रोसेकंद थांबते</label>
+              <label><input type="radio" name="q3" value="c" /> क. १००० वेळा loop चालवते</label>
+              <label><input type="radio" name="q3" value="d" /> ड. १,००० मिलिसेकंद = १ सेकंद थांबते</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-7')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>१०. सारांश</h2>
+        <ul>
+          <li>Arduino UNO — १४ डिजिटल + ६ अ‍ॅनालॉग पिन्स, 5V लॉजिक.</li>
+          <li>प्रत्येक प्रोग्राम = setup() (एकदा) + loop() (सतत).</li>
+          <li>मूळ फंक्शन्स: pinMode, digital/analog Read/Write, delay, Serial.</li>
+          <li>Blink = Arduino चा Hello World.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch07')">✓ धडा ७ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter06.html"><small>← मागे</small>धडा ६</a>
+        <a href="chapter08.html"><small>पुढे →</small>प्रकल्प १ — Tilt Sensor</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initBlinkTraceLab("lab-blink"));</script>
+</body>
+</html>

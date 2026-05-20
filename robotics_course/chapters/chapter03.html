@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ३: विद्युत व ओहमचा नियम — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#what">विद्युत म्हणजे काय?</a></li>
+        <li><a href="#vir">V, I, R</a></li>
+        <li><a href="#ohm">ओहमचा नियम</a></li>
+        <li><a href="#power">पॉवर (Watt)</a></li>
+        <li><a href="#series">सिरीज व समांतर</a></li>
+        <li><a href="#dcac">DC वि. AC</a></li>
+        <li><a href="#lab">लॅब: Ohm’s Law कॅल्क्युलेटर</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ३: विद्युत व ओहमचा नियम</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil</div>
+
+      <section id="what">
+        <h2>१. विद्युत म्हणजे काय?</h2>
+        <p>
+          विद्युत म्हणजे <strong>इलेक्ट्रॉन्सचा प्रवाह</strong>. ज्याप्रमाणे नदीतून पाणी वाहते, त्याच प्रमाणे तारेतून इलेक्ट्रॉन्स वाहतात — आणि त्यांच्यामुळेच आपले सर्व सर्किट चालते.
+        </p>
+        <div class="callout tip">
+          <strong>पाणी-सादृश्य (Water Analogy)</strong>
+          सर्किट समजायला सर्वात सोपा मार्ग — पाण्याच्या नळींची कल्पना करा.
+          <ul style="margin:6px 0 0;">
+            <li><strong>व्होल्ट (V) — पाण्याचा दबाव.</strong> टाकी जितकी उंच, तितका दबाव जास्त.</li>
+            <li><strong>अँपिअर (I) — पाण्याचा प्रवाह.</strong> नळीतून प्रत्येक सेकंदाला किती पाणी जाते?</li>
+            <li><strong>रेझिस्टन्स (R) — नळीची रुंदी.</strong> रुंदी कमी, तर प्रवाह कमी.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="vir">
+        <h2>२. V, I, R — मूलभूत राशी</h2>
+        <table class="syntax-table">
+          <thead><tr><th>राशी</th><th>मराठी अर्थ</th><th>एकक</th><th>चिन्ह</th></tr></thead>
+          <tbody>
+            <tr><td>Voltage (V)</td><td>विद्युत दाब</td><td>व्होल्ट (V)</td><td>V</td></tr>
+            <tr><td>Current (I)</td><td>विद्युत प्रवाह</td><td>अँपिअर (A)</td><td>I</td></tr>
+            <tr><td>Resistance (R)</td><td>विद्युत रोध</td><td>ओहम (Ω)</td><td>R</td></tr>
+            <tr><td>Power (P)</td><td>शक्ती</td><td>वॅट (W)</td><td>P</td></tr>
+          </tbody>
+        </table>
+        <div class="callout info">
+          <strong>लहान एकके</strong>
+          1 mA = 0.001 A &nbsp;|&nbsp; 1 kΩ = 1000 Ω &nbsp;|&nbsp; 1 MΩ = 1,000,000 Ω
+        </div>
+      </section>
+
+      <section id="ohm">
+        <h2>३. ओहमचा नियम (Ohm’s Law)</h2>
+        <p>विद्युत सर्किटचा सर्वात महत्त्वाचा नियम:</p>
+        <pre class="code-block">V = I × R
+
+जिथे —
+  V = व्होल्टेज (Volt)
+  I = करंट (Amp)
+  R = रेझिस्टन्स (Ohm)</pre>
+        <p>ह्या एकाच सूत्रावरून तिन्ही गोष्टी काढता येतात:</p>
+        <pre class="code-block">I = V / R   (करंट काढायला)
+R = V / I   (रोध काढायला)</pre>
+
+        <h3>उदाहरण</h3>
+        <p>5V बॅटरीला 220 Ω रेझिस्टर लावला, तर करंट किती?</p>
+        <pre class="code-block">I = V / R = 5 / 220 = 0.0227 A = 22.7 mA</pre>
+        <p>हे LED साठी अगदी सुरक्षित प्रवाह आहे. म्हणूनच Arduino + LED ला आपण <strong>220 Ω</strong> रेझिस्टर लावतो.</p>
+      </section>
+
+      <section id="power">
+        <h2>४. पॉवर (शक्ती)</h2>
+        <pre class="code-block">P = V × I    (वॅट मध्ये)</pre>
+        <p>उदा. 5V × 0.02 A = 0.1 W = 100 mW. म्हणजे LED 0.1 वॅट शक्ती वापरतो.</p>
+        <div class="callout warn">
+          <strong>लक्षात ठेवा</strong>
+          एखादा घटक त्याच्या रेटिंगपेक्षा जास्त पॉवर वापरला तर तो जळून जातो. म्हणून रेझिस्टर लावणे महत्त्वाचे.
+        </div>
+      </section>
+
+      <section id="series">
+        <h2>५. सिरीज (Series) व समांतर (Parallel) जोडणी</h2>
+        <table class="syntax-table">
+          <thead><tr><th>जोडणी</th><th>व्होल्टेज</th><th>करंट</th><th>एकूण रोध</th></tr></thead>
+          <tbody>
+            <tr><td>सिरीज</td><td>व्होल्टेज विभागते</td><td>सर्वत्र समान</td><td>R₁ + R₂ + R₃</td></tr>
+            <tr><td>समांतर</td><td>व्होल्टेज समान</td><td>करंट विभागते</td><td>1 / (1/R₁ + 1/R₂)</td></tr>
+          </tbody>
+        </table>
+        <p>उदा. ३ AA बॅटरी सिरीजमध्ये जोडल्या तर 4.5V मिळते. (1.5 + 1.5 + 1.5)</p>
+      </section>
+
+      <section id="dcac">
+        <h2>६. DC (थेट प्रवाह) वि. AC (पर्यायी प्रवाह)</h2>
+        <ul>
+          <li><strong>DC</strong> — एकाच दिशेने वाहतो. बॅटरी, USB, Arduino — सर्व DC वर.</li>
+          <li><strong>AC</strong> — दिशा बदलणारा. आपल्या भिंतीचा 230V सॉकेट — AC.</li>
+        </ul>
+        <div class="callout danger">
+          <strong>सुरक्षितता</strong>
+          आपण ह्या कोर्समध्ये फक्त <strong>5V – 9V DC</strong> वापरणार. कधीही थेट 230V मेन्सशी प्रयोग करू नका. Relay वापरूनच मेन्स ऍप्लायन्सेस नियंत्रित करा.
+        </div>
+      </section>
+
+      <section id="lab">
+        <h2>७. हँड्स-ऑन लॅब: Ohm’s Law कॅल्क्युलेटर</h2>
+        <p>व्होल्टेज आणि रेझिस्टन्स बदला — करंट किती मिळतो आणि LED काय करतो ते पाहा.</p>
+
+        <div class="lab" id="lab-ohm">
+          <div class="lab-head">
+            <h4>लॅब ३.१ — Ohm’s Law सिम्युलेटर</h4>
+            <span class="lab-badge">इंटरॅक्टिव्ह</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div style="display:flex;align-items:center;gap:30px;flex-direction:column;">
+                  <div style="display:flex;align-items:center;gap:20px;">
+                    <div style="text-align:center;font-size:13px;color:var(--muted);">
+                      <div style="font-size:34px;">🔋</div>
+                      <div class="out-v" style="font-family:monospace;font-weight:600;color:var(--accent);">5 V</div>
+                    </div>
+                    <div style="font-size:24px;color:var(--muted);">→</div>
+                    <div style="text-align:center;font-size:13px;color:var(--muted);">
+                      <div style="font-size:34px;">▭</div>
+                      <div style="font-family:monospace;font-weight:600;color:var(--accent);">R</div>
+                    </div>
+                    <div style="font-size:24px;color:var(--muted);">→</div>
+                    <div class="led" data-name="led" style="width:48px;height:48px;"></div>
+                  </div>
+                  <div class="led-msg" style="font-size:13px;color:var(--muted);"></div>
+                </div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>व्होल्टेज V (V)</label>
+                  <input type="range" data-name="v" min="0" max="12" step="0.5" value="5" />
+                  <span class="val" data-for="v">5</span>
+                </div>
+                <div class="row">
+                  <label>रेझिस्टन्स R (Ω)</label>
+                  <input type="range" data-name="r" min="10" max="1000" step="10" value="220" />
+                  <span class="val" data-for="r">220</span>
+                </div>
+                <div class="pin-state">
+                  <div>करंट I (A)</div><div class="out-i"><b>—</b></div>
+                  <div>करंट (mA)</div><div class="out-i-ma"><b>—</b></div>
+                  <div>पॉवर P (W)</div><div class="out-p"><b>—</b></div>
+                </div>
+              </div>
+            </div>
+            <div class="lab-toolbar">
+              <button class="btn" onclick="resetLab('lab-ohm')">↺ डीफॉल्ट</button>
+              <span class="run-status"></span>
+            </div>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li>R = 100 Ω, V = 5V असेल तर I किती? — LED सुरक्षित आहे का?</li>
+          <li>LED ला किमान २० mA हवे — V = 5V असेल तर R किती असावा?</li>
+          <li>P = V × I — हे एकक कोणत्या भौतिक राशीचे आहे?</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>८. चाचणी</h2>
+        <div class="quiz" id="quiz-3">
+          <div class="q" data-answer="b" data-answer-text="ब. V = I × R">
+            <p>१) ओहमचा नियम कोणत्या सूत्राने दर्शवला जातो?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. V = I + R</label>
+              <label><input type="radio" name="q1" value="b" /> ब. V = I × R</label>
+              <label><input type="radio" name="q1" value="c" /> क. V = I / R</label>
+              <label><input type="radio" name="q1" value="d" /> ड. V = R / I</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. ओहम (Ω)">
+            <p>२) रेझिस्टन्सचे एकक कोणते?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. व्होल्ट</label>
+              <label><input type="radio" name="q2" value="b" /> ब. अँपिअर</label>
+              <label><input type="radio" name="q2" value="c" /> क. ओहम (Ω)</label>
+              <label><input type="radio" name="q2" value="d" /> ड. वॅट</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="a" data-answer-text="अ. 22.7 mA">
+            <p>३) V = 5V, R = 220 Ω असेल तर I किती?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. 22.7 mA</label>
+              <label><input type="radio" name="q3" value="b" /> ब. 1100 A</label>
+              <label><input type="radio" name="q3" value="c" /> क. 5 mA</label>
+              <label><input type="radio" name="q3" value="d" /> ड. 0.5 A</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-3')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>९. सारांश</h2>
+        <ul>
+          <li>विद्युत = इलेक्ट्रॉन्सचा प्रवाह. पाण्याची उपमा — दबाव (V), प्रवाह (I), रुंदी (R).</li>
+          <li>ओहमचा नियम: <code class="inline">V = I × R</code>. ह्या एकाच सूत्रातून तिन्ही राशी काढता येतात.</li>
+          <li>पॉवर: <code class="inline">P = V × I</code>.</li>
+          <li>आपण कोर्समध्ये फक्त 5V – 9V DC वापरू; मेन्सशी प्रयोग नाही.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch03')">✓ धडा ३ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter02.html"><small>← मागे</small>धडा २</a>
+        <a href="chapter04.html"><small>पुढे →</small>धडा ४: घटक व ब्रेडबोर्ड</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initOhmsLawLab("lab-ohm"));</script>
+</body>
+</html>

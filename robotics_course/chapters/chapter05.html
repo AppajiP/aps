@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ५: सेन्सर्सची ओळख — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#what">सेन्सर म्हणजे काय?</a></li>
+        <li><a href="#dva">डिजिटल वि. अ‍ॅनालॉग</a></li>
+        <li><a href="#ir">IR Obstacle</a></li>
+        <li><a href="#ldr">LDR</a></li>
+        <li><a href="#touch">Touch / Tilt</a></li>
+        <li><a href="#ultra">Ultrasonic</a></li>
+        <li><a href="#pir">PIR</a></li>
+        <li><a href="#lab">लॅब: सेन्सर एक्सप्लोरर</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ५: सेन्सर्सची ओळख</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil</div>
+
+      <section id="what">
+        <h2>१. सेन्सर म्हणजे काय?</h2>
+        <p>
+          <strong>सेन्सर</strong> म्हणजे आपल्या इंद्रियांप्रमाणे काम करणारे साधन — जे
+          भौतिक माहिती (प्रकाश, अंतर, स्पर्श, तापमान, हालचाल) <em>विद्युत संदेशात</em> रूपांतर करते.
+        </p>
+        <div class="callout tip">
+          <strong>उपमा</strong>
+          डोळे — कॅमेरा/LDR &nbsp;|&nbsp; कान — मायक्रोफोन &nbsp;|&nbsp; नाक — गॅस सेन्सर &nbsp;|&nbsp; त्वचा — टच/तापमान सेन्सर.
+        </div>
+      </section>
+
+      <section id="dva">
+        <h2>२. डिजिटल वि. अ‍ॅनालॉग सेन्सर</h2>
+        <table class="syntax-table">
+          <thead><tr><th>प्रकार</th><th>आउटपुट</th><th>Arduino फंक्शन</th><th>उदाहरण</th></tr></thead>
+          <tbody>
+            <tr><td>डिजिटल</td><td>फक्त HIGH (1) किंवा LOW (0)</td><td><code>digitalRead()</code></td><td>IR sensor, Touch, Tilt</td></tr>
+            <tr><td>अ‍ॅनालॉग</td><td>0 – 1023 (व्होल्टेज पातळी)</td><td><code>analogRead()</code></td><td>LDR, मातीमधील ओलसरपणा</td></tr>
+          </tbody>
+        </table>
+        <p>Arduino UNO चे <strong>A0 – A5</strong> हे अ‍ॅनालॉग इनपुट पिन्स आहेत; उरलेले डिजिटल इनपुट म्हणून वापरता येतात.</p>
+      </section>
+
+      <section id="ir">
+        <h2>३. IR Obstacle Sensor</h2>
+        <p>हा सेन्सर पुढे एक IR (इन्फ्रारेड) किरण फेकतो. समोर वस्तू असल्यास परावर्तन (reflection) होऊन रिसीव्हर पकडतो आणि आउटपुट <strong>LOW</strong> होतो.</p>
+        <ul>
+          <li>३ पिन: <code class="inline">VCC</code>, <code class="inline">GND</code>, <code class="inline">OUT</code>.</li>
+          <li>आउटपुट डिजिटल. अंतर पोटेन्शिओमीटरने अ‍ॅडजस्ट करता येते.</li>
+          <li>आपण ह्याला Tilt sensor म्हणून सुद्धा वापरू (प्रकल्प १६).</li>
+        </ul>
+      </section>
+
+      <section id="ldr">
+        <h2>४. LDR — Light Dependent Resistor</h2>
+        <p>उजेड वाढताच रेझिस्टन्स कमी होतो. अंधारात >१ MΩ; तेजस्वी उजेडात ~१ kΩ.</p>
+        <p>व्होल्टेज डिव्हायडर सर्किटसह वापरतात:</p>
+        <pre class="code-block">5V ─── LDR ─┬── A0 (analogRead)
+                  |
+                10 kΩ
+                  |
+                 GND</pre>
+        <p>उजेड वाढला → LDR चा रेझिस्टन्स कमी → A0 ची व्होल्टेज वाढते → analogRead() ची संख्या वाढते.</p>
+      </section>
+
+      <section id="touch">
+        <h2>५. Touch Sensor आणि Tilt Switch</h2>
+        <ul>
+          <li><strong>TTP223 Touch sensor</strong> — माणसाच्या बोटाच्या स्पर्शाने capacitance बदलते; आउटपुट HIGH होते.</li>
+          <li><strong>Tilt switch / Ball switch</strong> — आत एक धातूचा बॉल; कलला की कनेक्शन तुटतो/जुळतो. खूप सोपा डिजिटल सेन्सर.</li>
+        </ul>
+      </section>
+
+      <section id="ultra">
+        <h2>६. Ultrasonic Sensor (HC-SR04)</h2>
+        <p>अंतर मोजण्यासाठी — ध्वनी लहरी पाठवून परत येण्यासाठी लागणारा वेळ मोजतो.</p>
+        <pre class="code-block">अंतर (cm) = (वेळ × 0.0343) / 2</pre>
+        <ul>
+          <li>4 पिन: VCC, GND, TRIG (output), ECHO (input).</li>
+          <li>श्रेणी: 2 cm – 400 cm.</li>
+        </ul>
+      </section>
+
+      <section id="pir">
+        <h2>७. PIR Motion Sensor</h2>
+        <p>उष्ण शरीराची (माणूस/प्राणी) हालचाल ओळखतो. HC-SR501 हा सर्वात लोकप्रिय PIR मॉड्यूल.</p>
+        <ul>
+          <li>३ पिन: VCC, GND, OUT.</li>
+          <li>आउटपुट डिजिटल — हालचाल झाली की HIGH (काही सेकंदांसाठी).</li>
+          <li>सेन्सिटिव्हिटी आणि टाइम-डिले दोन्ही पोटेन्शिओमीटरने सेट होतात.</li>
+        </ul>
+      </section>
+
+      <section id="lab">
+        <h2>८. हँड्स-ऑन लॅब: सेन्सर एक्सप्लोरर</h2>
+        <p>सेन्सर निवडा, मूल्य बदला आणि analog/digital आउटपुट कसे बदलते ते पाहा.</p>
+
+        <div class="lab" id="lab-sensor">
+          <div class="lab-head">
+            <h4>लॅब ५.१ — सेन्सर वर्तन</h4>
+            <span class="lab-badge">सिम्युलेशन</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div style="width:100%;">
+                  <div class="text-center" style="font-size:14px;color:var(--muted);">सेन्सर पातळी</div>
+                  <div style="height:18px;background:var(--surface-2);border:1px solid var(--border);border-radius:9px;overflow:hidden;margin-top:8px;">
+                    <div class="sensor-bar" style="height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:50%;transition:width .15s ease;"></div>
+                  </div>
+                  <div class="text-center mt-2 out-meaning" style="font-weight:600;color:var(--accent);">—</div>
+                </div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>सेन्सरचा प्रकार</label>
+                  <select data-name="kind">
+                    <option value="ir">IR Obstacle</option>
+                    <option value="ldr" selected>LDR (उजेड)</option>
+                    <option value="touch">Touch</option>
+                    <option value="tilt">Tilt</option>
+                    <option value="ultra">Ultrasonic</option>
+                  </select>
+                </div>
+                <div class="row">
+                  <label>मूल्य (0–100)</label>
+                  <input type="range" data-name="val" min="0" max="100" value="50" />
+                  <span class="val" data-for="val">50</span>
+                </div>
+                <div class="row">
+                  <label>थ्रेशोल्ड</label>
+                  <input type="range" data-name="th" min="0" max="100" value="40" />
+                  <span class="val" data-for="th">40</span>
+                </div>
+                <div class="pin-state">
+                  <div>analogRead()</div><div><span class="out-analog">—</span></div>
+                  <div>digitalRead()</div><div><b><span class="out-digital">—</span></b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>स्वाध्याय</h3>
+        <ul>
+          <li>LDR मध्ये थ्रेशोल्ड ३० पर्यंत कमी केला तर "अंधार" केव्हा ओळखला जाईल?</li>
+          <li>IR आणि LDR दोघांचा digitalRead() सारखाच आहे का?</li>
+          <li>Arduino च्या कोणत्या पिनवर हे सेन्सर्स जोडले जातात?</li>
+        </ul>
+      </section>
+
+      <section id="quiz">
+        <h2>९. चाचणी</h2>
+        <div class="quiz" id="quiz-5">
+          <div class="q" data-answer="b" data-answer-text="ब. analogRead()">
+            <p>१) LDR सेन्सरचे मूल्य Arduino मध्ये वाचण्यासाठी कोणते फंक्शन वापरतात?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a" /> अ. digitalRead()</label>
+              <label><input type="radio" name="q1" value="b" /> ब. analogRead()</label>
+              <label><input type="radio" name="q1" value="c" /> क. analogWrite()</label>
+              <label><input type="radio" name="q1" value="d" /> ड. delay()</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="c" data-answer-text="क. 0 ते 1023">
+            <p>२) Arduino UNO चा analogRead() कोणत्या रेंजमध्ये मूल्य देतो?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a" /> अ. 0 ते 1</label>
+              <label><input type="radio" name="q2" value="b" /> ब. 0 ते 255</label>
+              <label><input type="radio" name="q2" value="c" /> क. 0 ते 1023</label>
+              <label><input type="radio" name="q2" value="d" /> ड. 0 ते 9999</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <div class="q" data-answer="d" data-answer-text="ड. IR Obstacle Sensor">
+            <p>३) समोर अडथळा आल्यावर OUT पिन LOW करणारा सेन्सर कोणता?</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a" /> अ. LDR</label>
+              <label><input type="radio" name="q3" value="b" /> ब. PIR</label>
+              <label><input type="radio" name="q3" value="c" /> क. Touch sensor</label>
+              <label><input type="radio" name="q3" value="d" /> ड. IR Obstacle Sensor</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+
+          <button class="btn primary" onclick="checkQuiz('quiz-5')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>१०. सारांश</h2>
+        <ul>
+          <li>सेन्सर = भौतिक माहिती → विद्युत संदेश.</li>
+          <li>डिजिटल (HIGH/LOW) किंवा अ‍ॅनालॉग (0–1023).</li>
+          <li>IR — अडथळा, LDR — उजेड, Touch — स्पर्श, Ultrasonic — अंतर, PIR — हालचाल.</li>
+          <li>Arduino: <code class="inline">digitalRead()</code> आणि <code class="inline">analogRead()</code>.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch05')">✓ धडा ५ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter04.html"><small>← मागे</small>धडा ४</a>
+        <a href="chapter06.html"><small>पुढे →</small>धडा ६: अ‍ॅक्ट्युएटर्स</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initSensorLab("lab-sensor"));</script>
+</body>
+</html>
