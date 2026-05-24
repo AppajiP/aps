@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा १२: साधी यंत्रे — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .beam { width: 220px; height: 8px; background: linear-gradient(90deg, #60a5fa, #f59e0b); border-radius: 4px; position: relative; transition: transform .4s ease; }
+    .beam::before { content: "▲"; position: absolute; left: 50%; top: 8px; transform: translateX(-50%); color: var(--accent); font-size: 22px; }
+    .lever-msg { margin-top: 30px; font-size: 13px; color: var(--muted); text-align: center; }
+  </style>
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#intro">यंत्र म्हणजे काय?</a></li>
+        <li><a href="#why">साधी यंत्रे का?</a></li>
+        <li><a href="#lever">तरफ (Lever)</a></li>
+        <li><a href="#incline">कलथा (Inclined Plane)</a></li>
+        <li><a href="#wedge">कीलक / पाचर (Wedge)</a></li>
+        <li><a href="#screw">स्क्रू (Screw)</a></li>
+        <li><a href="#pulley">चक्र (Pulley)</a></li>
+        <li><a href="#wheel">चक्राक्ष (Wheel & Axle)</a></li>
+        <li><a href="#ma">यांत्रिक लाभ</a></li>
+        <li><a href="#lab1">PhET लॅब</a></li>
+        <li><a href="#lab2">मिनी सिम — तरफ</a></li>
+        <li><a href="#swadhyay">स्वाध्याय</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा १२: साधी यंत्रे</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil</div>
+
+      <section id="intro">
+        <h2>१. यंत्र (Machine) म्हणजे काय?</h2>
+        <p>कार्य सोपे करणाऱ्या प्रत्येक उपकरणाला यंत्र म्हणतात. आपण रोज वापरतो ती कात्री, चिमटा, सायकल, झाडू — सर्व यंत्रे आहेत.</p>
+        <ul>
+          <li><strong>साधी यंत्रे</strong> — फक्त एका कृतीवर चालणारी; भाग कमी. उदा. कात्री (२ चाकू + एक धुरी).</li>
+          <li><strong>संयुक्त यंत्रे</strong> — अनेक साध्या यंत्रांचे मिश्रण. उदा. सायकल, घड्याळ, मिक्सर.</li>
+        </ul>
+      </section>
+
+      <section id="why">
+        <h2>२. साधी यंत्रे का वापरतो?</h2>
+        <ol>
+          <li>कमी बलाने जास्त भार उचलायला (उदा. तरफ).</li>
+          <li>बलाची दिशा बदलायला (उदा. विहीरचे रहाट — खाली ओढून पाणी वर येते).</li>
+          <li>कार्य लवकर / अंतर वेगाने करायला.</li>
+          <li>शरीराची मेहनत कमी होते.</li>
+        </ol>
+      </section>
+
+      <section id="lever">
+        <h2>३. तरफ (Lever)</h2>
+        <p>एका <strong>टेकूवर</strong> फिरणारी कठीण पट्टी. तीन घटक — टेकू (Fulcrum), भार (Load), प्रयुक्त बल (Effort).</p>
+        <h3>तरफेचे तीन प्रकार</h3>
+        <table class="syntax-table">
+          <thead><tr><th>प्रकार</th><th>मांडणी</th><th>उदाहरण</th></tr></thead>
+          <tbody>
+            <tr><td>१ ला प्रकार</td><td>टेकू मधे; भार व बल दोन टोकांना</td><td>कात्री, खिळा-काढणी, सी-सॉ</td></tr>
+            <tr><td>२ रा प्रकार</td><td>भार मधे; टेकू व बल टोकांना</td><td>ठेल्याची हातगाडी, बाटली-उघडणी</td></tr>
+            <tr><td>३ रा प्रकार</td><td>बल मधे; टेकू व भार टोकांना</td><td>चिमटा, स्टेपलर, मनुष्याचा हात</td></tr>
+          </tbody>
+        </table>
+        <pre class="code-block">तरफेचा नियम (समतोल):
+प्रयुक्त बल (E) × बल अंतर (eA)  =  भार (L) × भार अंतर (lA)</pre>
+      </section>
+
+      <section id="incline">
+        <h2>४. कलथा (Inclined Plane)</h2>
+        <p>तिरपा सपाट पाट. भार सरळ वर उचलण्यापेक्षा तिरप्या मार्गाने वर सरकवणे सोपे — पण अंतर वाढते.</p>
+        <p><strong>उदाहरण:</strong> घराचा रॅम्प, डोंगरावर जायचा वळणाचा रस्ता, घाट.</p>
+      </section>
+
+      <section id="wedge">
+        <h2>५. कीलक / पाचर (Wedge)</h2>
+        <p>दोन कलथे एकत्र जोडलेले — पातळ टोक एका बाजूला. वस्तू कापायला / फाडायला.</p>
+        <p><strong>उदाहरण:</strong> कुऱ्हाडी, सुरी, खिळा, दात (आपले समोरचे दात!).</p>
+      </section>
+
+      <section id="screw">
+        <h2>६. स्क्रू (Screw)</h2>
+        <p>दंडावर गुंडाळलेली कलथ्याची पट्टी (Inclined plane wrapped around a cylinder). फिरवल्याने आत जातो.</p>
+        <p><strong>उदाहरण:</strong> स्क्रू, बोल्ट, झाकणाची बाटली, घराचे जिने (वर्तुळाकार).</p>
+      </section>
+
+      <section id="pulley">
+        <h2>७. चक्र (Pulley)</h2>
+        <p>खोबणी असलेले चक्र — त्यावरून दोरी जाते. खाली ओढले की वजन वर येते — बलाची <strong>दिशा बदलते</strong>.</p>
+        <ul>
+          <li><strong>स्थिर चक्र</strong> (Fixed) — फक्त दिशा बदलते. उदा. विहीरचे रहाट.</li>
+          <li><strong>हलणारे चक्र</strong> (Movable) — बल कमी लागते (अंतर वाढते).</li>
+          <li><strong>संयुक्त चक्र-पुली</strong> — एकाहून अधिक चक्रे; मोठा भार लहान बलाने.</li>
+        </ul>
+      </section>
+
+      <section id="wheel">
+        <h2>८. चक्राक्ष (Wheel and Axle)</h2>
+        <p>मोठ्या चक्राच्या केंद्राशी जोडलेला छोटा दंड (अक्ष). मोठ्या चक्राला थोडे बल लावले की अक्षाला मोठे बल मिळते.</p>
+        <p><strong>उदाहरण:</strong> सायकल, गाडीचे चाक, स्क्रूड्रायव्हर, पंखा, दरवाजाची मूठ.</p>
+      </section>
+
+      <section id="ma">
+        <h2>९. यांत्रिक लाभ (Mechanical Advantage)</h2>
+        <pre class="code-block">यांत्रिक लाभ (MA) = भार / प्रयुक्त बल
+
+MA > १  →  कमी बलाने मोठा भार
+MA = १  →  बल = भार (फक्त दिशा बदलते)
+MA < १  →  जास्त बल पण वेग वा अंतर वाढते</pre>
+        <p><strong>उदा.</strong> ५० N बल लावून २०० N चे ओझे उचलले, तर MA = २०० / ५० = ४.</p>
+      </section>
+
+      <section id="lab1">
+        <h2>१०. PhET लॅब — Balancing Act</h2>
+        <div class="lab" id="lab-bal">
+          <div class="lab-head">
+            <h4>लॅब १२.१ — तरफेचा समतोल (PhET)</h4>
+            <span class="lab-badge">PhET • HTML5</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim-meta">
+              <a href="https://phet.colorado.edu/sims/html/balancing-act/latest/balancing-act_en.html" target="_blank" rel="noopener">PhET — Balancing Act</a>
+            </div>
+            <div class="sim-frame aspect-16x9">
+              <iframe src="https://phet.colorado.edu/sims/html/balancing-act/latest/balancing-act_en.html"
+                      allowfullscreen title="PhET Balancing Act"></iframe>
+            </div>
+            <ul class="lab-steps">
+              <li>"Intro" टॅब — समान वजने दोन्ही बाजू एकाच अंतरावर ठेवा. समतोल.</li>
+              <li>अंतर वाढवा / कमी करा — हलक्या वजनाने जड वजन कसे संतुलित करावे?</li>
+              <li>नियम: <em>E × eA = L × lA</em>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab2">
+        <h2>११. मिनी सिम — तरफेचा यांत्रिक लाभ</h2>
+        <div class="lab" id="lab-lever">
+          <div class="lab-head">
+            <h4>लॅब १२.२ — तरफ कॅल्क्युलेटर</h4>
+            <span class="lab-badge">इंटरॅक्टिव्ह</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div class="beam"></div>
+                <div class="lever-msg"></div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>भार L (N)</label>
+                  <input type="range" data-name="load" min="10" max="200" step="10" value="100" />
+                  <span class="val" data-for="load">100</span>
+                </div>
+                <div class="row">
+                  <label>भार अंतर (lA)</label>
+                  <input type="range" data-name="larm" min="1" max="10" step="1" value="2" />
+                  <span class="val" data-for="larm">2</span>
+                </div>
+                <div class="row">
+                  <label>बल अंतर (eA)</label>
+                  <input type="range" data-name="earm" min="1" max="10" step="1" value="5" />
+                  <span class="val" data-for="earm">5</span>
+                </div>
+                <div class="pin-state">
+                  <div>आवश्यक बल E</div><div class="out-eff"><b>—</b></div>
+                  <div>यांत्रिक लाभ MA</div><div class="out-ma"><b>—</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="swadhyay">
+        <h2>१२. स्वाध्याय (सोडवलेला)</h2>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न १.</span><span class="q-text">रिकाम्या जागा भरा.</span></p>
+          <ol>
+            <li>तरफेच्या तीन घटकांना — टेकू, <strong>भार</strong> आणि <strong>प्रयुक्त बल</strong> म्हणतात.</li>
+            <li>घराचा रॅम्प हे <strong>कलथा (Inclined plane)</strong> ह्या साध्या यंत्राचे उदाहरण आहे.</li>
+            <li>विहीरचे रहाट हे <strong>स्थिर चक्र (Fixed pulley)</strong> ह्या प्रकाराचे चक्र आहे.</li>
+            <li>यांत्रिक लाभ = <strong>भार / प्रयुक्त बल</strong>.</li>
+            <li>कुऱ्हाडी हे <strong>कीलक / पाचर</strong> ह्या साध्या यंत्राचे उदाहरण आहे.</li>
+          </ol>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न २.</span><span class="q-text">योग्य/अयोग्य.</span></p>
+          <ol>
+            <li>कात्री ही दोन तरफांची जोडी आहे. — <strong>योग्य.</strong> (१ ल्या प्रकाराची.)</li>
+            <li>स्क्रू हे कलथ्याचेच रूप आहे. — <strong>योग्य.</strong> (दंडावर गुंडाळलेला कलथा.)</li>
+            <li>संयुक्त चक्र-पुलीचा यांत्रिक लाभ नेहमी १ पेक्षा कमी असतो. — <strong>अयोग्य.</strong> (तो जास्त असतो — कमी बलाने जास्त भार.)</li>
+            <li>स्टेपलर हे ३ ऱ्या प्रकारच्या तरफेचे उदाहरण आहे. — <strong>योग्य.</strong></li>
+          </ol>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न ३.</span><span class="q-text">जोड्या जुळवा.</span></p>
+          <table class="syntax-table">
+            <thead><tr><th>साधे यंत्र</th><th>उदाहरण</th></tr></thead>
+            <tbody>
+              <tr><td>१. तरफ</td><td>(क) कात्री</td></tr>
+              <tr><td>२. कलथा</td><td>(अ) रॅम्प</td></tr>
+              <tr><td>३. चक्र</td><td>(ड) विहीरचे रहाट</td></tr>
+              <tr><td>४. पाचर</td><td>(ब) सुरी</td></tr>
+              <tr><td>५. चक्राक्ष</td><td>(इ) स्क्रूड्रायव्हर</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न ४.</span><span class="q-text">सोडवा.</span></p>
+          <p><strong>एक भार २०० N आहे. तो उचलायला फक्त ५० N बल लागते. यांत्रिक लाभ काढा.</strong></p>
+          <pre class="code-block">MA = भार / प्रयुक्त बल
+   = २०० / ५०
+   = ४
+
+म्हणजे ह्या यंत्राने ४ पटीने बल कमी झाले.</pre>
+
+          <p><strong>तरफ-समतोल — भार ६० N, भार अंतर २ मी असेल; बल अंतर ३ मी असेल — आवश्यक बल किती?</strong></p>
+          <pre class="code-block">E × eA = L × lA
+E × ३ = ६० × २
+E × ३ = १२०
+E = ४० N</pre>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न ५.</span><span class="q-text">सविस्तर — तरफेचे तीन प्रकार सोदाहरण.</span></p>
+          <p><span class="a-label">उत्तर:</span></p>
+          <ol>
+            <li><strong>पहिल्या प्रकाराची तरफ:</strong> टेकू दोन टोकांच्या मधे असतो; भार एका टोकाला आणि बल दुसऱ्या टोकाला. उदा. कात्री, खिळा-काढणी, सी-सॉ.</li>
+            <li><strong>दुसऱ्या प्रकाराची तरफ:</strong> भार मधे; एका टोकाला टेकू आणि दुसऱ्या टोकाला बल. उदा. ठेल्याची हातगाडी (Wheelbarrow), बाटली-उघडणी (Bottle opener), काजू-फोडणारा.</li>
+            <li><strong>तिसऱ्या प्रकाराची तरफ:</strong> बल मधे; एका टोकाला टेकू आणि दुसऱ्या टोकाला भार. उदा. चिमटा, स्टेपलर, मनुष्याचा कोपरापासूनचा हात (कोपर टेकू, बायसेप्स बल, हातातले वजन भार).</li>
+          </ol>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न ६.</span><span class="q-text">"घाट / डोंगरावर वळणाचा रस्ता का बनवतात?" — स्पष्ट करा.</span></p>
+          <p><span class="a-label">उत्तर:</span> डोंगरावर सरळ वर चढायला अत्यंत जास्त बल लागते. म्हणून तो रस्ता <em>कलथा</em> करून — वर्तुळाकार वळसा घेऊन — हलक्या उतारात बांधतात. अंतर वाढते, पण लागणारे बल खूप कमी होते. वाहनांना सहज वर चढता येते, इंधन वाचते आणि सुरक्षित प्रवास.</p>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>१३. चाचणी</h2>
+        <div class="quiz" id="quiz-12">
+          <div class="q" data-answer="b" data-answer-text="ब. १ ल्या प्रकाराची तरफ">
+            <p>१) कात्री कोणत्या प्रकारात येते?</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a"/> अ. कलथा</label>
+              <label><input type="radio" name="q1" value="b"/> ब. १ ल्या प्रकाराची तरफ</label>
+              <label><input type="radio" name="q1" value="c"/> क. चक्र</label>
+              <label><input type="radio" name="q1" value="d"/> ड. पाचर</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. ४">
+            <p>२) भार २०० N, बल ५० N — यांत्रिक लाभ?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a"/> अ. १</label>
+              <label><input type="radio" name="q2" value="b"/> ब. २</label>
+              <label><input type="radio" name="q2" value="c"/> क. ४</label>
+              <label><input type="radio" name="q2" value="d"/> ड. ०.२५</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="a" data-answer-text="अ. दिशा बदलते">
+            <p>३) स्थिर चक्राचा मुख्य फायदा —</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a"/> अ. बलाची दिशा बदलते</label>
+              <label><input type="radio" name="q3" value="b"/> ब. बल कमी होते</label>
+              <label><input type="radio" name="q3" value="c"/> क. कार्य कमी</label>
+              <label><input type="radio" name="q3" value="d"/> ड. अंतर शून्य</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="d" data-answer-text="ड. वरील सर्व">
+            <p>४) साधे यंत्र वापरण्याचे फायदे —</p>
+            <div class="options">
+              <label><input type="radio" name="q4" value="a"/> अ. कमी बल</label>
+              <label><input type="radio" name="q4" value="b"/> ब. दिशा बदल</label>
+              <label><input type="radio" name="q4" value="c"/> क. मेहनत कमी</label>
+              <label><input type="radio" name="q4" value="d"/> ड. वरील सर्व</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="b" data-answer-text="ब. कलथा">
+            <p>५) रॅम्प कोणत्या साध्या यंत्राचे उदाहरण —</p>
+            <div class="options">
+              <label><input type="radio" name="q5" value="a"/> अ. तरफ</label>
+              <label><input type="radio" name="q5" value="b"/> ब. कलथा</label>
+              <label><input type="radio" name="q5" value="c"/> क. स्क्रू</label>
+              <label><input type="radio" name="q5" value="d"/> ड. चक्र</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-12')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>१४. सारांश</h2>
+        <ul>
+          <li>साधी यंत्रे ६ — तरफ, कलथा, पाचर, स्क्रू, चक्र, चक्राक्ष.</li>
+          <li>तरफेचे ३ प्रकार; नियम E × eA = L × lA.</li>
+          <li>यांत्रिक लाभ = भार / बल.</li>
+          <li>संयुक्त यंत्रे = साध्या यंत्रांचे एकत्रण (उदा. सायकल, घड्याळ).</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch12')">✓ धडा १२ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter11.html"><small>← मागे</small>धडा ११</a>
+        <a href="chapter13.html"><small>पुढे →</small>धडा १३: ध्वनी</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initLever("lab-lever"));</script>
+</body>
+</html>

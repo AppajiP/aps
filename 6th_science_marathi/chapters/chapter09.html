@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>धडा ९: गती व गतीचे प्रकार — Azone Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .car { font-size: 56px; position: absolute; left: 0; animation: ride 5s linear infinite; }
+    .road { position: relative; width: 280px; height: 80px; background: linear-gradient(180deg, transparent 40%, #0f1d33 40%, #0f1d33 60%, transparent 60%); border-radius: 8px; overflow: hidden; }
+    @keyframes ride { from { left: -60px; } to { left: 280px; } }
+  </style>
+</head>
+<body data-base="../" data-total-chapters="16">
+<div id="nav-holder"></div>
+
+<main class="container">
+  <div class="article-shell">
+    <aside class="sidebar">
+      <h4>या धड्यात</h4>
+      <ol>
+        <li><a href="#intro">गती म्हणजे काय?</a></li>
+        <li><a href="#types">गतीचे प्रकार</a></li>
+        <li><a href="#speed">अंतर, वेळ, चाल</a></li>
+        <li><a href="#measure">अंतर मोजण्याची प्रगती</a></li>
+        <li><a href="#lab1">हँड्स-ऑन — PhET</a></li>
+        <li><a href="#lab2">मिनी सिम — चाल कॅल्क्युलेटर</a></li>
+        <li><a href="#swadhyay">स्वाध्याय</a></li>
+        <li><a href="#quiz">चाचणी</a></li>
+        <li><a href="#summary">सारांश</a></li>
+      </ol>
+    </aside>
+
+    <article class="article">
+      <h1>धडा ९: गती व गतीचे प्रकार</h1>
+      <div class="article-meta">Azone Academy • रचना: Appaji Patil</div>
+
+      <section id="intro">
+        <h2>१. गती (Motion) म्हणजे काय?</h2>
+        <p>एखाद्या वस्तूचे <strong>स्थान कालौघात बदलणे</strong> म्हणजे गती. जर वस्तू एकाच जागी राहिली तर ती <strong>स्थिर (Rest)</strong> आहे.</p>
+        <div class="callout tip"><strong>उदाहरण</strong>तुम्ही बसमध्ये बसले आहात. बस चालू झाली तर तुम्ही <em>रस्त्याच्या तुलनेत</em> गतीत आहात, पण <em>बसच्या तुलनेत</em> स्थिर! म्हणून गती ही <strong>सापेक्ष</strong> असते — कशाच्या तुलनेत हे महत्त्वाचे.</div>
+      </section>
+
+      <section id="types">
+        <h2>२. गतीचे ५ प्रकार</h2>
+        <table class="syntax-table">
+          <thead><tr><th>प्रकार</th><th>व्याख्या</th><th>उदाहरण</th></tr></thead>
+          <tbody>
+            <tr><td><strong>१. सरळ रेषीय गती</strong> (Linear/Rectilinear)</td><td>एका सरळ रेषेत</td><td>रॉकेट, सरळ रस्त्यावरील गाडी, पडणारा दगड</td></tr>
+            <tr><td><strong>२. वर्तुळाकार गती</strong> (Circular)</td><td>वर्तुळाच्या मार्गाने</td><td>घड्याळाचा काटा, पंख्याची पाते, चाक</td></tr>
+            <tr><td><strong>३. कंपन गती</strong> (Oscillatory)</td><td>एका बिंदू भोवती मागे-पुढे</td><td>लोलक, झुलणारा झोका, गिटारची तार</td></tr>
+            <tr><td><strong>४. नियतकालिक गती</strong> (Periodic)</td><td>ठरलेल्या वेळेनंतर पुन्हा-पुन्हा</td><td>पृथ्वी सूर्याभोवती; घड्याळाचा सेकंद-काटा</td></tr>
+            <tr><td><strong>५. यादृच्छिक गती</strong> (Random)</td><td>कोणतीही ठरलेली दिशा/नमुना नाही</td><td>उडणारी माशी, गर्दीत चालणारा माणूस</td></tr>
+          </tbody>
+        </table>
+        <div class="callout info"><strong>एका वस्तूत अनेक गती</strong>चालू घड्याळ्याचा सेकंद-काटा वर्तुळाकार + नियतकालिक दोन्ही गतीत आहे. पृथ्वी स्वतःभोवती (परिवलन) आणि सूर्याभोवती (परिक्रमण) — दोन्ही गती करते.</div>
+      </section>
+
+      <section id="speed">
+        <h2>३. अंतर, वेळ आणि चाल (Speed)</h2>
+        <p><strong>चाल</strong> = वस्तू एका सेकंदात किती अंतर पार करते.</p>
+        <pre class="code-block">चाल = अंतर / वेळ
+       (Speed = Distance / Time)
+
+एकक — मीटर / सेकंद (m/s)  किंवा  किलोमीटर / तास (km/h)
+
+रूपांतर —  1 m/s  ×  3.6  =  km/h
+          1 km/h ÷ 3.6  =  m/s</pre>
+
+        <h3>उदाहरण १</h3>
+        <p>एका गाडीने ३ तासांत १८० किमी अंतर पार केले. तिची चाल किती?</p>
+        <pre class="code-block">चाल = अंतर / वेळ
+     = १८० / ३
+     = ६० km/h</pre>
+
+        <h3>उदाहरण २</h3>
+        <p>एका धावपटूची चाल ५ m/s आहे. १ मिनिटात तो किती मीटर धावेल?</p>
+        <pre class="code-block">अंतर = चाल × वेळ
+     = ५ × ६०
+     = ३०० मीटर</pre>
+
+        <table class="syntax-table">
+          <thead><tr><th>वस्तू</th><th>साधारण चाल</th></tr></thead>
+          <tbody>
+            <tr><td>माणसाचे चालणे</td><td>१.४ m/s ≈ ५ km/h</td></tr>
+            <tr><td>सायकल</td><td>५ m/s ≈ १८ km/h</td></tr>
+            <tr><td>मोटार (शहर)</td><td>१४ m/s ≈ ५० km/h</td></tr>
+            <tr><td>रेल्वे (Express)</td><td>३० m/s ≈ १०८ km/h</td></tr>
+            <tr><td>विमान</td><td>२५० m/s ≈ ९०० km/h</td></tr>
+            <tr><td>प्रकाश</td><td>३,००,००० km/s !</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="measure">
+        <h2>४. अंतर मोजण्याची प्रगती</h2>
+        <ul>
+          <li>प्राचीन काळ — हात, पाऊल, हाताचा वीतम (हे सर्व प्रमाण-अप्रमाण होते).</li>
+          <li>आज — आंतरराष्ट्रीय एकक प्रणाली (SI): मीटर, सेंटीमीटर, किलोमीटर, मायक्रोमीटर.</li>
+        </ul>
+        <pre class="code-block">1 km   = 1000 m
+1 m    = 100 cm
+1 cm   = 10 mm
+1 mm   = 1000 μm  (मायक्रोमीटर)</pre>
+      </section>
+
+      <section id="lab1">
+        <h2>५. हँड्स-ऑन लॅब (PhET — Forces and Motion: Basics)</h2>
+        <p>"Motion" टॅब निवडा — वस्तूला ढकलून तिचा वेग (Speed) पाहा. वस्तू बदलून, मित्र/भार जोडून निरीक्षण करा.</p>
+        <div class="lab" id="lab-fmb">
+          <div class="lab-head">
+            <h4>लॅब ९.१ — गती सिम्युलेटर (PhET)</h4>
+            <span class="lab-badge">PhET • HTML5</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim-meta">
+              <a href="https://phet.colorado.edu/sims/html/forces-and-motion-basics/latest/forces-and-motion-basics_en.html" target="_blank" rel="noopener">PhET — Forces and Motion: Basics</a>
+            </div>
+            <div class="sim-frame aspect-16x9">
+              <iframe src="https://phet.colorado.edu/sims/html/forces-and-motion-basics/latest/forces-and-motion-basics_en.html"
+                      allowfullscreen title="PhET Forces and Motion Basics"></iframe>
+            </div>
+            <ul class="lab-steps">
+              <li>"Motion" टॅब निवडा.</li>
+              <li>व्यक्ती / पुस्तक / बादली ढकलून पाहा.</li>
+              <li>Speedometer मधील चाल पाहा.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="lab2">
+        <h2>६. मिनी सिम — चाल कॅल्क्युलेटर</h2>
+        <div class="lab" id="lab-speed">
+          <div class="lab-head">
+            <h4>लॅब ९.२ — अंतर / वेळ / चाल</h4>
+            <span class="lab-badge">इंटरॅक्टिव्ह</span>
+          </div>
+          <div class="lab-body">
+            <div class="sim">
+              <div class="stage">
+                <div class="road"><div class="car">🚗</div></div>
+                <div class="speed-msg" style="margin-top:10px;font-size:13px;color:var(--muted);"></div>
+              </div>
+              <div class="controls">
+                <h5>नियंत्रणे</h5>
+                <div class="row">
+                  <label>अंतर (मीटर)</label>
+                  <input type="range" data-name="d" min="10" max="500" step="10" value="100" />
+                  <span class="val" data-for="d">100</span>
+                </div>
+                <div class="row">
+                  <label>वेळ (सेकंद)</label>
+                  <input type="range" data-name="t" min="2" max="60" step="1" value="20" />
+                  <span class="val" data-for="t">20</span>
+                </div>
+                <div class="pin-state">
+                  <div>चाल (m/s)</div><div class="out-v"><b>—</b></div>
+                  <div>चाल (km/h)</div><div class="out-vk"><b>—</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="swadhyay">
+        <h2>७. स्वाध्याय (सोडवलेला)</h2>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न १.</span><span class="q-text">रिकाम्या जागा भरा.</span></p>
+          <ol>
+            <li>चाल = <strong>अंतर / वेळ</strong>.</li>
+            <li>चालचे SI एकक <strong>मीटर/सेकंद (m/s)</strong>.</li>
+            <li>घड्याळाच्या लोलकाची गती ही <strong>कंपन</strong> गती आहे.</li>
+            <li>पंख्याची पाते ही <strong>वर्तुळाकार</strong> गती करतात.</li>
+            <li>१ km/h = <strong>१/३.६</strong> m/s.</li>
+          </ol>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न २.</span><span class="q-text">योग्य/अयोग्य.</span></p>
+          <ol>
+            <li>स्थिर वस्तूत गती नसते. — <strong>योग्य.</strong></li>
+            <li>एका वस्तूत एकाच वेळी अनेक गती असू शकत नाहीत. — <strong>अयोग्य.</strong> (पृथ्वी परिवलन + परिक्रमण दोन्ही करते.)</li>
+            <li>गती सापेक्ष असते. — <strong>योग्य.</strong></li>
+            <li>५ m/s = १८ km/h. — <strong>योग्य.</strong> (५ × ३.६ = १८.)</li>
+          </ol>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न ३.</span><span class="q-text">जोड्या जुळवा.</span></p>
+          <table class="syntax-table">
+            <thead><tr><th>गतीचा प्रकार</th><th>उदाहरण</th></tr></thead>
+            <tbody>
+              <tr><td>१. सरळ रेषीय</td><td>(क) रॉकेट</td></tr>
+              <tr><td>२. वर्तुळाकार</td><td>(अ) घड्याळाचा काटा</td></tr>
+              <tr><td>३. कंपन</td><td>(ड) झुलणारा झोका</td></tr>
+              <tr><td>४. यादृच्छिक</td><td>(ब) उडणारी माशी</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न ४.</span><span class="q-text">सोडवा.</span></p>
+          <p><strong>(अ) एका सायकलने ४५ मिनिटांत १२ किलोमीटर अंतर पार केले. तिची चाल किती?</strong></p>
+          <p><span class="a-label">उत्तर:</span></p>
+          <pre class="code-block">वेळ = ४५ मिनिटे = ४५/६० तास = ०.७५ तास
+चाल = अंतर / वेळ
+     = १२ / ०.७५
+     = १६ km/h</pre>
+
+          <p><strong>(ब) एक रेल्वे २ तासांत १२० किमी जाते. ५ तासांत किती जाईल? (तिची चाल कायम राहते असे समजा)</strong></p>
+          <p><span class="a-label">उत्तर:</span></p>
+          <pre class="code-block">चाल = १२० / २ = ६० km/h
+५ तासांचे अंतर = ६० × ५ = ३०० km</pre>
+
+          <p><strong>(क) एक धावपटू १०० मीटर अंतर १० सेकंदांत धावतो. त्याची चाल कोणत्या एककात आणि किती?</strong></p>
+          <p><span class="a-label">उत्तर:</span></p>
+          <pre class="code-block">चाल = १०० / १० = १० m/s
+       = १० × ३.६ = ३६ km/h</pre>
+        </div>
+
+        <div class="solved">
+          <p><span class="q-no">प्रश्न ५.</span><span class="q-text">सविस्तर — गतीचे पाच प्रकार सोदाहरण.</span></p>
+          <p><span class="a-label">उत्तर:</span></p>
+          <ol>
+            <li><strong>सरळ रेषीय गती:</strong> एका सरळ रेषेत हालचाल. उदा. रॉकेट, सरळ रस्त्यावरील गाडी, झाडावरून पडणारा फळ.</li>
+            <li><strong>वर्तुळाकार गती:</strong> ठरलेल्या केंद्राभोवती वर्तुळात हालचाल. उदा. घड्याळाचे काटे, पंख्याची पाते, चाक.</li>
+            <li><strong>कंपन गती:</strong> एका बिंदूभोवती मागे-पुढे हलणे. उदा. लोलक, झुलणारा झोका, गिटारच्या तारा.</li>
+            <li><strong>नियतकालिक गती:</strong> ठरावीक वेळेनंतर पुन्हा-पुन्हा घडणारी. उदा. पृथ्वीचे सूर्याभोवती परिक्रमण (३६५ दिवसांत एकदा), घड्याळाचा सेकंद-काटा.</li>
+            <li><strong>यादृच्छिक गती:</strong> कोणताही ठरलेला नमुना/दिशा नाही. उदा. उडणारी माशी, बंद डब्यातला रेणूचा प्रवास, गर्दीतला माणूस.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="quiz">
+        <h2>८. चाचणी</h2>
+        <div class="quiz" id="quiz-9">
+          <div class="q" data-answer="b" data-answer-text="ब. m/s">
+            <p>१) चालचे SI एकक —</p>
+            <div class="options">
+              <label><input type="radio" name="q1" value="a"/> अ. m</label>
+              <label><input type="radio" name="q1" value="b"/> ब. m/s</label>
+              <label><input type="radio" name="q1" value="c"/> क. km</label>
+              <label><input type="radio" name="q1" value="d"/> ड. s</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="a" data-answer-text="अ. कंपन गती">
+            <p>२) लोलकाची गती कोणत्या प्रकाराची आहे?</p>
+            <div class="options">
+              <label><input type="radio" name="q2" value="a"/> अ. कंपन</label>
+              <label><input type="radio" name="q2" value="b"/> ब. वर्तुळाकार</label>
+              <label><input type="radio" name="q2" value="c"/> क. सरळ रेषीय</label>
+              <label><input type="radio" name="q2" value="d"/> ड. यादृच्छिक</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="c" data-answer-text="क. ३६ km/h">
+            <p>३) १० m/s = ? km/h</p>
+            <div class="options">
+              <label><input type="radio" name="q3" value="a"/> अ. १० km/h</label>
+              <label><input type="radio" name="q3" value="b"/> ब. १८ km/h</label>
+              <label><input type="radio" name="q3" value="c"/> क. ३६ km/h</label>
+              <label><input type="radio" name="q3" value="d"/> ड. १०० km/h</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="d" data-answer-text="ड. ६० km/h">
+            <p>४) एक गाडी १८० किमी अंतर ३ तासांत पार करते — चाल किती?</p>
+            <div class="options">
+              <label><input type="radio" name="q4" value="a"/> अ. १८ km/h</label>
+              <label><input type="radio" name="q4" value="b"/> ब. ३० km/h</label>
+              <label><input type="radio" name="q4" value="c"/> क. ५४० km/h</label>
+              <label><input type="radio" name="q4" value="d"/> ड. ६० km/h</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <div class="q" data-answer="b" data-answer-text="ब. यादृच्छिक">
+            <p>५) "गर्दीत चालणारा माणूस" — कोणती गती?</p>
+            <div class="options">
+              <label><input type="radio" name="q5" value="a"/> अ. सरळ रेषीय</label>
+              <label><input type="radio" name="q5" value="b"/> ब. यादृच्छिक</label>
+              <label><input type="radio" name="q5" value="c"/> क. कंपन</label>
+              <label><input type="radio" name="q5" value="d"/> ड. नियतकालिक</label>
+            </div>
+            <div class="feedback"></div>
+          </div>
+          <button class="btn primary" onclick="checkQuiz('quiz-9')">उत्तरे तपासा</button>
+          <span class="quiz-summary text-muted" style="margin-left:10px;"></span>
+        </div>
+      </section>
+
+      <section id="summary">
+        <h2>९. सारांश</h2>
+        <ul>
+          <li>गती = स्थानाचा कालौघातील बदल; गती सापेक्ष असते.</li>
+          <li>५ प्रकार — सरळ रेषीय, वर्तुळाकार, कंपन, नियतकालिक, यादृच्छिक.</li>
+          <li>चाल = अंतर / वेळ; एकक m/s; 1 m/s = 3.6 km/h.</li>
+        </ul>
+        <button id="doneBtn" class="btn" onclick="markChapterDone('ch09')">✓ धडा ९ पूर्ण म्हणून नोंदवा</button>
+      </section>
+
+      <div class="page-nav">
+        <a href="chapter08.html"><small>← मागे</small>धडा ८</a>
+        <a href="chapter10.html"><small>पुढे →</small>धडा १०: बल व बलाचे प्रकार</a>
+      </div>
+    </article>
+  </div>
+</main>
+
+<div id="footer-holder"></div>
+<script src="../js/script.js"></script>
+<script src="../js/includes.js"></script>
+<script src="../js/labs.js"></script>
+<script>document.addEventListener("DOMContentLoaded", () => initSpeedCalc("lab-speed"));</script>
+</body>
+</html>
