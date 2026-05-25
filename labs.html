@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NB पायथन प्रयोगशाळा · निवडक प्रयोग</title>
+<style>
+  /* ---------- Reset & base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans Devanagari",
+                 "Mangal", "Helvetica Neue", Arial, sans-serif;
+    background: #f4f6f8;
+    color: #2c3e50;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  ul { list-style: none; margin: 0; padding: 0; }
+
+  /* ---------- Top header (white bar) ---------- */
+  .top-header {
+    background: #ffffff;
+    border-bottom: 1px solid #ececec;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 36px;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .top-header .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 18px; font-weight: 700; color: #1a73e8;
+  }
+  .logo-mark {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: linear-gradient(135deg, #1a73e8 0%, #00bfa5 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 18px;
+  }
+  .top-nav {
+    display: flex; align-items: center; gap: 26px;
+    margin-left: 48px;
+    font-size: 15px; color: #4b5563;
+  }
+  .top-nav .item { position: relative; padding: 6px 2px; cursor: pointer; }
+  .top-nav .item:hover { color: #1a73e8; }
+  .top-nav .item.has-menu::after {
+    content: "▾"; margin-left: 4px; font-size: 11px; color: #9aa3af;
+  }
+  .top-header .spacer { flex: 1; }
+  .top-header .actions { display: flex; align-items: center; gap: 18px; }
+  .pill-link {
+    color: #1a73e8; font-size: 13px; padding: 6px 10px;
+    border-radius: 16px; transition: background .2s;
+  }
+  .pill-link:hover { background: #eaf2fe; }
+  .btn-primary {
+    background: #1a73e8; color: #fff;
+    padding: 7px 18px; border-radius: 18px; font-size: 13px;
+    transition: background .2s;
+  }
+  .btn-primary:hover { background: #155cc1; }
+
+  /* ---------- Sub-header (page title strip) ---------- */
+  .sub-header {
+    background: #ffffff;
+    border-bottom: 1px solid #ececec;
+    padding: 18px 36px;
+    display: flex; align-items: center;
+  }
+  .crumb {
+    font-size: 16px; font-weight: 600; color: #1f2937;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .crumb .badge {
+    background: #e8f5ee; color: #1aa760;
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 12px; font-weight: 600;
+  }
+  .crumb .dot { color: #c5c8ce; font-weight: 400; }
+  .sub-header .actions {
+    margin-left: auto; display: flex; align-items: center; gap: 14px;
+  }
+  .counter {
+    color: #6b7280; font-size: 13px;
+  }
+  .counter strong { color: #1aa760; font-weight: 700; }
+  .btn-new {
+    background: #1aa760; color: #fff;
+    padding: 8px 18px; border-radius: 4px;
+    font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: background .2s;
+  }
+  .btn-new:hover { background: #148a4f; }
+  .btn-new::before {
+    content: "+"; font-size: 16px; line-height: 1; font-weight: 600;
+  }
+
+  /* ---------- Recommended bar ---------- */
+  .recommend-bar {
+    margin: 16px 36px 0;
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 14px 20px;
+    display: flex; align-items: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .recommend-bar .label {
+    font-weight: 600; color: #1f2937;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .recommend-bar .label::before {
+    content: ""; width: 3px; height: 14px;
+    background: #1aa760; border-radius: 2px;
+  }
+  .recommend-bar .right {
+    margin-left: auto; color: #9aa3af; font-size: 13px;
+    display: flex; align-items: center; gap: 4px; cursor: pointer;
+  }
+  .recommend-bar .right:hover { color: #1aa760; }
+
+  /* ---------- Layout ---------- */
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+    padding: 16px 36px 40px;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 8px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    position: sticky; top: 80px;
+    align-self: start;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  .sidebar h4 {
+    margin: 12px 16px 8px; font-size: 13px; color: #9aa3af;
+    font-weight: 600; letter-spacing: 0.5px;
+  }
+  .sidebar .topic {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px;
+    border-left: 3px solid transparent;
+    color: #4b5563; font-size: 13.5px; cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .sidebar .topic .count {
+    color: #b9bdc4; font-size: 12px;
+  }
+  .sidebar .topic:hover {
+    background: #f5faf7; color: #1aa760;
+  }
+  .sidebar .topic.active {
+    background: #ecf7f1; color: #1aa760;
+    border-left-color: #1aa760; font-weight: 600;
+  }
+
+  /* ---------- Main panel ---------- */
+  .main {
+    background: #ffffff;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    padding: 18px 22px 26px;
+  }
+
+  /* ---------- Filter rows ---------- */
+  .filter-row {
+    display: flex; align-items: center; flex-wrap: wrap;
+    gap: 6px 10px; padding: 8px 0;
+    border-bottom: 1px dashed #eef0f3;
+  }
+  .filter-row:last-of-type { border-bottom: none; padding-bottom: 14px; }
+  .filter-row .key {
+    color: #9aa3af; font-size: 13px; margin-right: 10px;
+    min-width: 80px;
+  }
+  .chip {
+    padding: 4px 12px; border-radius: 14px;
+    font-size: 13px; color: #4b5563; cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .chip:hover { color: #1aa760; }
+  .chip.active {
+    background: #1aa760; color: #ffffff; font-weight: 500;
+  }
+  .filter-row .spacer { flex: 1; }
+  .toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: #4b5563; font-size: 13px; cursor: pointer;
+    margin-left: 8px;
+  }
+  .toggle .box {
+    width: 14px; height: 14px; border: 1px solid #c5c8ce;
+    border-radius: 3px; display: inline-block; position: relative;
+  }
+  .toggle.on .box {
+    background: #1aa760; border-color: #1aa760;
+  }
+  .toggle.on .box::after {
+    content: "✓"; color: #fff; font-size: 11px;
+    position: absolute; top: -3px; left: 1px;
+  }
+  .tag-new {
+    background: #fff3e0; color: #fb8c00;
+    padding: 2px 6px; border-radius: 3px;
+    font-size: 11px; font-weight: 600; margin-left: 4px;
+  }
+
+  /* ---------- Card grid ---------- */
+  .grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 18px 16px;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform .18s, box-shadow .18s;
+    border: 1px solid #f0f1f3;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(26, 167, 96, 0.12);
+    border-color: #d8efe2;
+  }
+  .thumb {
+    height: 110px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    color: #ffffff;
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .thumb::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.18), transparent 60%);
+  }
+  .thumb .icon {
+    position: relative; z-index: 1;
+    font-family: "Consolas", "Monaco", monospace;
+  }
+  .thumb .play {
+    position: absolute; right: 8px; bottom: 8px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(0,0,0,0.35);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+  }
+  .thumb .play::before {
+    content: ""; border-left: 7px solid #fff;
+    border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+    margin-left: 2px;
+  }
+  .thumb .free {
+    position: absolute; left: 0; top: 8px;
+    background: #fb8c00; color: #fff;
+    padding: 2px 8px 2px 6px;
+    font-size: 11px; font-weight: 600;
+    border-radius: 0 3px 3px 0; z-index: 2;
+  }
+  /* Color variants for thumbnails */
+  .c1  { background: linear-gradient(135deg, #4F8BF9 0%, #2D5DC9 100%); }
+  .c2  { background: linear-gradient(135deg, #1AA760 0%, #0E7A45 100%); }
+  .c3  { background: linear-gradient(135deg, #FB8C00 0%, #E65100 100%); }
+  .c4  { background: linear-gradient(135deg, #8E63D9 0%, #5E35B1 100%); }
+  .c5  { background: linear-gradient(135deg, #F44C70 0%, #C2185B 100%); }
+  .c6  { background: linear-gradient(135deg, #00BFA5 0%, #00897B 100%); }
+  .c7  { background: linear-gradient(135deg, #FFB300 0%, #F57F17 100%); }
+  .c8  { background: linear-gradient(135deg, #546E7A 0%, #263238 100%); }
+
+  .meta {
+    padding: 10px 12px 12px;
+  }
+  .meta .title {
+    font-size: 13.5px; color: #2c3e50; font-weight: 500;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 38px;
+  }
+  .meta .stats {
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 10px;
+    color: #9aa3af; font-size: 12px;
+  }
+  .meta .stats .eye::before { content: "👁  "; }
+  .meta .stats .like::before { content: "👍  "; }
+
+  /* ---------- Footer ---------- */
+  .footer-bar {
+    margin-top: 28px; padding: 16px 0; text-align: center;
+    color: #9aa3af; font-size: 13px;
+    border-top: 1px dashed #eef0f3;
+  }
+  .footer-bar .more {
+    color: #1aa760; cursor: pointer; margin-left: 4px;
+  }
+  .footer-bar .more:hover { text-decoration: underline; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; padding: 16px; }
+    .sidebar { position: static; max-height: none; }
+    .top-nav { display: none; }
+    .top-header, .sub-header, .recommend-bar { padding-left: 16px; padding-right: 16px; }
+    .recommend-bar { margin-left: 16px; margin-right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ TOP HEADER ============ -->
+<header class="top-header">
+  <a class="logo" href="#">
+    <span class="logo-mark">NB</span>
+    <span>पायथन प्रयोगशाळा</span>
+  </a>
+  <nav class="top-nav">
+    <span class="item has-menu">उत्पादने</span>
+    <span class="item has-menu">डाउनलोड</span>
+    <span class="item has-menu">मोबाईल अनुभव</span>
+    <span class="item">आभासी प्रयोग</span>
+    <span class="item">प्रयोग मूल्यमापन</span>
+  </nav>
+  <span class="spacer"></span>
+  <div class="actions">
+    <a class="pill-link" href="#">शिक्षक खाते डेस्कटॉपवर जोडा</a>
+    <a class="pill-link" href="#">विद्यार्थी अ‍ॅप डाउनलोड</a>
+    <a class="btn-primary" href="#">लॉगिन / नोंदणी</a>
+  </div>
+</header>
+
+<!-- ============ SUB-HEADER ============ -->
+<section class="sub-header">
+  <div class="crumb">
+    <span class="badge">माध्यमिक</span>
+    <span>NB पायथन प्रयोगशाळा शिक्षक खाते</span>
+    <span class="dot">·</span>
+    <span>निवडक प्रयोग</span>
+  </div>
+  <div class="actions">
+    <span class="counter"><strong>0</strong> प्रयोग</span>
+    <a class="btn-new" href="#">नवीन प्रयोग</a>
+  </div>
+</section>
+
+<!-- ============ RECOMMEND BAR ============ -->
+<section class="recommend-bar">
+  <div class="label">शिफारस केलेले प्रयोग विषय</div>
+  <div class="right">संकोचवा ▴</div>
+</section>
+
+<!-- ============ MAIN LAYOUT ============ -->
+<div class="layout">
+
+  <!-- Sidebar: chapters -->
+  <aside class="sidebar">
+    <h4>प्रकरणे</h4>
+    <div class="topic active">सर्व प्रकरणे <span class="count">62</span></div>
+    <div class="topic">०० — सेटअप <span class="count">1</span></div>
+    <div class="topic">०१ — पायथनचा परिचय <span class="count">4</span></div>
+    <div class="topic">०२ — चल व माहिती प्रकार <span class="count">4</span></div>
+    <div class="topic">०३ — ऑपरेटर्स <span class="count">5</span></div>
+    <div class="topic">०४ — इनपुट / आउटपुट <span class="count">5</span></div>
+    <div class="topic">०५ — निर्णय विधाने <span class="count">6</span></div>
+    <div class="topic">०६ — लूप्स (Loops) <span class="count">6</span></div>
+    <div class="topic">०७ — याद्या (Lists) <span class="count">5</span></div>
+    <div class="topic">०८ — टपल / सेट / डिक्ट <span class="count">5</span></div>
+    <div class="topic">०९ — स्ट्रिंग्ज <span class="count">5</span></div>
+    <div class="topic">१० — फंक्शन्स <span class="count">7</span></div>
+    <div class="topic">११ — मॉड्यूल्स <span class="count">4</span></div>
+    <div class="topic">१२ — फाइल हाताळणी <span class="count">5</span></div>
+    <div class="topic">१३ — अपवाद (Exceptions) <span class="count">5</span></div>
+    <div class="topic">१४ — OOP <span class="count">7</span></div>
+    <div class="topic">★ प्रकल्प (Projects) <span class="count">6</span></div>
+  </aside>
+
+  <!-- Main panel -->
+  <main class="main">
+
+    <!-- Filter row 1: resource type -->
+    <div class="filter-row">
+      <span class="key">संसाधन प्रकार:</span>
+      <span class="chip active">सर्व</span>
+      <span class="chip">मूलभूत प्रयोग</span>
+      <span class="chip">सराव कोड</span>
+      <span class="chip">परस्परसंवादी</span>
+      <span class="chip">व्हिडिओ संसाधने</span>
+      <span class="chip">स्वाध्याय</span>
+      <span class="chip">प्रकल्प</span>
+    </div>
+
+    <!-- Filter row 2: sort + toggles -->
+    <div class="filter-row">
+      <span class="key">क्रमवारी:</span>
+      <span class="chip active">अभ्यासक्रमानुसार</span>
+      <span class="chip">सर्वाधिक वापरले</span>
+      <span class="chip">नवीनतम</span>
+      <span class="spacer"></span>
+      <span class="toggle on"><span class="box"></span>नवीन अभ्यासक्रम <span class="tag-new">NEW</span></span>
+      <span class="toggle"><span class="box"></span>फक्त मोफत</span>
+    </div>
+
+    <!-- Card grid -->
+    <div class="grid">
+
+      <!-- 00 setup -->
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">&gt;_</span>
+          <span class="free">मोफत</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">पहिला पायथन प्रोग्राम — Hello World</div>
+          <div class="stats"><span class="eye">2301.3k</span></div>
+        </div>
+      </div>
+
+      <!-- 01 parichay -->
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">print()</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">print( ) चे मूलभूत उपयोग</div>
+          <div class="stats"><span class="eye">1221.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon"># …</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">टीप (Comments) — एक व अनेक ओळींच्या</div>
+          <div class="stats"><span class="eye">346k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">\n \t</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">विशेष अक्षरे — Escape Characters</div>
+          <div class="stats"><span class="eye">605.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">sep=</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">print( ) मध्ये sep व end चा वापर</div>
+          <div class="stats"><span class="eye">229.1k</span></div>
+        </div>
+      </div>
+
+      <!-- 02 chal va mahiti prakar -->
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">x = 5</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">चल (Variables) कसे तयार करायचे</div>
+          <div class="stats"><span class="eye">1247.2k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">int</span>
+          <span class="free">मोफत</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">पायथनमधील माहितीचे प्रकार (Data Types)</div>
+          <div class="stats"><span class="eye">555.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">type()</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">type( ) फंक्शनचा वापर</div>
+          <div class="stats"><span class="eye">101.3k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">str→int</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">प्रकार रूपांतर (Type Casting)</div>
+          <div class="stats"><span class="eye">749.5k</span></div>
+        </div>
+      </div>
+
+      <!-- 03 operators -->
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">+ − ×</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">अंकगणितीय ऑपरेटर्स (Arithmetic)</div>
+          <div class="stats"><span class="eye">457.3k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">==</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">तुलना ऑपरेटर्स (Comparison)</div>
+          <div class="stats"><span class="eye">30.9k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">and or</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">तार्किक ऑपरेटर्स — and / or / not</div>
+          <div class="stats"><span class="eye">50.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">+=</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">असाइनमेंट व कंपाउंड ऑपरेटर्स</div>
+          <div class="stats"><span class="eye">596.9k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">in / is</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">मेम्बरशिप व आयडेंटिटी ऑपरेटर्स</div>
+          <div class="stats"><span class="eye">185.4k</span></div>
+        </div>
+      </div>
+
+      <!-- 04 input output -->
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">input()</span>
+          <span class="free">मोफत</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">वापरकर्त्याकडून इनपुट घेणे</div>
+          <div class="stats"><span class="eye">43.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">int(in)</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">संख्यात्मक इनपुट व रूपांतर</div>
+          <div class="stats"><span class="eye">208.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">f"{x}"</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">f-string ने सुंदर output</div>
+          <div class="stats"><span class="eye">45.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">.format()</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">format( ) पद्धत वापरून आउटपुट</div>
+          <div class="stats"><span class="eye">68.1k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">🧮</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">सोपे कॅल्क्युलेटर — मिनी प्रकल्प</div>
+          <div class="stats"><span class="eye">98k</span></div>
+        </div>
+      </div>
+
+      <!-- 05 nirnay vidhane -->
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">if</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">if विधान — मूलभूत अट तपासणी</div>
+          <div class="stats"><span class="eye">128.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">if/else</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">if-else — दोन पर्यायांमधून निवड</div>
+          <div class="stats"><span class="eye">47.9k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">elif</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">elif — अनेक पर्यायांची साखळी</div>
+          <div class="stats"><span class="eye">27.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">if-if</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Nested if — आत आत अटी</div>
+          <div class="stats"><span class="eye">84.2k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">🎓</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">गुणांवरून श्रेणी ठरवणे (Grading)</div>
+          <div class="stats"><span class="eye">244.2k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">📅</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">लीप वर्ष तपासणी (Leap Year)</div>
+          <div class="stats"><span class="eye">48.8k</span></div>
+        </div>
+      </div>
+
+      <!-- 06 loops -->
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">for</span>
+          <span class="free">मोफत</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">for लूप — मूलभूत वापर</div>
+          <div class="stats"><span class="eye">87.5k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">range()</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">range( ) फंक्शनसह for लूप</div>
+          <div class="stats"><span class="eye">11k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">while</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">while लूप — अट टिकेपर्यंत पुनरावृत्ती</div>
+          <div class="stats"><span class="eye">151.8k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">break</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">break व continue चा वापर</div>
+          <div class="stats"><span class="eye">274.3k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">for-for</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Nested loops — गुणाकार पाढा</div>
+          <div class="stats"><span class="eye">139.1k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">★ ★ ★</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Patterns — फुलांचे व त्रिकोणी नकाशे</div>
+          <div class="stats"><span class="eye">116.6k</span></div>
+        </div>
+      </div>
+
+      <!-- 07 lists -->
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">[ ]</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">यादी (List) — मूलभूत ओळख</div>
+          <div class="stats"><span class="eye">54.6k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">a[0:5]</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Indexing व Slicing</div>
+          <div class="stats"><span class="eye">327.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">.append</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">यादीचे मेथड्स — append / pop / sort</div>
+          <div class="stats"><span class="eye">90.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">for x in</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">यादीवर लूप व आकडेमोड</div>
+          <div class="stats"><span class="eye">20.1k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">[x*2]</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">List Comprehension</div>
+          <div class="stats"><span class="eye">11.3k</span></div>
+        </div>
+      </div>
+
+      <!-- 08 tuple set dict -->
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">( , )</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">टपल (Tuple) — अपरिवर्तनीय यादी</div>
+          <div class="stats"><span class="eye">30.6k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">{ }</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">सेट (Set) — अनन्य घटक</div>
+          <div class="stats"><span class="eye">218.6k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">{k:v}</span>
+          <span class="free">मोफत</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">डिक्शनरी — key व value</div>
+          <div class="stats"><span class="eye">61.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">.items()</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">डिक्शनरीचे मेथड्स</div>
+          <div class="stats"><span class="eye">124.5k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">📓</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">विद्यार्थी नोंदी — डिक्शनरी प्रकल्प</div>
+          <div class="stats"><span class="eye">32.5k</span></div>
+        </div>
+      </div>
+
+      <!-- 09 strings -->
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">"abc"</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">स्ट्रिंग — मूलभूत क्रिया</div>
+          <div class="stats"><span class="eye">148.8k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">s[2]</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">स्ट्रिंगचे Indexing</div>
+          <div class="stats"><span class="eye">155.9k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">.upper</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">स्ट्रिंग मेथड्स — upper / lower / strip</div>
+          <div class="stats"><span class="eye">163.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">split</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">split व join चा वापर</div>
+          <div class="stats"><span class="eye">155.5k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">📝</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">वाक्यातील शब्द मोजणी</div>
+          <div class="stats"><span class="eye">30.4k</span></div>
+        </div>
+      </div>
+
+      <!-- 10 functions -->
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">def f()</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">मूलभूत फंक्शन तयार करणे</div>
+          <div class="stats"><span class="eye">32.5k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">return</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">return विधान</div>
+          <div class="stats"><span class="eye">62.5k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">f(a,b)</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">फंक्शनला Arguments देणे</div>
+          <div class="stats"><span class="eye">79.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">*args</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">*args व **kwargs</div>
+          <div class="stats"><span class="eye">88.1k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">scope</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Local व Global Scope</div>
+          <div class="stats"><span class="eye">41.2k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">λ</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Lambda Functions — एक ओळीची फंक्शन्स</div>
+          <div class="stats"><span class="eye">66.8k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">🧮</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">कॅल्क्युलेटर — फंक्शन्स वापरून</div>
+          <div class="stats"><span class="eye">123.6k</span></div>
+        </div>
+      </div>
+
+      <!-- 11 modules -->
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">math</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">math मॉड्यूल — sqrt, pi, sin</div>
+          <div class="stats"><span class="eye">58.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">random</span>
+          <span class="free">मोफत</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">random मॉड्यूल — संख्या व निवड</div>
+          <div class="stats"><span class="eye">142.5k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">📆</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">datetime — तारीख व वेळ</div>
+          <div class="stats"><span class="eye">36.9k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">import</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">स्वतःचे मॉड्यूल तयार करणे</div>
+          <div class="stats"><span class="eye">21.4k</span></div>
+        </div>
+      </div>
+
+      <!-- 12 file handling -->
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">write</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">फाइलमध्ये लिहिणे</div>
+          <div class="stats"><span class="eye">19.8k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">read</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">फाइलमधून वाचणे</div>
+          <div class="stats"><span class="eye">22.1k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">append</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">फाइलला जोडणे (append)</div>
+          <div class="stats"><span class="eye">17.5k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">with</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">with-statement ने सुरक्षित handling</div>
+          <div class="stats"><span class="eye">25.6k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">.csv</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">CSV फाइल वाचन व लेखन</div>
+          <div class="stats"><span class="eye">14.7k</span></div>
+        </div>
+      </div>
+
+      <!-- 13 exceptions -->
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">try</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">try / except — मूलभूत अपवाद</div>
+          <div class="stats"><span class="eye">38.6k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">multi</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">अनेक अपवाद हाताळणे</div>
+          <div class="stats"><span class="eye">27.9k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">finally</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">else व finally ब्लॉक्स</div>
+          <div class="stats"><span class="eye">19.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">raise</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">raise — स्वतः अपवाद टाकणे</div>
+          <div class="stats"><span class="eye">16.8k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">class Err</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">स्वतःचा अपवाद वर्ग (Custom)</div>
+          <div class="stats"><span class="eye">12.3k</span></div>
+        </div>
+      </div>
+
+      <!-- 14 OOP -->
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">class</span>
+          <span class="free">मोफत</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">वर्ग व ऑब्जेक्ट (Class & Object)</div>
+          <div class="stats"><span class="eye">89.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">__init__</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">__init__ व self चा अर्थ</div>
+          <div class="stats"><span class="eye">76.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">def m()</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">वर्गातील Methods</div>
+          <div class="stats"><span class="eye">52.3k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">A→B</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Inheritance — वारसा हक्क</div>
+          <div class="stats"><span class="eye">94.6k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">_priv</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Encapsulation — माहिती लपवणे</div>
+          <div class="stats"><span class="eye">31.8k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c1">
+          <span class="icon">poly</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">Polymorphism — एकच नाव, अनेक रूपे</div>
+          <div class="stats"><span class="eye">28.2k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c2">
+          <span class="icon">🏦</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">बँक खाते — OOP प्रकल्प</div>
+          <div class="stats"><span class="eye">112.5k</span></div>
+        </div>
+      </div>
+
+      <!-- Projects -->
+      <div class="card">
+        <div class="thumb c3">
+          <span class="icon">🎲</span>
+          <span class="free">मोफत</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">★ संख्या ओळखा खेळ (Number Guess)</div>
+          <div class="stats"><span class="eye">147.3k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c4">
+          <span class="icon">🎓</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">★ विद्यार्थी निकाल प्रणाली</div>
+          <div class="stats"><span class="eye">98.7k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c5">
+          <span class="icon">✅</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">★ To-Do यादी अ‍ॅप्लिकेशन</div>
+          <div class="stats"><span class="eye">132.4k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c6">
+          <span class="icon">💸</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">★ खर्चाचा हिशेब (Expense Tracker)</div>
+          <div class="stats"><span class="eye">75.2k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c7">
+          <span class="icon">❓</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">★ प्रश्नमंजुषा खेळ (Quiz Game)</div>
+          <div class="stats"><span class="eye">86.1k</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="thumb c8">
+          <span class="icon">📚</span>
+          <span class="play"></span>
+        </div>
+        <div class="meta">
+          <div class="title">★ ग्रंथालय व्यवस्थापन प्रणाली</div>
+          <div class="stats"><span class="eye">63.9k</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer / more -->
+    <div class="footer-bar">
+      एकूण <strong>62</strong> प्रयोग दाखवले · <span class="more">अधिक प्रयोग पाहा ▾</span>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // ---------- Lightweight interactivity (chips, toggles, sidebar) ----------
+  document.querySelectorAll('.filter-row').forEach(row => {
+    row.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        row.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+  });
+
+  document.querySelectorAll('.toggle').forEach(t => {
+    t.addEventListener('click', () => t.classList.toggle('on'));
+  });
+
+  document.querySelectorAll('.sidebar .topic').forEach(topic => {
+    topic.addEventListener('click', () => {
+      document.querySelectorAll('.sidebar .topic').forEach(x => x.classList.remove('active'));
+      topic.classList.add('active');
+    });
+  });
+
+  // Counter increments when a card is clicked (mimicking "add to teacher cart")
+  const counter = document.querySelector('.counter strong');
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', () => {
+      counter.textContent = (parseInt(counter.textContent, 10) || 0) + 1;
+      card.style.boxShadow = '0 0 0 2px #1aa760 inset';
+      setTimeout(() => { card.style.boxShadow = ''; }, 600);
+    });
+  });
+</script>
+
+</body>
+</html>
