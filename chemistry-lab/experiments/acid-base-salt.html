@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Composition of acids, bases and salts",
+  subtitle: "What every soluble compound dissociates into",
+  lede: "Acids, bases and salts are all electrolytes: when dissolved in water they break up into mobile ions. The pattern of ions decides how the substance behaves.",
+  sections: [
+    { heading: "Acids in water",
+      formula: "HCl &nbsp;→&nbsp; H⁺ + Cl⁻",
+      body: "An acid releases hydrogen ions H⁺ (more accurately, hydronium H₃O⁺) when it dissolves in water. The H⁺ is responsible for sour taste, sour pH, the colour change of indicators, and reaction with active metals.",
+      list: [
+        "Strong: HCl, HNO₃, H₂SO₄ — fully ionise.",
+        "Weak: CH₃COOH, H₂CO₃ — only partially ionise."
+      ] },
+    { heading: "Bases in water",
+      formula: "NaOH &nbsp;→&nbsp; Na⁺ + OH⁻",
+      body: "A base releases hydroxide ions OH⁻. Bases neutralise acids by combining their OH⁻ with the acid's H⁺ to form water.",
+      list: [
+        "Strong: NaOH, KOH, Ca(OH)₂.",
+        "Weak: NH₃·H₂O (aqueous ammonia)."
+      ] },
+    { heading: "Salts",
+      formula: "NaCl → Na⁺ + Cl⁻       CuSO₄ → Cu²⁺ + SO₄²⁻",
+      body: "A salt is the ionic compound left when an acid neutralises a base. It contains a cation from the base and an anion from the acid. Most simple salts are crystalline solids that dissolve in water to give the corresponding ions." }
+  ],
+  aside: "Knowing the ions present lets you predict reactions: e.g. mixing Ag⁺ with Cl⁻ produces insoluble AgCl, while Na⁺ with NO₃⁻ stays in solution.",
+  questions: [
+    "Classify each: NH₄NO₃, KOH, H₂SO₄, CH₃COONa.",
+    "Write the ionic equation for the neutralisation of HCl by Ca(OH)₂."
+  ]
+});
+</script>
+</body></html>

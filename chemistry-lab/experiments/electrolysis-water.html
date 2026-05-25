@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Electrolysis of Water — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Electrolysis of water</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Composition of water</div>
+    <h1 style="margin:6px 0 4px">Composition of water — electrolysis (Hofmann voltameter)</h1>
+    <p style="color:var(--muted);margin:0">
+      Pass a direct current through dilute acidified water and watch H₂ and O₂
+      collect over the two electrodes in a 2 : 1 volume ratio.
+    </p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Hofmann voltameter</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-on">Switch on</button>
+          <button class="btn secondary" id="btn-off">Switch off</button>
+          <button class="btn success" id="btn-test-h2" disabled>Test cathode gas</button>
+          <button class="btn success" id="btn-test-o2" disabled>Test anode gas</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="slider-row">
+          <label for="voltage">Voltage</label>
+          <input id="voltage" type="range" min="0" max="12" value="6" step="0.1" />
+          <span class="val" id="voltage-val">6.0 V</span>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations</h3>
+          <dl class="kv">
+            <dt>H₂ collected (cathode)</dt><dd id="o-h2">0.0 mL</dd>
+            <dt>O₂ collected (anode)</dt><dd id="o-o2">0.0 mL</dd>
+            <dt>Volume ratio H₂ : O₂</dt><dd id="o-ratio">— : —</dd>
+            <dt>Current</dt><dd id="o-i">0.00 A</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Power supply is off.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>The experiment</h2>
+          <p>A few drops of sulfuric acid increase the conductivity of pure water,
+             which is otherwise an extremely poor conductor. The acid is not
+             consumed — it merely supplies ions that carry the current.</p>
+          <div class="formula">2 H₂O &nbsp;→&nbsp; 2 H₂↑ + O₂↑</div>
+          <h3>Electrode reactions</h3>
+          <ul>
+            <li>Cathode (–): 4 H⁺ + 4 e⁻ → 2 H₂</li>
+            <li>Anode (+): 2 H₂O → O₂ + 4 H⁺ + 4 e⁻</li>
+          </ul>
+          <h3>Identification tests</h3>
+          <ul>
+            <li>Cathode gas: insert a lit splint — H₂ burns with a small "pop".</li>
+            <li>Anode gas: insert a glowing splint — O₂ reignites it.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = {
+      on: false,
+      V: 6,
+      h2: 0,
+      o2: 0,
+      bubblesA: [],
+      bubblesC: [],
+      t: 0
+    };
+    const voltage = document.getElementById("voltage");
+    voltage.addEventListener("input", () => {
+      state.V = parseFloat(voltage.value);
+      document.getElementById("voltage-val").textContent = state.V.toFixed(1) + " V";
+    });
+    const setMsg = (t, c) => { const el = document.getElementById("o-msg"); el.textContent = t; el.style.color = c || "var(--accent)"; };
+    document.getElementById("btn-on").addEventListener("click", () => { state.on = true; setMsg("Current flowing. Watch the gas levels rise."); });
+    document.getElementById("btn-off").addEventListener("click", () => { state.on = false; setMsg("Switched off."); });
+    document.getElementById("btn-reset").addEventListener("click", () => { state.on = false; state.h2 = 0; state.o2 = 0; state.bubblesA.length = 0; state.bubblesC.length = 0; setMsg("Reset."); });
+    document.getElementById("btn-test-h2").addEventListener("click", () => {
+      if (state.h2 < 5) return;
+      setMsg("Lit splint at cathode: small pop — gas is hydrogen (H₂).", "var(--primary-2)");
+    });
+    document.getElementById("btn-test-o2").addEventListener("click", () => {
+      if (state.o2 < 2.5) return;
+      setMsg("Glowing splint at anode: re-ignites — gas is oxygen (O₂).", "var(--primary-2)");
+    });
+
+    function update(dt) {
+      state.t += dt;
+      const I = state.on ? Math.max(0, (state.V - 1.5)) * 0.06 : 0;
+      // Production rate (mL/s) proportional to current; H2:O2 = 2:1
+      const rateH = I * 2.4;
+      const rateO = I * 1.2;
+      state.h2 = Math.min(40, state.h2 + rateH * dt);
+      state.o2 = Math.min(20, state.o2 + rateO * dt);
+      // bubbles
+      if (state.on && Math.random() < 12 * dt) state.bubblesC.push({y: 0, r: 1.5 + Math.random() * 2, vx: (Math.random()-0.5)*4 });
+      if (state.on && Math.random() < 6 * dt) state.bubblesA.push({y: 0, r: 1.5 + Math.random() * 2, vx: (Math.random()-0.5)*4 });
+      for (const b of state.bubblesC) { b.y += 60 * dt; }
+      for (const b of state.bubblesA) { b.y += 60 * dt; }
+      state.bubblesC = state.bubblesC.filter(b => b.y < 110);
+      state.bubblesA = state.bubblesA.filter(b => b.y < 110);
+
+      document.getElementById("o-h2").textContent = state.h2.toFixed(1) + " mL";
+      document.getElementById("o-o2").textContent = state.o2.toFixed(1) + " mL";
+      document.getElementById("o-i").textContent  = I.toFixed(2) + " A";
+      document.getElementById("o-ratio").textContent =
+        state.o2 > 0.5 ? (state.h2 / state.o2).toFixed(2) + " : 1" : "— : —";
+      document.getElementById("btn-test-h2").disabled = state.h2 < 5;
+      document.getElementById("btn-test-o2").disabled = state.o2 < 2.5;
+    }
+
+    function drawTube(cx, gasMl, maxMl, electrodeColor, label, bubbles, anode) {
+      // tube column 60x180 with gas at top
+      const tx = cx - 22, ty = 80, tw = 44, th = 180;
+      ctx.fillStyle = "rgba(80,160,255,.22)";
+      ctx.fillRect(tx, ty, tw, th);
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(tx, ty, tw, th);
+      // gas at top
+      const frac = Math.min(1, gasMl / maxMl);
+      const gh = frac * (th - 20);
+      ctx.fillStyle = anode ? "rgba(255,255,200,.35)" : "rgba(180,220,255,.45)";
+      ctx.fillRect(tx + 1, ty + 1, tw - 2, gh);
+      // top tap
+      ctx.fillStyle = "#22304f";
+      ctx.fillRect(tx + tw/2 - 6, ty - 12, 12, 14);
+      // electrode at bottom
+      ctx.strokeStyle = electrodeColor;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(cx, ty + th); ctx.lineTo(cx, ty + th + 30); ctx.stroke();
+      // label
+      ctx.fillStyle = "rgba(255,255,255,.75)";
+      ctx.font = "12px Inter";
+      ctx.fillText(label, tx + 2, ty + th + 46);
+      ctx.fillText(gasMl.toFixed(1) + " mL", tx + 2, ty - 16);
+      // bubbles inside tube
+      for (const b of bubbles) {
+        ctx.beginPath();
+        ctx.arc(cx + b.vx * 2, ty + th - b.y, b.r, 0, Math.PI*2);
+        ctx.fillStyle = "rgba(180,220,255,.7)";
+        ctx.fill();
+      }
+    }
+
+    function draw() {
+      const W = width(), H = height();
+      ctx.clearRect(0, 0, W, H);
+      // base reservoir
+      const cx = W / 2;
+      const ry = 270, rw = 320, rh = 40;
+      ctx.fillStyle = "rgba(80,160,255,.22)";
+      ctx.fillRect(cx - rw/2, ry, rw, rh);
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.strokeRect(cx - rw/2, ry, rw, rh);
+      // U-bridge to tubes
+      drawTube(cx - 80, state.h2, 40, "#ff7c8a", "Cathode (–) H₂", state.bubblesC, false);
+      drawTube(cx + 80, state.o2, 20, "#7adfbf", "Anode (+) O₂",  state.bubblesA, true);
+
+      // power supply
+      const px = cx - 50, py = H - 70, pw = 100, ph = 40;
+      ctx.fillStyle = "#16213f";
+      ctx.fillRect(px, py, pw, ph);
+      ctx.strokeStyle = "#42537b";
+      ctx.strokeRect(px, py, pw, ph);
+      ctx.fillStyle = state.on ? "#29d3a0" : "#ff5d6c";
+      ctx.beginPath(); ctx.arc(px + 14, py + 14, 4, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,.75)";
+      ctx.font = "12px Inter";
+      ctx.fillText(state.V.toFixed(1) + " V DC", px + 26, py + 19);
+
+      // wires
+      ctx.strokeStyle = "#ff7c8a";
+      ctx.beginPath(); ctx.moveTo(px + 20, py); ctx.lineTo(px + 20, py - 30); ctx.lineTo(cx - 80, py - 30); ctx.lineTo(cx - 80, ry + rh); ctx.stroke();
+      ctx.strokeStyle = "#7adfbf";
+      ctx.beginPath(); ctx.moveTo(px + 80, py); ctx.lineTo(px + 80, py - 30); ctx.lineTo(cx + 80, py - 30); ctx.lineTo(cx + 80, ry + rh); ctx.stroke();
+
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText("2 H₂O → 2 H₂↑ + O₂↑   (H₂:O₂ ≈ 2:1 by volume)", 16, H - 14);
+    }
+
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

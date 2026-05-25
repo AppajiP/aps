@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Virtual Chemistry Lab — Resource Library</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+        content="Open virtual chemistry lab with interactive simulations of standard middle-school experiments." />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">⚗</div>
+        <div>
+          <div class="brand-text">Virtual Chemistry Lab</div>
+          <div class="brand-sub">Open resource library · interactive simulations</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#gallery">Experiments</a>
+        <a href="#about">About</a>
+        <a href="experiments/atomic-structure.html">Atomic Model</a>
+        <a href="experiments/balance-equations.html">Equation Balancer</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="hero">
+      <h1>Resource library for the virtual chemistry lab</h1>
+      <p>
+        A browser-based collection of standard chemistry experiments built with
+        plain HTML, CSS, and JavaScript. Every entry below opens an
+        interactive simulation or an annotated theory page. No login or
+        plug-in is required.
+      </p>
+      <div class="hero-stats">
+        <span>Total experiments: <b id="total">0</b></span>
+        <span>With interactive simulation: <b id="interactive-count">0</b></span>
+        <span>Showing: <b id="count">0</b></span>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="filter-bar">
+        <div class="search" role="search">
+          <span aria-hidden="true">🔎</span>
+          <input id="search-input" type="search"
+                 placeholder="Search experiments, formulas, or units…"
+                 aria-label="Search experiments" />
+        </div>
+        <div id="filter-chips" aria-label="Filter by resource type"></div>
+      </div>
+
+      <div id="grid" class="grid"></div>
+    </section>
+
+    <section id="about" class="panel" style="margin-top:32px">
+      <h2>About this lab</h2>
+      <p>
+        The pattern of this site is inspired by classroom virtual-experiment
+        libraries: a searchable gallery of cards on the home page, and a
+        dedicated stage with controls, observations, and follow-up questions
+        for each experiment.
+      </p>
+      <p>
+        All simulations are written from scratch in vanilla JavaScript using
+        the HTML <code>&lt;canvas&gt;</code> and SVG elements. You can open
+        any <code>.html</code> file directly in a modern browser — no build
+        step or server is needed.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site">
+    Virtual Chemistry Lab · standalone HTML/CSS/JS · no external dependencies
+  </footer>
+
+  <script src="scripts/experiments.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>

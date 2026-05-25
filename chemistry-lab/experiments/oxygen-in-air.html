@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Oxygen in Air — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Measuring oxygen content of air</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Oxygen in air</div>
+    <h1 style="margin:6px 0 4px">How much of the air is oxygen?</h1>
+    <p style="color:var(--muted);margin:0">
+      Burn red phosphorus in a sealed bell-jar standing in water; the water
+      rises by about one-fifth of the jar volume.
+    </p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Sealed jar over water</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-ignite">Ignite phosphorus</button>
+          <button class="btn secondary" id="btn-open">Open clamp &amp; observe water level</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations</h3>
+          <dl class="kv">
+            <dt>Phase</dt><dd id="o-phase">ready</dd>
+            <dt>Water risen</dt><dd id="o-rise">0 %</dd>
+            <dt>O₂ remaining</dt><dd id="o-o2">21 %</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Ignite the phosphorus to begin.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>What happens</h2>
+          <p>Excess red phosphorus reacts with the oxygen in the trapped air to
+             form solid white phosphorus(V) oxide:</p>
+          <div class="formula">4 P + 5 O₂ &nbsp;→&nbsp; 2 P₂O₅</div>
+          <p>Because the product is a solid, the gas pressure inside drops and
+             water rises through the clamp to refill the missing volume.</p>
+          <h3>Why phosphorus?</h3>
+          <ul>
+            <li>Burns readily in air.</li>
+            <li>Product is a non-gaseous solid — pressure really drops.</li>
+            <li>No carbon dioxide is produced (it would partially dissolve in water).</li>
+          </ul>
+          <h3>Common errors</h3>
+          <ul>
+            <li>Too little phosphorus — not all O₂ is consumed → water rises less than ⅕.</li>
+            <li>Jar not sealed quickly — outside air leaks in.</li>
+            <li>Jar opened before it has cooled — hot gas contracts on cooling.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = { phase: "ready", t: 0, smoke: [], waterRise: 0, o2: 21, burnTime: 0 };
+    function setMsg(s, c){ const el = document.getElementById("o-msg"); el.textContent = s; el.style.color = c || "var(--accent)"; }
+    document.getElementById("btn-ignite").addEventListener("click", () => {
+      if (state.phase !== "ready") return;
+      state.phase = "burning"; state.t = 0;
+      setMsg("White smoke of P₂O₅ fills the jar.");
+    });
+    document.getElementById("btn-open").addEventListener("click", () => {
+      if (state.phase !== "cooled") return;
+      state.phase = "opening"; state.t = 0;
+      setMsg("Clamp opened — water rushes in to fill the missing oxygen.");
+    });
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      state.phase = "ready"; state.t = 0; state.smoke.length = 0; state.waterRise = 0; state.o2 = 21; state.burnTime = 0; setMsg("Reset.");
+    });
+
+    function update(dt) {
+      state.t += dt;
+      if (state.phase === "burning") {
+        state.burnTime += dt;
+        // O2 depleted exponentially
+        state.o2 = Math.max(0, state.o2 - (state.o2 * 0.6) * dt);
+        if (Math.random() < 40 * dt) state.smoke.push({ x: 0, y: 0, r: 2 + Math.random()*4, a: 0.7, vy: -20-Math.random()*30, vx: (Math.random()-0.5)*30 });
+        if (state.o2 < 0.5) { state.phase = "cooling"; setMsg("Phosphorus has burned out. Let the jar cool before opening the clamp."); }
+      }
+      if (state.phase === "cooling") {
+        if (state.t > 2) { state.phase = "cooled"; setMsg("Jar has cooled. Open the clamp now."); }
+      }
+      if (state.phase === "opening") {
+        state.waterRise = Math.min(20, state.waterRise + 12 * dt);
+        if (state.waterRise > 19.5) { state.phase = "done"; setMsg("Water has risen ≈ 20 % of the jar volume → about 1/5 of the air was oxygen."); }
+      }
+      for (const s of state.smoke) { s.x += s.vx*dt; s.y += s.vy*dt; s.a -= 0.4 * dt; s.vy *= 0.99; }
+      state.smoke = state.smoke.filter(s => s.a > 0);
+
+      document.getElementById("o-phase").textContent = state.phase;
+      document.getElementById("o-rise").textContent  = state.waterRise.toFixed(0) + " %";
+      document.getElementById("o-o2").textContent    = state.o2.toFixed(1) + " %";
+    }
+
+    function draw() {
+      const W = width(), H = height();
+      ctx.clearRect(0,0,W,H);
+      // trough
+      const trX = 60, trW = W - 120, trY = H - 80, trH = 60;
+      ctx.fillStyle = "rgba(80,160,255,.22)";
+      ctx.fillRect(trX, trY, trW, trH);
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.strokeRect(trX, trY, trW, trH);
+
+      // bell jar
+      const jx = W/2 - 90, jy = 60, jw = 180, jh = trY - jy + 30;
+      const insideY = jy + 8;
+      const insideH = jh - 16;
+      // gas (white smoke)
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(jx + 2, insideY, jw - 4, insideH);
+      ctx.clip();
+      // water inside
+      const waterFracIn = state.waterRise / 100;
+      const waterH = waterFracIn * insideH;
+      ctx.fillStyle = "rgba(80,160,255,.4)";
+      ctx.fillRect(jx + 2, insideY + insideH - waterH, jw - 4, waterH);
+      // smoke
+      for (const s of state.smoke) {
+        ctx.fillStyle = `rgba(245,245,255,${Math.max(0,s.a*0.6)})`;
+        ctx.beginPath();
+        ctx.arc(jx + jw/2 + s.x, jy + 100 + s.y, s.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+      // phosphorus spoon
+      ctx.strokeStyle = "#999";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(jx + jw/2, 18); ctx.lineTo(jx + jw/2, jy + 120); ctx.stroke();
+      ctx.fillStyle = "#3a4969";
+      ctx.beginPath(); ctx.ellipse(jx + jw/2, jy + 130, 18, 6, 0, 0, Math.PI*2); ctx.fill();
+      // phosphorus glow when burning
+      if (state.phase === "burning") {
+        const g = ctx.createRadialGradient(jx + jw/2, jy + 128, 1, jx + jw/2, jy + 128, 50);
+        g.addColorStop(0, "rgba(255,210,120,1)");
+        g.addColorStop(1, "rgba(255,150,80,0)");
+        ctx.fillStyle = g;
+        ctx.fillRect(jx, jy, jw, 200);
+      }
+      ctx.restore();
+      // jar outline
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(jx, jy, jw, jh);
+
+      // top clamp
+      ctx.fillStyle = "#22304f"; ctx.fillRect(jx + jw/2 - 14, jy - 10, 28, 10);
+      ctx.fillStyle = state.phase === "opening" || state.phase === "done" ? "#29d3a0" : "#ff5d6c";
+      ctx.beginPath(); ctx.arc(jx + jw/2 + 22, jy - 5, 4, 0, Math.PI*2); ctx.fill();
+
+      // graduations on jar (5 lines)
+      ctx.strokeStyle = "rgba(255,255,255,.25)";
+      ctx.lineWidth = 1;
+      for (let i = 1; i < 5; i++) {
+        const y = jy + (jh/5) * i;
+        ctx.beginPath();
+        ctx.moveTo(jx, y); ctx.lineTo(jx + 8, y); ctx.stroke();
+      }
+      // 1/5 marker
+      ctx.strokeStyle = "rgba(41,211,160,.8)";
+      ctx.setLineDash([4,4]);
+      const y15 = jy + jh - (jh/5);
+      ctx.beginPath(); ctx.moveTo(jx - 6, y15); ctx.lineTo(jx + jw + 6, y15); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = "rgba(41,211,160,.9)";
+      ctx.font = "12px Inter";
+      ctx.fillText("1/5 mark", jx + jw + 8, y15 + 4);
+
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText("4 P + 5 O₂ → 2 P₂O₅", 16, H - 14);
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

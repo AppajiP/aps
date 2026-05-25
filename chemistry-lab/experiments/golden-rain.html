@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Golden Rain — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Golden rain — PbI₂ crystals</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Golden rain</div>
+    <h1 style="margin:6px 0 4px">Golden rain — recrystallising PbI₂</h1>
+    <p style="color:var(--muted);margin:0">
+      Mix lead(II) nitrate with potassium iodide. Heat to redissolve, then
+      let the flask cool — shimmering golden PbI₂ crystals settle slowly.</p>
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Flask</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-mix">Mix Pb(NO₃)₂ + KI</button>
+          <button class="btn secondary" id="btn-heat">Heat to dissolve</button>
+          <button class="btn success" id="btn-cool">Cool to recrystallise</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>State</h3>
+          <p id="o-state" style="color:var(--accent)">Empty flask.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>The chemistry</h2>
+          <div class="formula">Pb(NO₃)₂ + 2 KI → PbI₂↓ + 2 KNO₃</div>
+          <p>PbI₂ is brilliant yellow and almost insoluble in cold water but
+             noticeably soluble in hot water. When the hot saturated solution
+             is allowed to cool slowly, large platelets crystallise out and
+             flutter down — the "golden rain".</p>
+          <h3>Safety</h3>
+          <p>Lead compounds are toxic. In a real lab they must be handled with
+             gloves and disposed of as hazardous waste.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = { phase: "empty", flakes: [], dissolved: 0, t: 0 };
+    const setMsg = (s) => document.getElementById("o-state").textContent = s;
+    document.getElementById("btn-mix").addEventListener("click", () => {
+      state.phase = "ppt"; state.flakes = []; state.dissolved = 0;
+      for (let i = 0; i < 80; i++) state.flakes.push({ x: (Math.random()-0.5)*180, y: 80 + Math.random()*120, vy: 10 + Math.random()*20, size: 3+Math.random()*4, rot: Math.random()*Math.PI });
+      setMsg("Yellow PbI₂ precipitate fills the flask.");
+    });
+    document.getElementById("btn-heat").addEventListener("click", () => {
+      if (state.phase === "empty") return;
+      state.phase = "hot";
+      setMsg("Heating — precipitate dissolves into a hot yellow solution.");
+    });
+    document.getElementById("btn-cool").addEventListener("click", () => {
+      if (state.phase !== "hot") return;
+      state.phase = "cooling";
+      setMsg("Cooling — golden flakes drift down through the flask.");
+      // re-seed flakes from top
+      state.flakes = [];
+      for (let i = 0; i < 90; i++) state.flakes.push({ x: (Math.random()-0.5)*180, y: -10 - Math.random()*40, vy: 18 + Math.random()*22, size: 3+Math.random()*5, rot: Math.random()*Math.PI });
+    });
+    document.getElementById("btn-reset").addEventListener("click", () => { state.phase = "empty"; state.flakes = []; setMsg("Reset."); });
+
+    function update(dt) {
+      state.t += dt;
+      if (state.phase === "hot") {
+        state.dissolved = Math.min(1, state.dissolved + 0.7 * dt);
+        for (const f of state.flakes) f.y -= 25 * dt; // flakes fade up as they dissolve
+      } else if (state.phase === "cooling") {
+        for (const f of state.flakes) { f.y += f.vy * dt; f.rot += 0.6 * dt; }
+      } else {
+        state.dissolved = 0;
+      }
+    }
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0,0,W,H);
+      const cx = W/2, cy = H/2 + 20;
+      // round flask
+      ctx.beginPath(); ctx.arc(cx, cy, 110, 0, Math.PI*2);
+      const sol = state.phase === "hot" || state.phase === "cooling";
+      ctx.fillStyle = sol ? "rgba(255,210,80,.25)" : "rgba(120,170,255,.06)";
+      ctx.fill();
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      // neck
+      ctx.beginPath();
+      ctx.moveTo(cx - 14, cy - 105); ctx.lineTo(cx - 14, cy - 160);
+      ctx.lineTo(cx + 14, cy - 160); ctx.lineTo(cx + 14, cy - 105); ctx.stroke();
+
+      // clip flakes inside flask
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, 108, 0, Math.PI*2); ctx.clip();
+      for (const f of state.flakes) {
+        const alpha = state.phase === "hot" ? Math.max(0, 1 - state.dissolved) : 0.95;
+        ctx.save();
+        ctx.translate(cx + f.x, cy + f.y);
+        ctx.rotate(f.rot);
+        ctx.fillStyle = `rgba(255,210,80,${alpha})`;
+        ctx.fillRect(-f.size, -f.size*0.3, f.size*2, f.size*0.6);
+        ctx.restore();
+      }
+      // settled pile
+      if (state.phase === "ppt" || state.phase === "cooling") {
+        ctx.fillStyle = "rgba(255,200,60,.7)";
+        ctx.beginPath();
+        ctx.ellipse(cx, cy + 80, 95, 18, 0, 0, Math.PI*2);
+        ctx.fill();
+      }
+      ctx.restore();
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText("Pb(NO₃)₂ + 2 KI → PbI₂↓ + 2 KNO₃", 16, H - 14);
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

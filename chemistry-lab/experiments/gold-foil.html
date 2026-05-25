@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gold Foil Experiment — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Rutherford gold foil experiment</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Gold foil</div>
+    <h1 style="margin:6px 0 4px">Rutherford's gold foil experiment</h1>
+    <p style="color:var(--muted);margin:0">
+      Fire α-particles at a thin sheet of gold foil and detect them on a
+      surrounding fluorescent screen. The pattern of scattering reveals the
+      existence of the atomic nucleus.</p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Scattering chamber (top view)</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-fire">Fire α-particles</button>
+          <button class="btn secondary" id="btn-pause">Pause</button>
+          <button class="btn danger" id="btn-reset">Reset counts</button>
+        </div>
+        <div class="slider-row">
+          <label for="rate">Beam rate</label>
+          <input id="rate" type="range" min="1" max="60" value="20"/>
+          <span class="val" id="rate-val">20 /s</span>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Detector counts</h3>
+          <dl class="kv">
+            <dt>Total fired</dt><dd id="o-tot">0</dd>
+            <dt>Passed straight through</dt><dd id="o-thru">0</dd>
+            <dt>Slightly deflected (&lt; 30°)</dt><dd id="o-small">0</dd>
+            <dt>Strongly deflected (&gt; 30°)</dt><dd id="o-big">0</dd>
+            <dt>Bounced back (&gt; 90°)</dt><dd id="o-back">0</dd>
+          </dl>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>What it shows</h2>
+          <ul>
+            <li>Most α-particles pass straight through — atoms are mostly empty space.</li>
+            <li>A few are deflected at large angles — there is a small, dense, positively-charged region.</li>
+            <li>Very rarely (~1 in 8000) an α-particle bounces back — direct hit on the nucleus.</li>
+          </ul>
+          <p>This led Rutherford in 1911 to propose the nuclear model of the atom,
+             replacing J. J. Thomson's "plum-pudding" model.</p>
+          <h3>Geometry</h3>
+          <p>The cross-section for back-scattering scales as Z²/E², which is why a
+             heavy nucleus such as gold (Z = 79) gives an observable rebound rate.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = { running: false, rate: 20, particles: [], counts: { tot:0, thru:0, small:0, big:0, back:0 }, t: 0, sinceSpawn: 0 };
+    const rate = document.getElementById("rate");
+    rate.addEventListener("input", () => { state.rate = +rate.value; document.getElementById("rate-val").textContent = state.rate + " /s"; });
+    document.getElementById("btn-fire").addEventListener("click", () => state.running = true);
+    document.getElementById("btn-pause").addEventListener("click", () => state.running = false);
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      state.particles.length = 0;
+      state.counts = { tot:0, thru:0, small:0, big:0, back:0 };
+    });
+
+    function spawn() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      const foilX = W * 0.55;
+      state.particles.push({
+        x: 40, y: H/2 + (Math.random() - 0.5) * 200,
+        vx: 220, vy: 0,
+        scattered: false,
+        recorded: false,
+        b: 0,
+        foilX
+      });
+      state.counts.tot++;
+    }
+
+    // Approximate Rutherford scattering: based on impact parameter b
+    // angle = 2 atan(d / (2b)),  d ∝ 1/E
+    function scatter(p, foilCenterY) {
+      const b = p.y - foilCenterY;          // impact parameter (px)
+      const d = 12;                          // "closest-approach" length
+      const theta = 2 * Math.atan2(d, 2 * Math.abs(b));
+      const sign = b >= 0 ? 1 : -1;          // deflection direction
+      const speed = Math.hypot(p.vx, p.vy);
+      const newAngle = sign * theta;         // turn by ±theta
+      p.vx = speed * Math.cos(newAngle);
+      p.vy = speed * Math.sin(newAngle);
+      p.scattered = true;
+      // record bucket
+      const deg = Math.abs(newAngle) * 180 / Math.PI;
+      if (deg < 2)      state.counts.thru++;
+      else if (deg < 30) state.counts.small++;
+      else if (deg < 90) state.counts.big++;
+      else               state.counts.back++;
+      p.recorded = true;
+      // a small chance of head-on rebound (very small b)
+      if (Math.abs(b) < 4 && Math.random() < 0.6) {
+        p.vx = -speed * (0.6 + Math.random()*0.3);
+        p.vy = (Math.random() - 0.5) * speed * 0.4;
+        if (!p.bouncedRecorded) {
+          state.counts.back++;
+          state.counts.big = Math.max(0, state.counts.big - 1); // reclassify
+          p.bouncedRecorded = true;
+        }
+      }
+    }
+
+    function update(dt) {
+      state.t += dt;
+      if (state.running) {
+        state.sinceSpawn += dt;
+        const interval = 1 / state.rate;
+        while (state.sinceSpawn > interval) { spawn(); state.sinceSpawn -= interval; }
+      }
+      const W = stage.clientWidth, H = stage.clientHeight;
+      const foilY = H/2;
+      for (const p of state.particles) {
+        // pass through foil only once
+        if (!p.scattered && ((p.x < p.foilX && p.x + p.vx*dt >= p.foilX) || (p.x > p.foilX && p.x + p.vx*dt <= p.foilX))) {
+          scatter(p, foilY);
+        }
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+      }
+      // cull
+      state.particles = state.particles.filter(p => p.x > -20 && p.x < W + 20 && p.y > -20 && p.y < H + 20);
+
+      document.getElementById("o-tot").textContent = state.counts.tot;
+      document.getElementById("o-thru").textContent = state.counts.thru;
+      document.getElementById("o-small").textContent = state.counts.small;
+      document.getElementById("o-big").textContent = state.counts.big;
+      document.getElementById("o-back").textContent = state.counts.back;
+    }
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0,0,W,H);
+      // detector screen (semicircle)
+      const cx = W * 0.55, cy = H/2;
+      const R = Math.min(W*0.4, H*0.45);
+      ctx.strokeStyle = "rgba(106,166,255,.3)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI*2);
+      ctx.stroke();
+      // angle markers
+      ctx.fillStyle = "rgba(149,163,200,.7)";
+      ctx.font = "11px Inter";
+      [0, 30, 60, 90, 120, 150, 180, -30, -60, -90, -120, -150].forEach(a => {
+        const rad = a * Math.PI/180;
+        const x = cx + Math.cos(rad)*(R+10);
+        const y = cy + Math.sin(rad)*(R+10);
+        ctx.fillText(a + "°", x-10, y+4);
+      });
+
+      // alpha source on the left
+      ctx.fillStyle = "#22304f";
+      ctx.fillRect(10, cy - 18, 60, 36);
+      ctx.strokeStyle = "#42537b";
+      ctx.strokeRect(10, cy - 18, 60, 36);
+      ctx.fillStyle = "rgba(255,255,255,.7)";
+      ctx.font = "11px Inter";
+      ctx.fillText("α source", 18, cy + 4);
+
+      // gold foil
+      const fx = cx;
+      ctx.fillStyle = "#ffd166";
+      ctx.fillRect(fx - 2, cy - R + 20, 4, 2*R - 40);
+      ctx.fillStyle = "rgba(255,255,255,.5)";
+      ctx.font = "11px Inter";
+      ctx.fillText("Au foil", fx + 6, cy - R + 28);
+
+      // particles
+      for (const p of state.particles) {
+        ctx.fillStyle = p.scattered ? "#29d3a0" : "#ff7c8a";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 2.2, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

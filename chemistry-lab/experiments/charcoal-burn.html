@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Charcoal in air vs in pure oxygen",
+  subtitle: "Why the same reaction looks so different",
+  lede: "A glowing piece of charcoal placed in air gives off a dull red light; in a jar of pure oxygen the same piece burns with a bright white glow and consumes itself quickly.",
+  sections: [
+    { heading: "The reaction is the same",
+      formula: "C + O₂ → CO₂",
+      body: "In both cases carbon is oxidised to carbon dioxide. What changes is the rate." },
+    { heading: "Why pure O₂ burns brighter",
+      list: [
+        "Air is only 21 % O₂; the other 78 % N₂ is essentially inert ballast that absorbs heat without contributing to the reaction.",
+        "In a jar of pure O₂ the local oxygen partial pressure is roughly five times higher — the reaction proceeds about five times faster.",
+        "Heat released per second is therefore much higher, and the temperature reached by the charcoal rises into the white-hot range."
+      ] },
+    { heading: "Test the products",
+      body: "Pour the contents of the jar into limewater. The limewater turns milky, confirming that CO₂ has been produced." }
+  ],
+  aside: "The same logic explains why glowing splints reignite in O₂, why a steel wire that merely heats in air burns spectacularly in O₂, and why high-altitude fires (low O₂) are harder to ignite.",
+  questions: [
+    "Why does a piece of charcoal eventually stop glowing in a closed jar of air?",
+    "Predict the appearance of burning carbon in 100 % nitrogen."
+  ]
+});
+</script>
+</body></html>

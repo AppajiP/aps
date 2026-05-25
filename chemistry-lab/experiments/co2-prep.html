@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lab Preparation of CO₂ — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Preparation &amp; properties of CO₂</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; CO₂ preparation</div>
+    <h1 style="margin:6px 0 4px">Laboratory preparation of carbon dioxide</h1>
+    <p style="color:var(--muted);margin:0">
+      Drop dilute hydrochloric acid onto marble chips and lead the gas
+      through delivery tubes to test density, solubility, and its reaction
+      with limewater.</p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Generator &amp; tests</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-open">Open tap (add HCl)</button>
+          <button class="btn secondary" id="btn-close">Close tap</button>
+          <button class="btn success" id="btn-test-lime" disabled>Bubble into limewater</button>
+          <button class="btn success" id="btn-test-candle" disabled>Pour over burning candles</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations</h3>
+          <dl class="kv">
+            <dt>Gas collected</dt><dd id="o-vol">0 mL</dd>
+            <dt>Limewater</dt><dd id="o-lime">clear</dd>
+            <dt>Candle test</dt><dd id="o-candle">two candles lit</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Open the tap on the funnel to start.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>Reaction</h2>
+          <div class="formula">CaCO₃ + 2 HCl &nbsp;→&nbsp; CaCl₂ + H₂O + CO₂↑</div>
+          <h3>Why these reagents?</h3>
+          <ul>
+            <li>Dilute HCl, not H₂SO₄ — the latter forms insoluble CaSO₄ that coats the chips and stops the reaction.</li>
+            <li>Marble chips, not powder — keeps the reaction rate controllable.</li>
+            <li>No heating needed — the reaction is exothermic enough on its own.</li>
+          </ul>
+          <h3>Properties tested</h3>
+          <ul>
+            <li><b>Density:</b> CO₂ is ~1.5 × denser than air, so it pours from a beaker and snuffs lower candles first.</li>
+            <li><b>Solubility:</b> CO₂ is slightly soluble — collect by upward displacement of air.</li>
+            <li><b>Limewater test:</b> CO₂ + Ca(OH)₂ → CaCO₃↓ + H₂O. The clear solution turns milky.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = { open: false, vol: 0, lime: 0, candleTest: false, bubbles: [], t: 0, candleHeights: [60, 90] };
+    const setMsg = (s) => document.getElementById("o-msg").textContent = s;
+    document.getElementById("btn-open").addEventListener("click", () => { state.open = true; setMsg("HCl dripping onto marble — bubbles of CO₂ rising."); });
+    document.getElementById("btn-close").addEventListener("click", () => { state.open = false; setMsg("Tap closed."); });
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      state.open = false; state.vol = 0; state.lime = 0; state.candleTest = false;
+      state.bubbles.length = 0; state.candleHeights = [60, 90];
+      setMsg("Reset.");
+    });
+    document.getElementById("btn-test-lime").addEventListener("click", () => {
+      if (state.vol < 30) return;
+      state.lime = 1; setMsg("Limewater turns milky — confirms CO₂ (CaCO₃ precipitate).");
+    });
+    document.getElementById("btn-test-candle").addEventListener("click", () => {
+      if (state.vol < 50) return;
+      state.candleTest = true; setMsg("Lower candle goes out first — CO₂ is denser than air.");
+    });
+
+    function update(dt) {
+      state.t += dt;
+      if (state.open && Math.random() < 18 * dt) {
+        state.bubbles.push({ x: (Math.random()-0.5)*30, y: 0, r: 2 + Math.random()*3, vy: -50 - Math.random()*30 });
+      }
+      if (state.open) state.vol = Math.min(200, state.vol + 14 * dt);
+      for (const b of state.bubbles) b.y += b.vy * dt;
+      state.bubbles = state.bubbles.filter(b => b.y > -90);
+      if (state.candleTest) {
+        // lower candle shrinks first
+        state.candleHeights[0] = Math.max(0, state.candleHeights[0] - 30*dt);
+        if (state.candleHeights[0] <= 0) state.candleHeights[1] = Math.max(0, state.candleHeights[1] - 20*dt);
+      }
+      document.getElementById("o-vol").textContent = state.vol.toFixed(0) + " mL";
+      document.getElementById("o-lime").textContent = state.lime > 0 ? "milky white (CaCO₃)" : "clear";
+      document.getElementById("o-candle").textContent =
+        !state.candleTest ? "two candles lit" :
+        state.candleHeights[0] > 0 ? "both burning" :
+        state.candleHeights[1] > 0 ? "lower out, upper still lit" : "both out";
+      document.getElementById("btn-test-lime").disabled = state.vol < 30;
+      document.getElementById("btn-test-candle").disabled = state.vol < 50;
+    }
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0,0,W,H);
+
+      // generator flask (left)
+      const gx = 130, gy = H - 200;
+      ctx.fillStyle = "rgba(120,170,255,.10)";
+      ctx.beginPath(); ctx.arc(gx, gy, 60, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = "#9ec2ff"; ctx.stroke();
+      // marble chips
+      ctx.fillStyle = "#dcdce0";
+      for (let i = 0; i < 6; i++) {
+        const a = i * 1.2;
+        ctx.beginPath();
+        ctx.arc(gx + Math.cos(a)*30, gy + 30 + Math.sin(a)*6, 4 + Math.random()*2, 0, Math.PI*2);
+        ctx.fill();
+      }
+      // acid layer
+      ctx.fillStyle = "rgba(255,210,80,.25)";
+      ctx.beginPath(); ctx.arc(gx, gy, 60, 0.2, Math.PI - 0.2); ctx.fill();
+      // bubbles
+      for (const b of state.bubbles) {
+        ctx.fillStyle = "rgba(180,220,255,.7)";
+        ctx.beginPath(); ctx.arc(gx + b.x, gy + b.y + 20, b.r, 0, Math.PI*2); ctx.fill();
+      }
+      // funnel (separating)
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.beginPath();
+      ctx.moveTo(gx - 18, gy - 100); ctx.lineTo(gx + 18, gy - 100);
+      ctx.lineTo(gx + 4, gy - 50); ctx.lineTo(gx + 4, gy - 10);
+      ctx.lineTo(gx - 4, gy - 10); ctx.lineTo(gx - 4, gy - 50); ctx.closePath();
+      ctx.fillStyle = "rgba(255,210,80,.18)"; ctx.fill(); ctx.stroke();
+      // tap indicator
+      ctx.fillStyle = state.open ? "#29d3a0" : "#ff5d6c";
+      ctx.beginPath(); ctx.arc(gx + 10, gy - 30, 4, 0, Math.PI*2); ctx.fill();
+      // delivery tube
+      ctx.beginPath();
+      ctx.moveTo(gx + 50, gy - 50); ctx.quadraticCurveTo(gx + 250, gy - 80, gx + 360, gy + 30);
+      ctx.lineWidth = 3; ctx.stroke(); ctx.lineWidth = 2;
+
+      // collecting jar (right top)
+      const jx = gx + 340, jy = gy + 30, jw = 80, jh = 120;
+      ctx.fillStyle = "rgba(255,160,80,.15)";
+      ctx.fillRect(jx, jy, jw, jh);
+      ctx.strokeRect(jx, jy, jw, jh);
+      // gas level
+      const f = state.vol / 200;
+      ctx.fillStyle = "rgba(255,160,80,.35)";
+      ctx.fillRect(jx, jy + jh - f*jh, jw, f*jh);
+      ctx.fillStyle = "rgba(255,255,255,.7)";
+      ctx.font = "11px Inter";
+      ctx.fillText("CO₂ collection", jx, jy - 6);
+
+      // limewater test tube
+      const lx = jx + jw + 30, ly = H - 220;
+      ctx.fillStyle = state.lime ? "rgba(245,245,255,.7)" : "rgba(220,230,255,.3)";
+      ctx.fillRect(lx, ly, 26, 100);
+      ctx.strokeRect(lx, ly, 26, 100);
+      ctx.fillStyle = "rgba(255,255,255,.7)";
+      ctx.fillText(state.lime ? "milky" : "limewater", lx - 6, ly - 6);
+
+      // candle staircase (lower right area is small; place under main)
+      const sx = 30, sy = H - 80;
+      ctx.fillStyle = "#22304f";
+      ctx.fillRect(sx, sy + 30, 60, 16);
+      ctx.fillRect(sx + 25, sy, 60, 16);
+      // candles
+      drawCandle(sx + 16, sy + 30, state.candleHeights[0]);
+      drawCandle(sx + 50, sy,      state.candleHeights[1]);
+
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText("CaCO₃ + 2 HCl → CaCl₂ + H₂O + CO₂↑", 16, H - 14);
+    }
+    function drawCandle(x, baseY, h) {
+      ctx.fillStyle = "#e8d8a8";
+      ctx.fillRect(x - 4, baseY - h, 8, h);
+      if (h > 1) {
+        ctx.fillStyle = "#ffb347";
+        ctx.beginPath();
+        ctx.ellipse(x, baseY - h - 5, 3, 7, 0, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

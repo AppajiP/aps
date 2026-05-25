@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Preparing oxygen from KClO₃ + MnO₂",
+  subtitle: "The classic catalyst demonstration",
+  lede: "Heating potassium chlorate by itself decomposes slowly and only at high temperature. Add a pinch of MnO₂ and the same reaction releases oxygen rapidly at a much lower temperature.",
+  sections: [
+    { heading: "Reaction",
+      formula: "2 KClO₃ &nbsp;→&nbsp; 2 KCl + 3 O₂↑  (MnO₂ catalyst)",
+      body: "The MnO₂ is not consumed; it can be recovered unchanged at the end. It works by providing a low-energy pathway for the breakdown of the chlorate ion." },
+    { heading: "Setup notes",
+      list: [
+        "Mix dry KClO₃ with about 1/5 its mass of MnO₂ powder.",
+        "Place in a hard-glass test tube, fitted with a delivery tube into a trough of water.",
+        "Heat gently — vigorous bubbling begins almost immediately, even before the solid glows."
+      ] },
+    { heading: "Why a catalyst helps",
+      body: "A catalyst lowers the activation energy of the reaction without changing the overall enthalpy change. Less energy needs to be supplied as heat, so the reaction starts at a lower temperature and runs faster.",
+      formula: "Eₐ (without catalyst) &nbsp;»&nbsp; Eₐ (with catalyst)" }
+  ],
+  aside: [
+    "Industrial oxygen is produced today by fractional distillation of liquid air, not from KClO₃. The chlorate method is mainly used as a classroom demonstration of catalysis.",
+    "Modern school labs prefer H₂O₂ + MnO₂ because it is safer — KClO₃ is a strong oxidiser and forms explosive mixtures with organic dust."
+  ],
+  questions: [
+    "List two pieces of evidence that MnO₂ is a catalyst rather than a reactant.",
+    "Why is it dangerous to heat KClO₃ together with sucrose or charcoal?"
+  ]
+});
+</script>
+</body></html>

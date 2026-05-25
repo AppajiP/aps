@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cu + O₂ Mass Test — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Mass change in 2 Cu + O₂ → 2 CuO</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Cu + O₂ mass</div>
+    <h1 style="margin:6px 0 4px">Mass of copper before &amp; after heating in air</h1>
+    <p style="color:var(--muted);margin:0">
+      Weigh a copper turning, heat it strongly in air, and weigh again. Did
+      mass appear from nowhere?</p>
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Crucible on balance</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-heat">Heat strongly</button>
+          <button class="btn secondary" id="btn-cool">Stop and cool</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="slider-row">
+          <label for="cu">Copper mass</label>
+          <input id="cu" type="range" min="1" max="10" value="6.4" step="0.1"/>
+          <span class="val" id="cu-val">6.4 g</span>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations</h3>
+          <dl class="kv">
+            <dt>Mass on balance</dt><dd id="o-mass">— g</dd>
+            <dt>Surface color</dt><dd id="o-col">copper-red</dd>
+            <dt>O₂ consumed (calc.)</dt><dd id="o-o2">0.00 g</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Adjust mass, then heat.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>What's happening</h2>
+          <div class="formula">2 Cu + O₂ → 2 CuO</div>
+          <p>Each 64 g of copper combines with 16 g of oxygen to form 80 g of
+             black copper(II) oxide. The mass goes up because oxygen from the
+             air is being incorporated into the solid.</p>
+          <h3>Open vs sealed</h3>
+          <p>In an open crucible the mass increases. In a stoppered flask of
+             air, the total mass stays the same — mass is conserved, but it is
+             redistributed from the gas phase into the solid.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = { heat: false, progress: 0, cu: 6.4, t: 0 };
+    const cuS = document.getElementById("cu");
+    cuS.addEventListener("input", () => { state.cu = +cuS.value; document.getElementById("cu-val").textContent = state.cu.toFixed(1) + " g"; });
+    const setMsg = (s) => document.getElementById("o-msg").textContent = s;
+    document.getElementById("btn-heat").addEventListener("click", () => { state.heat = true; setMsg("Heating crucible — copper turning black."); });
+    document.getElementById("btn-cool").addEventListener("click", () => { state.heat = false; setMsg("Cooling. Read the balance once steady."); });
+    document.getElementById("btn-reset").addEventListener("click", () => { state.heat = false; state.progress = 0; setMsg("Reset."); });
+
+    function update(dt) {
+      state.t += dt;
+      if (state.heat) state.progress = Math.min(1, state.progress + 0.18 * dt);
+      const o2 = state.progress * state.cu * (16/64);   // O atoms grabbed
+      const total = state.cu + o2;
+      document.getElementById("o-mass").textContent = total.toFixed(2) + " g";
+      document.getElementById("o-col").textContent  =
+        state.progress < 0.1 ? "copper-red" :
+        state.progress < 0.9 ? "darkening to black" : "black (CuO)";
+      document.getElementById("o-o2").textContent = o2.toFixed(2) + " g";
+    }
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0,0,W,H);
+      // balance
+      const cx = W/2, py = H - 90;
+      ctx.fillStyle = "#16213f"; ctx.fillRect(cx - 110, py, 220, 8);
+      ctx.fillStyle = "#22304f"; ctx.fillRect(cx - 8, py + 8, 16, 50);
+      ctx.fillStyle = "#16213f"; ctx.fillRect(cx - 70, py + 56, 140, 24);
+      ctx.fillStyle = "rgba(255,255,255,.7)";
+      ctx.font = "14px monospace";
+      const o2 = state.progress * state.cu * (16/64);
+      ctx.fillText((state.cu + o2).toFixed(2) + " g", cx - 30, py + 73);
+      // crucible
+      const fx = cx, fy = py - 30;
+      ctx.fillStyle = "#2a2a32"; ctx.fillRect(fx - 38, fy - 26, 76, 26);
+      // copper / cuo
+      const col1 = [198, 120, 58];
+      const col2 = [40, 40, 50];
+      const p = state.progress;
+      const r = Math.round(col1[0]*(1-p) + col2[0]*p);
+      const g = Math.round(col1[1]*(1-p) + col2[1]*p);
+      const b = Math.round(col1[2]*(1-p) + col2[2]*p);
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(fx - 30, fy - 20, 60, 14);
+      // flame underneath when heating
+      if (state.heat) {
+        const grad = ctx.createRadialGradient(fx, fy + 16, 4, fx, fy + 16, 40);
+        grad.addColorStop(0, "rgba(255,210,120,.95)");
+        grad.addColorStop(1, "rgba(255,80,40,0)");
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.ellipse(fx, fy + 14, 24, 26, 0, 0, Math.PI*2); ctx.fill();
+      }
+      // burner
+      ctx.fillStyle = "#22304f"; ctx.fillRect(fx - 18, fy + 38, 36, 8);
+      ctx.fillRect(fx - 5, fy + 16, 10, 24);
+
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText("2 Cu + O₂ → 2 CuO", 16, H - 14);
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

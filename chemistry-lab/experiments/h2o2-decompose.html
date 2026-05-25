@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Decomposition of hydrogen peroxide",
+  subtitle: "A safer way to prepare oxygen at room temperature",
+  lede: "A few drops of dilute hydrogen peroxide on a heap of manganese(IV) oxide release a vigorous stream of bubbles — pure oxygen, ready to relight a glowing splint.",
+  sections: [
+    { heading: "Reaction",
+      formula: "2 H₂O₂ &nbsp;→&nbsp; 2 H₂O + O₂↑   (MnO₂ catalyst)",
+      body: "H₂O₂ is thermodynamically unstable: it always wants to decompose to water and O₂. The reaction is just very slow at room temperature without help. MnO₂ provides a catalytic surface that lowers the activation energy and triggers an immediate burst of bubbles." },
+    { heading: "Advantages over heating KMnO₄ or KClO₃",
+      list: [
+        "Runs at room temperature — no burner, no risk of cracking the tube.",
+        "Reagents are easy to obtain (3 % drugstore H₂O₂ is a fine starting point).",
+        "Reaction rate is controlled simply by the drop rate of H₂O₂.",
+        "MnO₂ can be filtered and reused indefinitely."
+      ] },
+    { heading: "Identifying the gas",
+      body: "Insert a glowing splint into the mouth of the collection tube. The splint re-ignites — confirming oxygen. Limewater is unaffected, ruling out CO₂."
+    }
+  ],
+  aside: "Catalase, the enzyme in liver and potato tissue, performs exactly the same job as MnO₂. A piece of raw liver dropped into 6 % H₂O₂ froths violently — a vivid biology-chemistry crossover demo.",
+  questions: [
+    "Why is MnO₂ described as a catalyst and not a reactant?",
+    "Design a fair test comparing the catalytic activity of MnO₂, Fe₂O₃ and CuO on the decomposition of the same H₂O₂ stock."
+  ]
+});
+</script>
+</body></html>

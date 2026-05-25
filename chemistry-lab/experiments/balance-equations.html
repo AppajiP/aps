@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Balance Chemical Equations — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Balancing equations</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Balancing equations</div>
+    <h1 style="margin:6px 0 4px">Balancing chemical equations</h1>
+    <p style="color:var(--muted);margin:0">
+      Adjust the coefficients in front of each species until every element has
+      the same total count on both sides of the arrow.</p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="panel">
+          <div class="tabs" id="puzzles"></div>
+          <div id="equation" style="font-size:24px; font-family:'JetBrains Mono', monospace; text-align:center; padding:20px 6px; line-height: 1.8;"></div>
+          <h3>Element tally</h3>
+          <div id="tally" style="font-family:'JetBrains Mono', monospace; font-size: 14px;"></div>
+          <div class="controls">
+            <button class="btn" id="btn-check">Check</button>
+            <button class="btn secondary" id="btn-reset">Reset coefficients</button>
+            <button class="btn success" id="btn-reveal">Reveal answer</button>
+          </div>
+          <p id="msg" style="margin-top:12px; min-height: 1.4em; color: var(--accent);"></p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>How to balance</h2>
+          <ol>
+            <li>Count each kind of atom on both sides.</li>
+            <li>Adjust the integer coefficient (never the subscripts!) in front
+                of a formula to even out the count.</li>
+            <li>Balance the metals first, then non-metals, then H, then O.</li>
+            <li>Reduce all coefficients to their lowest whole-number ratio.</li>
+          </ol>
+          <p>The total mass of reactants always equals the total mass of
+             products — this is the law of conservation of mass.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    // Each puzzle: list of species with elemental composition; answer is the
+    // smallest-integer coefficient vector.
+    const PUZZLES = [
+      {
+        name: "Hydrogen + Oxygen",
+        lhs: [{f: "H₂", el: {H:2}}, {f: "O₂", el: {O:2}}],
+        rhs: [{f: "H₂O", el: {H:2, O:1}}],
+        answer: [2, 1, 2]
+      },
+      {
+        name: "Methane combustion",
+        lhs: [{f: "CH₄", el: {C:1, H:4}}, {f: "O₂", el: {O:2}}],
+        rhs: [{f: "CO₂", el: {C:1, O:2}}, {f: "H₂O", el: {H:2, O:1}}],
+        answer: [1, 2, 1, 2]
+      },
+      {
+        name: "Iron rust",
+        lhs: [{f: "Fe", el: {Fe:1}}, {f: "O₂", el: {O:2}}],
+        rhs: [{f: "Fe₂O₃", el: {Fe:2, O:3}}],
+        answer: [4, 3, 2]
+      },
+      {
+        name: "Aluminium + HCl",
+        lhs: [{f: "Al", el: {Al:1}}, {f: "HCl", el: {H:1, Cl:1}}],
+        rhs: [{f: "AlCl₃", el: {Al:1, Cl:3}}, {f: "H₂", el: {H:2}}],
+        answer: [2, 6, 2, 3]
+      },
+      {
+        name: "Ammonia synthesis",
+        lhs: [{f: "N₂", el: {N:2}}, {f: "H₂", el: {H:2}}],
+        rhs: [{f: "NH₃", el: {N:1, H:3}}],
+        answer: [1, 3, 2]
+      },
+      {
+        name: "KClO₃ decomposition",
+        lhs: [{f: "KClO₃", el: {K:1, Cl:1, O:3}}],
+        rhs: [{f: "KCl", el: {K:1, Cl:1}}, {f: "O₂", el: {O:2}}],
+        answer: [2, 2, 3]
+      }
+    ];
+    let idx = 0;
+    let coeffs = [];
+
+    function newPuzzle(i) {
+      idx = i;
+      const p = PUZZLES[idx];
+      coeffs = new Array(p.lhs.length + p.rhs.length).fill(1);
+      render();
+    }
+
+    function tally() {
+      const p = PUZZLES[idx];
+      const lhs = {}, rhs = {};
+      p.lhs.forEach((s, j) => Object.entries(s.el).forEach(([k,v]) => lhs[k] = (lhs[k]||0) + v * coeffs[j]));
+      p.rhs.forEach((s, j) => Object.entries(s.el).forEach(([k,v]) => rhs[k] = (rhs[k]||0) + v * coeffs[p.lhs.length + j]));
+      return { lhs, rhs };
+    }
+
+    function speciesHtml(s, ix) {
+      return `<span class="sp">
+        <button class="coef" data-i="${ix}" data-d="-1" aria-label="decrease">−</button>
+        <span class="num">${coeffs[ix]}</span>
+        <button class="coef" data-i="${ix}" data-d="1"  aria-label="increase">+</button>
+        ${s.f}
+      </span>`;
+    }
+    function render() {
+      const p = PUZZLES[idx];
+      // tabs
+      const tabs = document.getElementById("puzzles");
+      tabs.innerHTML = "";
+      PUZZLES.forEach((q, i) => {
+        const b = document.createElement("button");
+        b.textContent = q.name;
+        if (i === idx) b.classList.add("active");
+        b.addEventListener("click", () => newPuzzle(i));
+        tabs.appendChild(b);
+      });
+      // equation
+      const eq = document.getElementById("equation");
+      eq.innerHTML =
+        p.lhs.map((s, j) => speciesHtml(s, j)).join(" + ") +
+        ` <span style="color:var(--muted)">→</span> ` +
+        p.rhs.map((s, j) => speciesHtml(s, p.lhs.length + j)).join(" + ");
+      eq.querySelectorAll(".coef").forEach(b => {
+        b.addEventListener("click", () => {
+          const i = +b.dataset.i, d = +b.dataset.d;
+          coeffs[i] = Math.max(1, Math.min(20, coeffs[i] + d));
+          render();
+        });
+      });
+      // tally
+      const { lhs, rhs } = tally();
+      const keys = Array.from(new Set([...Object.keys(lhs), ...Object.keys(rhs)])).sort();
+      const tHost = document.getElementById("tally");
+      tHost.innerHTML = "";
+      keys.forEach(k => {
+        const row = document.createElement("div");
+        const L = lhs[k]||0, R = rhs[k]||0;
+        const ok = L === R;
+        row.innerHTML = `<span style="color:${ok ? 'var(--accent)' : 'var(--danger)'}">${ok ? '✓' : '✗'}</span>
+                         &nbsp; ${k}: &nbsp; ${L} on left &nbsp; · &nbsp; ${R} on right`;
+        tHost.appendChild(row);
+      });
+      document.getElementById("msg").textContent = "";
+    }
+
+    document.getElementById("btn-check").addEventListener("click", () => {
+      const { lhs, rhs } = tally();
+      const keys = Array.from(new Set([...Object.keys(lhs), ...Object.keys(rhs)]));
+      const ok = keys.every(k => (lhs[k]||0) === (rhs[k]||0));
+      const msg = document.getElementById("msg");
+      if (ok) {
+        // also check minimal
+        const g = gcdArr(coeffs);
+        if (g > 1) {
+          msg.style.color = "var(--warn)";
+          msg.textContent = "Balanced, but the coefficients can still be divided by " + g + ". Reduce to the smallest whole numbers.";
+        } else {
+          msg.style.color = "var(--accent)";
+          msg.textContent = "✓ Balanced! Mass is conserved.";
+        }
+      } else {
+        msg.style.color = "var(--danger)";
+        msg.textContent = "Not yet — at least one element does not match.";
+      }
+    });
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      coeffs = coeffs.map(() => 1); render();
+    });
+    document.getElementById("btn-reveal").addEventListener("click", () => {
+      coeffs = PUZZLES[idx].answer.slice();
+      render();
+      document.getElementById("msg").style.color = "var(--primary-2)";
+      document.getElementById("msg").textContent = "Answer revealed.";
+    });
+
+    function gcd(a,b) { return b === 0 ? a : gcd(b, a%b); }
+    function gcdArr(a) { return a.reduce((x,y) => gcd(x,y)); }
+
+    // inline styles for spacing of equation buttons
+    const css = document.createElement("style");
+    css.textContent = `
+      #equation .sp { display: inline-flex; align-items: center; gap: 4px; margin: 4px; }
+      #equation .coef { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border);
+                        background: var(--bg-soft); color: var(--text); font-weight: 700; cursor: pointer; }
+      #equation .coef:hover { border-color: var(--primary); }
+      #equation .num { display: inline-block; min-width: 22px; text-align: center; color: var(--primary-2); }
+    `;
+    document.head.appendChild(css);
+
+    newPuzzle(0);
+  })();
+  </script>
+</body>
+</html>

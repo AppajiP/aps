@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Sublimation of iodine",
+  subtitle: "Solid → vapour without passing through a liquid",
+  lede: "Warming a few crystals of solid iodine in a closed beaker covered by a cool watch-glass shows brilliant violet vapour, which redeposits as needle-like crystals on the cold surface.",
+  diagram: `
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="600" height="220" fill="#0e1530"/>
+      <!-- beaker -->
+      <rect x="180" y="40" width="240" height="150" fill="rgba(120,170,255,.08)" stroke="#9ec2ff" stroke-width="2"/>
+      <!-- iodine on base -->
+      <rect x="240" y="170" width="120" height="14" fill="#3a2c45"/>
+      <!-- violet vapour -->
+      <ellipse cx="300" cy="120" rx="100" ry="55" fill="rgba(170,90,200,.35)"/>
+      <ellipse cx="280" cy="100" rx="60" ry="30" fill="rgba(170,90,200,.45)"/>
+      <!-- watch-glass on top with re-deposited crystals -->
+      <rect x="170" y="30" width="260" height="12" fill="#42537b"/>
+      <g fill="#7a3d8c">
+        <rect x="220" y="38" width="2" height="6"/>
+        <rect x="240" y="38" width="2" height="8"/>
+        <rect x="260" y="38" width="2" height="5"/>
+        <rect x="285" y="38" width="2" height="7"/>
+        <rect x="310" y="38" width="2" height="6"/>
+        <rect x="340" y="38" width="2" height="9"/>
+        <rect x="365" y="38" width="2" height="6"/>
+        <rect x="390" y="38" width="2" height="7"/>
+      </g>
+      <text x="186" y="20" fill="#9ec2ff" font-size="12">cold watch-glass</text>
+      <text x="186" y="208" fill="#9ec2ff" font-size="12">gentle heat below</text>
+    </svg>`,
+  sections: [
+    { heading: "What 'sublimation' means",
+      body: "Sublimation is a direct transition from solid to gas without melting. It is driven by the high vapour pressure of certain molecular solids — even at temperatures below their melting point, enough molecules escape the crystal to fill a closed space with vapour." },
+    { heading: "Why iodine?",
+      list: [
+        "I₂ is a non-polar molecular crystal with a vapour pressure of ~0.4 mmHg at 25 °C.",
+        "Its deep violet vapour is intensely coloured, making it easy to see.",
+        "The redeposited needles are also useful — this is a simple purification technique."
+      ] },
+    { heading: "Other subliming substances",
+      list: [
+        "Solid CO₂ ('dry ice') at atmospheric pressure.",
+        "Naphthalene (mothballs).",
+        "Ammonium chloride decomposes and recombines, giving a similar visual effect."
+      ] }
+  ],
+  aside: "Sublimation is exploited industrially in freeze-drying coffee and pharmaceuticals — water is removed directly from the frozen product, leaving structure and aroma intact.",
+  questions: [
+    "Why is purification by sublimation only practical for a small set of compounds?",
+    "What change would you see if the watch-glass were warm rather than cold?"
+  ]
+});
+</script>
+</body></html>

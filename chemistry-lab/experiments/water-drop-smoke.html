@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "A drop of water lights smoke",
+  subtitle: "Highly exothermic dissolution / oxidation",
+  lede: "A pile of zinc powder mixed with sodium peroxide ignites the instant a single drop of water touches it — without any external flame.",
+  sections: [
+    { heading: "Why a drop of water is enough",
+      body: "Sodium peroxide reacts vigorously with water to release oxygen and a lot of heat. The heat is sufficient to ignite the surrounding finely-divided zinc, which then burns brightly in the oxygen liberated nearby." },
+    { heading: "Approximate reactions",
+      formula: "2 Na₂O₂ + 2 H₂O → 4 NaOH + O₂↑<br>2 Zn + O₂ → 2 ZnO (smoke)" },
+    { heading: "Safety",
+      list: [
+        "Use small amounts (less than 0.5 g of each reagent).",
+        "Place the heap on a fireproof tile inside a fume cupboard.",
+        "Wear face shield and gloves — molten splashes and irritating ZnO smoke are produced."
+      ] }
+  ],
+  aside: "This demo dramatically illustrates the difference between activation energy (a small puff of heat) and reaction energy (a large amount of heat released afterwards). The whole reaction is self-sustaining once started.",
+  questions: [
+    "Where does the oxygen come from that lets the zinc burn?",
+    "Why does heating zinc powder over a flame in air also produce ZnO smoke?",
+    "Could a single drop of HCl trigger the same reaction? Explain."
+  ]
+});
+</script>
+</body></html>
