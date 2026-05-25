@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Iron in Oxygen — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Iron wire burning in oxygen</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Iron in oxygen</div>
+    <h1 style="margin:6px 0 4px">Burning iron wire in oxygen</h1>
+    <p style="color:var(--muted);margin:0">
+      A coil of fine iron wire glows white and throws bright sparks when lowered
+      into a jar of pure oxygen.
+    </p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Gas jar</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-ignite">Light match-head &amp; lower wire</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations</h3>
+          <dl class="kv">
+            <dt>Wire temperature</dt><dd id="o-temp">25 °C</dd>
+            <dt>Spark intensity</dt><dd id="o-spark">none</dd>
+            <dt>Phase</dt><dd id="o-phase">ready</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Open the jar and ignite the matchstick on the wire tip.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>Why iron burns only in pure O₂</h2>
+          <p>In air, only ~21 % of the gas is O₂; the heat released by oxidation is
+             diluted by the rest of the air and the wire merely glows red. In pure
+             oxygen, the reaction is fast enough to melt the iron and throw sparks
+             of molten oxide.</p>
+          <div class="formula">3 Fe + 2 O₂ &nbsp;→&nbsp; Fe₃O₄</div>
+          <h3>Safety notes</h3>
+          <ul>
+            <li>Cover the bottom of the jar with sand or water — molten Fe₃O₄
+                will crack hot glass on impact.</li>
+            <li>Use spiral-wound thin wire so the heat is concentrated.</li>
+          </ul>
+          <h3>Try this</h3>
+          <ol>
+            <li>Why is a burning matchstick attached to the wire?</li>
+            <li>Predict the product when iron burns in steam instead.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = {
+      phase: "ready",  // ready, lowering, burning, done
+      t: 0,
+      wireY: 60,
+      sparks: [],
+      glowsAt: 0,
+      sand: 60,
+    };
+    function setMsg(t) { document.getElementById("o-msg").textContent = t; }
+    document.getElementById("btn-ignite").addEventListener("click", () => {
+      if (state.phase !== "ready") return;
+      state.phase = "lowering";
+      state.t = 0;
+      setMsg("Match-head is burning. Lowering the iron spiral into the jar…");
+    });
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      state.phase = "ready"; state.t = 0; state.wireY = 60; state.sparks.length = 0;
+      setMsg("Reset.");
+    });
+
+    function update(dt) {
+      state.t += dt;
+      if (state.phase === "lowering") {
+        state.wireY += 70 * dt;
+        if (state.wireY > 180) { state.phase = "burning"; state.glowsAt = state.t; setMsg("Iron is white-hot — sparks fly! 3 Fe + 2 O₂ → Fe₃O₄"); }
+      }
+      if (state.phase === "burning") {
+        // spawn sparks
+        const n = Math.floor(40 * dt + Math.random());
+        for (let i = 0; i < n; i++) {
+          state.sparks.push({
+            x: 0, y: 0,
+            vx: (Math.random() - 0.5) * 220,
+            vy: -40 - Math.random() * 80,
+            life: 0.8 + Math.random() * 0.7
+          });
+        }
+        if (state.t - state.glowsAt > 6) { state.phase = "done"; setMsg("Wire has fully reacted. Black solid Fe₃O₄ remains."); }
+      }
+      for (const s of state.sparks) {
+        s.x += s.vx * dt;
+        s.y += s.vy * dt;
+        s.vy += 260 * dt;
+        s.life -= dt;
+      }
+      state.sparks = state.sparks.filter(s => s.life > 0);
+      // HUD
+      document.getElementById("o-temp").textContent =
+        state.phase === "burning" ? "≈ 1500 °C" :
+        state.phase === "done" ? "cooling" : "25 °C";
+      document.getElementById("o-spark").textContent =
+        state.phase === "burning" ? "intense white" :
+        state.phase === "done" ? "fading" : "none";
+      document.getElementById("o-phase").textContent = state.phase;
+    }
+
+    function draw() {
+      const W = width(), H = height();
+      ctx.clearRect(0, 0, W, H);
+      // jar
+      const jx = W/2 - 110, jy = 60, jw = 220, jh = H - 130;
+      // oxygen tint
+      const grad = ctx.createLinearGradient(0, jy, 0, jy + jh);
+      grad.addColorStop(0, "rgba(80,170,255,.18)");
+      grad.addColorStop(1, "rgba(80,170,255,.05)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(jx, jy, jw, jh);
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(jx, jy, jw, jh);
+      // sand at bottom
+      ctx.fillStyle = "#a98c5a";
+      ctx.fillRect(jx + 2, jy + jh - state.sand, jw - 4, state.sand - 2);
+      ctx.fillStyle = "rgba(255,255,255,.05)";
+      ctx.fillRect(jx + 2, jy + jh - state.sand, jw - 4, 4);
+
+      // jar lid (open)
+      ctx.fillStyle = "#22304f";
+      ctx.fillRect(jx + 30, jy - 6, jw - 60, 6);
+
+      // wire holder rod
+      const rodX = W/2;
+      ctx.strokeStyle = "#8aa";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(rodX, 20); ctx.lineTo(rodX, state.wireY);
+      ctx.stroke();
+
+      // iron spiral
+      ctx.save();
+      ctx.translate(rodX, state.wireY + 18);
+      const burning = state.phase === "burning";
+      const done = state.phase === "done";
+      ctx.strokeStyle = burning ? "#fff7c2" : done ? "#222" : "#999aa6";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i < 28; i++) {
+        const a = i * 0.45;
+        const r = 14 + i * 0.2;
+        const x = Math.cos(a) * r * 0.5;
+        const y = i * 1.6;
+        ctx[i ? "lineTo" : "moveTo"](x, y);
+      }
+      ctx.stroke();
+      // match-head if not yet burning fully
+      if (state.phase === "ready" || state.phase === "lowering") {
+        ctx.fillStyle = "#ff6a3d";
+        ctx.beginPath();
+        ctx.arc(0, 48, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // glow halo
+      if (burning) {
+        const halo = ctx.createRadialGradient(0, 24, 4, 0, 24, 70);
+        halo.addColorStop(0, "rgba(255,255,200,.7)");
+        halo.addColorStop(1, "rgba(255,180,80,0)");
+        ctx.fillStyle = halo;
+        ctx.fillRect(-80, -30, 160, 120);
+      }
+      // sparks
+      for (const s of state.sparks) {
+        ctx.fillStyle = `rgba(255,${200 + Math.random()*55|0},120,${s.life})`;
+        ctx.fillRect(s.x - 1, s.y - 1, 2, 2);
+      }
+      ctx.restore();
+
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText("3 Fe + 2 O₂ → Fe₃O₄", 16, H - 14);
+    }
+
+    ChemUtils.loop((dt) => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

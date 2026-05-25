@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Heating KMnO₄ — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo">⚗</div>
+        <div>
+          <div class="brand-text">Virtual Chemistry Lab</div>
+          <div class="brand-sub">Heating potassium permanganate</div>
+        </div>
+      </div>
+      <nav>
+        <a href="../index.html">All experiments</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Heating KMnO₄</div>
+    <h1 style="margin:6px 0 4px">Preparing oxygen by heating potassium permanganate</h1>
+    <p style="color:var(--muted);margin:0">
+      Standard inquiry experiment. Heat KMnO₄ in a test tube and collect the
+      oxygen produced by displacement of water.
+    </p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="stage">
+          <div class="stage-label">Apparatus stage</div>
+          <canvas id="stage"></canvas>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="btn-light">Light burner</button>
+          <button class="btn secondary" id="btn-stop">Stop heating</button>
+          <button class="btn success" id="btn-collect" disabled>Collect a bottle</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+
+        <div class="slider-row">
+          <label for="heat">Flame intensity</label>
+          <input id="heat" type="range" min="0" max="100" value="55" />
+          <span class="val" id="heat-val">55%</span>
+        </div>
+
+        <div class="panel" style="margin-top:14px">
+          <h3>Live observations</h3>
+          <dl class="kv">
+            <dt>Tube temperature</dt><dd id="o-temp">25 °C</dd>
+            <dt>KMnO₄ remaining</dt><dd id="o-mass">5.00 g</dd>
+            <dt>O₂ collected</dt><dd id="o-vol">0 mL</dd>
+            <dt>Bottles filled</dt><dd id="o-bottles">0</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Burner is off.</p>
+        </div>
+      </div>
+
+      <aside>
+        <div class="panel">
+          <h2>Theory</h2>
+          <p>Solid potassium permanganate decomposes on heating to give a mixture of
+             potassium manganate, manganese(IV) oxide, and oxygen gas:</p>
+          <div class="formula">2 KMnO₄ &nbsp;→&nbsp; K₂MnO₄ + MnO₂ + O₂↑</div>
+          <h3>Setup tips</h3>
+          <ul>
+            <li>Plug the tube mouth with a small wad of cotton wool to stop
+                solid particles entering the delivery tube.</li>
+            <li>Tilt the tube slightly downward so condensed water never runs
+                back onto the hot glass.</li>
+            <li>Heat the solid evenly first, then concentrate the flame.</li>
+          </ul>
+          <h3>Why displacement of water?</h3>
+          <p>Oxygen is only sparingly soluble in water, so collecting it over
+             a trough gives a pure, dry-enough sample for ignition tests.</p>
+          <h3>Follow-up questions</h3>
+          <ol>
+            <li>Why must the delivery tube be removed from the water before
+                the burner is taken away?</li>
+            <li>What would happen if no cotton plug were used?</li>
+            <li>Use the mass remaining to estimate the volume of O₂ released
+                at STP for a 5 g sample.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site">Virtual Chemistry Lab</footer>
+
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      const stage   = document.getElementById("stage");
+      const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+
+      const state = {
+        burning: false,
+        flame: 0.55,
+        temp: 25,
+        massStart: 5.00,
+        massLeft: 5.00,
+        volume: 0,
+        bottles: 0,
+        bubbles: [],
+        smoke: [],
+        time: 0
+      };
+
+      const heat = document.getElementById("heat");
+      const heatVal = document.getElementById("heat-val");
+      heat.addEventListener("input", () => {
+        state.flame = heat.value / 100;
+        heatVal.textContent = heat.value + "%";
+      });
+
+      function setMsg(t, color) {
+        const el = document.getElementById("o-msg");
+        el.textContent = t;
+        el.style.color = color || "var(--accent)";
+      }
+
+      document.getElementById("btn-light").addEventListener("click", () => {
+        if (state.massLeft <= 0) { setMsg("All KMnO₄ has decomposed. Reset to refill.", "var(--warn)"); return; }
+        state.burning = true;
+        setMsg("Burner lit — heating the test tube.");
+      });
+      document.getElementById("btn-stop").addEventListener("click", () => {
+        state.burning = false;
+        setMsg("Burner off.");
+      });
+      document.getElementById("btn-reset").addEventListener("click", () => {
+        state.burning = false;
+        state.temp = 25;
+        state.massLeft = state.massStart;
+        state.volume = 0;
+        state.bottles = 0;
+        state.bubbles.length = 0;
+        state.smoke.length = 0;
+        setMsg("Apparatus reset.");
+      });
+      document.getElementById("btn-collect").addEventListener("click", () => {
+        if (state.volume < 250) return;
+        state.bottles += 1;
+        state.volume -= 250;
+        setMsg("Collected a 250 mL bottle of oxygen. Total bottles: " + state.bottles);
+      });
+
+      // --- drawing ---------------------------------------------------------
+      function draw() {
+        const W = width(), H = height();
+        ctx.clearRect(0, 0, W, H);
+
+        // Bench
+        ctx.fillStyle = "#0d1530";
+        ctx.fillRect(0, H - 70, W, 70);
+        ctx.fillStyle = "#172447";
+        ctx.fillRect(0, H - 70, W, 2);
+
+        drawClamp(W, H);
+        drawTestTube(W, H);
+        drawBurner(W, H);
+        drawDelivery(W, H);
+        drawTrough(W, H);
+        drawBubbles(W, H);
+
+        // HUD
+        ctx.fillStyle = "rgba(255,255,255,.7)";
+        ctx.font = "12px Inter, sans-serif";
+        ctx.fillText("KMnO\u2084 → K\u2082MnO\u2084 + MnO\u2082 + O\u2082\u2191", 16, H - 14);
+      }
+
+      function drawClamp(W, H) {
+        ctx.strokeStyle = "#42537b";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(70, 40); ctx.lineTo(70, H - 70); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(70, 130); ctx.lineTo(180, 130); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(70, 80); ctx.lineTo(140, 80); ctx.stroke();
+      }
+
+      function drawTestTube(W, H) {
+        const x = 180, y = 110;
+        const tubeW = 36, tubeL = 170;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(0.15);
+        ctx.fillStyle = "rgba(120,170,255,.10)";
+        ctx.strokeStyle = "#9ec2ff";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, tubeL);
+        ctx.arc(tubeW / 2, tubeL, tubeW / 2, Math.PI, 0, true);
+        ctx.lineTo(tubeW, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // KMnO4 solid (deep purple)
+        const fracLeft = state.massLeft / state.massStart;
+        const solidH = 26 * fracLeft;
+        if (solidH > 0.4) {
+          ctx.fillStyle = "#4b1e6b";
+          ctx.beginPath();
+          ctx.moveTo(2, tubeL - solidH);
+          ctx.lineTo(2, tubeL);
+          ctx.arc(tubeW / 2, tubeL, tubeW / 2 - 2, Math.PI, 0, true);
+          ctx.lineTo(tubeW - 2, tubeL - solidH);
+          ctx.closePath();
+          ctx.fill();
+          ctx.strokeStyle = "rgba(255,255,255,.15)";
+          ctx.beginPath();
+          ctx.moveTo(2, tubeL - solidH);
+          ctx.lineTo(tubeW - 2, tubeL - solidH);
+          ctx.stroke();
+        }
+        // Cotton plug
+        ctx.fillStyle = "#f4ecd6";
+        ctx.fillRect(4, 6, tubeW - 8, 8);
+
+        ctx.restore();
+      }
+
+      function drawBurner(W, H) {
+        const flameH = state.burning ? 24 + state.flame * 60 : 0;
+        const bx = 200, by = H - 70;
+        // Stand
+        ctx.fillStyle = "#22304f";
+        ctx.fillRect(bx - 26, by, 52, 8);
+        ctx.fillStyle = "#2c3b60";
+        ctx.fillRect(bx - 8, by - 30, 16, 30);
+        // Flame
+        if (flameH > 0) {
+          const grad = ctx.createRadialGradient(bx, by - 18, 4, bx, by - 18, flameH);
+          grad.addColorStop(0, "rgba(255,255,200,.95)");
+          grad.addColorStop(0.4, "rgba(255,170,60,.9)");
+          grad.addColorStop(1, "rgba(255,80,40,0)");
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.ellipse(bx, by - 14 - flameH * 0.4, 18, flameH, 0, 0, Math.PI * 2);
+          ctx.fill();
+          // blue core
+          ctx.fillStyle = "rgba(120,200,255,.65)";
+          ctx.beginPath();
+          ctx.ellipse(bx, by - 12 - flameH * 0.2, 6, flameH * 0.4, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function drawDelivery(W, H) {
+        ctx.strokeStyle = "#9ec2ff";
+        ctx.lineWidth = 3;
+        // From test tube mouth, over the rim of trough
+        ctx.beginPath();
+        ctx.moveTo(195, 110);
+        ctx.bezierCurveTo(240, 70, 300, 80, 360, 160);
+        ctx.lineTo(360, 250);
+        ctx.stroke();
+      }
+
+      function drawTrough(W, H) {
+        const tx = 320, ty = 270, tw = 220, th = 70;
+        // water
+        ctx.fillStyle = "rgba(80,160,255,.25)";
+        ctx.fillRect(tx, ty, tw, th);
+        ctx.strokeStyle = "#9ec2ff";
+        ctx.strokeRect(tx, ty, tw, th);
+        // gas-collection bottle
+        const bx = tx + 100, by = ty - 80;
+        const bw = 60, bh = 110;
+        ctx.fillStyle = "rgba(120,170,255,.08)";
+        ctx.fillRect(bx, by, bw, bh);
+        ctx.strokeStyle = "#9ec2ff";
+        ctx.strokeRect(bx, by, bw, bh);
+        // water level inside bottle
+        const fill = ChemUtils.clamp(state.volume / 250, 0, 1);
+        const wh = bh - fill * bh;
+        ctx.fillStyle = "rgba(80,160,255,.45)";
+        ctx.fillRect(bx, by + (bh - wh), bw, wh);
+        // label
+        ctx.fillStyle = "rgba(255,255,255,.65)";
+        ctx.font = "11px Inter";
+        ctx.fillText("O₂ bottle", bx + 8, by + 14);
+      }
+
+      function drawBubbles(W, H) {
+        for (const b of state.bubbles) {
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(180,220,255,.65)";
+          ctx.fill();
+        }
+      }
+
+      // --- simulation ------------------------------------------------------
+      function update(dt) {
+        state.time += dt;
+        const targetTemp = state.burning ? 50 + state.flame * 350 : 25;
+        state.temp = ChemUtils.lerp(state.temp, targetTemp, 1 - Math.exp(-dt * 0.6));
+
+        if (state.burning && state.temp > 200 && state.massLeft > 0) {
+          const rate = (state.temp - 200) * 0.00009 * (0.4 + state.flame);
+          const dm = Math.min(state.massLeft, rate * dt);
+          state.massLeft -= dm;
+          // 5 g of KMnO4 gives ~0.50 g of O2 = ~350 mL at STP
+          const dV = dm * 70;
+          state.volume = Math.min(500, state.volume + dV);
+
+          // Spawn bubbles
+          if (Math.random() < 14 * dt * (0.5 + state.flame)) {
+            state.bubbles.push({ x: 360 + (Math.random() - 0.5) * 12, y: 300, r: 2 + Math.random() * 3, vy: -40 - Math.random() * 30 });
+          }
+        }
+        for (const b of state.bubbles) {
+          b.y += b.vy * dt;
+          b.vy *= 0.99;
+        }
+        // remove bubbles that hit gas-water interface
+        const bottleBottom = 300;
+        const fill = ChemUtils.clamp(state.volume / 250, 0, 1);
+        const interfaceY = bottleBottom - fill * 110;
+        for (let i = state.bubbles.length - 1; i >= 0; i--) {
+          if (state.bubbles[i].y < interfaceY + 4) state.bubbles.splice(i, 1);
+        }
+
+        // HUD
+        document.getElementById("o-temp").textContent = state.temp.toFixed(0) + " °C";
+        document.getElementById("o-mass").textContent = state.massLeft.toFixed(2) + " g";
+        document.getElementById("o-vol").textContent  = state.volume.toFixed(0) + " mL";
+        document.getElementById("o-bottles").textContent = state.bottles;
+        document.getElementById("btn-collect").disabled = state.volume < 250;
+      }
+
+      ChemUtils.loop((dt) => { update(dt); draw(); });
+    })();
+  </script>
+</body>
+</html>

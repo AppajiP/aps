@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Element Quiz — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Periodic table quiz</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Element quiz</div>
+    <h1 style="margin:6px 0 4px">Periodic table — element quiz</h1>
+    <p style="color:var(--muted);margin:0">
+      Practice element symbols, atomic numbers, and group positions for the
+      first 36 elements.</p>
+    <div class="exp-layout">
+      <div>
+        <div class="panel">
+          <div id="question" style="font-size:18px;margin:8px 0 16px"></div>
+          <div id="choices" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px,1fr)); gap:10px;"></div>
+          <div class="controls" style="margin-top:14px">
+            <button class="btn" id="btn-next">Next question</button>
+            <button class="btn danger" id="btn-reset">Reset score</button>
+          </div>
+          <div class="panel" style="background:var(--bg-soft); margin-top:14px">
+            <h3>Score</h3>
+            <dl class="kv">
+              <dt>Correct</dt><dd id="o-correct">0</dd>
+              <dt>Asked</dt><dd id="o-total">0</dd>
+              <dt>Accuracy</dt><dd id="o-acc">—</dd>
+            </dl>
+            <p id="o-msg" style="color:var(--accent);min-height:1.4em">Pick the correct answer.</p>
+          </div>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>Tips for remembering</h2>
+          <ul>
+            <li>Group 1 (alkali metals): Li, Na, K, Rb…</li>
+            <li>Group 2 (alkaline-earth): Be, Mg, Ca, Sr…</li>
+            <li>Group 17 (halogens): F, Cl, Br, I…</li>
+            <li>Group 18 (noble gases): He, Ne, Ar, Kr…</li>
+          </ul>
+          <p>Atomic number = number of protons. The order in the periodic table
+             is by increasing Z.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script>
+  (function () {
+    const E = [
+      ["H","Hydrogen",1],["He","Helium",1],
+      ["Li","Lithium",1],["Be","Beryllium",1],["B","Boron",1],["C","Carbon",1],
+      ["N","Nitrogen",1],["O","Oxygen",1],["F","Fluorine",1],["Ne","Neon",1],
+      ["Na","Sodium",1],["Mg","Magnesium",1],["Al","Aluminium",1],["Si","Silicon",1],
+      ["P","Phosphorus",1],["S","Sulfur",1],["Cl","Chlorine",1],["Ar","Argon",1],
+      ["K","Potassium",1],["Ca","Calcium",1],
+      ["Sc","Scandium",1],["Ti","Titanium",1],["V","Vanadium",1],["Cr","Chromium",1],
+      ["Mn","Manganese",1],["Fe","Iron",1],["Co","Cobalt",1],["Ni","Nickel",1],
+      ["Cu","Copper",1],["Zn","Zinc",1],["Ga","Gallium",1],["Ge","Germanium",1],
+      ["As","Arsenic",1],["Se","Selenium",1],["Br","Bromine",1],["Kr","Krypton",1]
+    ];
+    let asked = 0, correct = 0;
+    let answer = null;
+
+    function rng(n) { return Math.floor(Math.random()*n); }
+    function unique(arr, k, exclude) {
+      const out = [], used = new Set([exclude]);
+      while (out.length < k && used.size < arr.length) {
+        const i = rng(arr.length);
+        if (used.has(arr[i][0])) continue;
+        used.add(arr[i][0]);
+        out.push(arr[i]);
+      }
+      return out;
+    }
+    function ask() {
+      const target = E[rng(E.length)];
+      const z = E.indexOf(target) + 1;
+      const types = [
+        () => ({ q: `Which is the symbol for <b>${target[1]}</b>?`, correct: target[0],
+                 opts: shuffle([target[0], ...unique(E, 3, target[0]).map(x=>x[0])]) }),
+        () => ({ q: `What is the atomic number of <b>${target[0]}</b> (${target[1]})?`,
+                 correct: String(z),
+                 opts: shuffle([String(z), String(Math.max(1,z-2)), String(z+1), String(z+5)]) }),
+        () => ({ q: `Which element has atomic number <b>${z}</b>?`,
+                 correct: target[1],
+                 opts: shuffle([target[1], ...unique(E, 3, target[0]).map(x=>x[1])]) })
+      ];
+      const t = types[rng(types.length)]();
+      answer = t.correct;
+      document.getElementById("question").innerHTML = t.q;
+      const host = document.getElementById("choices");
+      host.innerHTML = "";
+      t.opts.forEach(o => {
+        const b = document.createElement("button");
+        b.className = "btn secondary";
+        b.style.minHeight = "44px";
+        b.textContent = o;
+        b.addEventListener("click", () => answerClick(o, b));
+        host.appendChild(b);
+      });
+      document.getElementById("o-msg").textContent = "Choose an answer.";
+      document.getElementById("o-msg").style.color = "var(--muted)";
+    }
+    function shuffle(arr) {
+      for (let i = arr.length-1; i > 0; i--) { const j = rng(i+1); [arr[i],arr[j]] = [arr[j],arr[i]]; }
+      return arr;
+    }
+    function answerClick(o, btn) {
+      asked++;
+      if (o === answer) {
+        correct++;
+        document.getElementById("o-msg").textContent = "Correct!";
+        document.getElementById("o-msg").style.color = "var(--accent)";
+        btn.style.background = "linear-gradient(180deg, var(--accent), #1da882)";
+      } else {
+        document.getElementById("o-msg").textContent = "Not quite. Correct answer: " + answer;
+        document.getElementById("o-msg").style.color = "var(--danger)";
+        btn.style.background = "linear-gradient(180deg, var(--danger), #d63b4b)";
+      }
+      [...document.getElementById("choices").children].forEach(b => b.disabled = true);
+      document.getElementById("o-total").textContent = asked;
+      document.getElementById("o-correct").textContent = correct;
+      document.getElementById("o-acc").textContent = (correct/asked*100).toFixed(0) + " %";
+    }
+    document.getElementById("btn-next").addEventListener("click", ask);
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      asked = 0; correct = 0;
+      document.getElementById("o-total").textContent = 0;
+      document.getElementById("o-correct").textContent = 0;
+      document.getElementById("o-acc").textContent = "—";
+      ask();
+    });
+    ask();
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Activity Series of Metals — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Activity series of metals</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Metal activity</div>
+    <h1 style="margin:6px 0 4px">Activity series of metals</h1>
+    <p style="color:var(--muted);margin:0">
+      Pick a metal and a solution and observe whether a single-displacement
+      reaction takes place. The more reactive metal displaces the less reactive
+      one from its compound.</p>
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Reaction test tube</div><canvas id="stage"></canvas></div>
+        <div class="slider-row">
+          <label>Metal</label>
+          <select id="metal" style="flex:1; padding:6px; background:var(--bg-soft); border:1px solid var(--border); color:var(--text); border-radius:8px;">
+            <option value="Mg">Magnesium (Mg)</option>
+            <option value="Zn">Zinc (Zn)</option>
+            <option value="Fe">Iron (Fe)</option>
+            <option value="Cu">Copper (Cu)</option>
+            <option value="Ag">Silver (Ag)</option>
+          </select>
+        </div>
+        <div class="slider-row">
+          <label>Solution</label>
+          <select id="soln" style="flex:1; padding:6px; background:var(--bg-soft); border:1px solid var(--border); color:var(--text); border-radius:8px;">
+            <option value="HCl">Dilute HCl</option>
+            <option value="H2SO4">Dilute H₂SO₄</option>
+            <option value="CuSO4">CuSO₄ (blue)</option>
+            <option value="FeSO4">FeSO₄ (pale green)</option>
+            <option value="AgNO3">AgNO₃ (colourless)</option>
+          </select>
+        </div>
+        <div class="controls">
+          <button class="btn" id="btn-drop">Drop metal in</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations</h3>
+          <p id="o-eq" class="formula" style="margin: 6px 0;"></p>
+          <p id="o-obs" style="color:var(--accent); min-height: 1.4em;">Drop a metal into the solution to begin.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>Activity series</h2>
+          <p>From most to least reactive (school-level subset):</p>
+          <div class="formula" style="display:block; padding:10px;">
+            K &gt; Ca &gt; Na &gt; Mg &gt; Al &gt; Zn &gt; Fe &gt; (H) &gt; Cu &gt; Hg &gt; Ag &gt; Pt &gt; Au
+          </div>
+          <h3>Rules of thumb</h3>
+          <ul>
+            <li>A metal above hydrogen displaces H₂ from dilute acids.</li>
+            <li>A metal higher up displaces a lower one from its salt solution.</li>
+            <li>Cu, Ag, Au do not react with dilute non-oxidising acids.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const RANK = { Mg: 5, Zn: 4, Fe: 3, H: 2.5, Cu: 2, Ag: 1 };
+    const COLORS = {
+      HCl:   "rgba(220,235,255,.4)",
+      H2SO4: "rgba(220,235,255,.4)",
+      CuSO4: "rgba(60,140,255,.55)",
+      FeSO4: "rgba(140,200,150,.45)",
+      AgNO3: "rgba(220,235,255,.4)"
+    };
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = {
+      metal: "Mg", soln: "HCl",
+      dropped: false, t: 0,
+      bubbles: [], coating: 0, colorShift: 0
+    };
+    const metalSel = document.getElementById("metal");
+    const solnSel  = document.getElementById("soln");
+    metalSel.addEventListener("change", () => { state.metal = metalSel.value; reset(); });
+    solnSel.addEventListener("change",  () => { state.soln  = solnSel.value;  reset(); });
+    function reset() {
+      state.dropped = false; state.t = 0;
+      state.bubbles.length = 0; state.coating = 0; state.colorShift = 0;
+      document.getElementById("o-obs").textContent = "Drop a metal into the solution to begin.";
+      document.getElementById("o-eq").textContent = "";
+    }
+    document.getElementById("btn-reset").addEventListener("click", reset);
+
+    function predict() {
+      const m = state.metal, s = state.soln;
+      const acid = s === "HCl" || s === "H2SO4";
+      if (acid) {
+        if (RANK[m] > RANK.H) {
+          const anion = s === "HCl" ? "Cl" : "SO₄";
+          const subAnion = s === "HCl" ? "" : "";
+          const formula = s === "HCl"
+            ? `${m} + 2 HCl → ${m}Cl₂ + H₂↑`
+            : `${m} + H₂SO₄ → ${m}SO₄ + H₂↑`;
+          return { reacts: true, eq: formula, obs: "Bubbles of hydrogen rise; metal slowly dissolves." };
+        }
+        return { reacts: false, eq: `${m} + ${s === "HCl" ? "HCl" : "H₂SO₄"} → no reaction`, obs: m + " is below hydrogen — no reaction." };
+      }
+      const saltMetal = s === "CuSO4" ? "Cu" : s === "FeSO4" ? "Fe" : "Ag";
+      if (RANK[m] > RANK[saltMetal]) {
+        const anion = s === "AgNO3" ? "NO₃" : "SO₄";
+        const num = s === "AgNO3" ? 2 : 1;
+        const eq = `${m} + ${num === 2 ? "2 " : ""}${s === "CuSO4" ? "CuSO₄" : s === "FeSO4" ? "FeSO₄" : "AgNO₃"} → ${m}${anion === "SO₄" ? "SO₄" : "(NO₃)₂"} + ${num === 2 ? "2 " : ""}${saltMetal}`;
+        const obsMap = {
+          Cu: "Reddish copper coats the metal; blue colour fades.",
+          Fe: "Grey iron deposits on the metal; green colour fades.",
+          Ag: "Sparkling silver crystals grow on the metal surface."
+        };
+        return { reacts: true, eq, obs: obsMap[saltMetal] };
+      }
+      return { reacts: false, eq: `${m} + ${s} → no reaction`, obs: m + " is below " + saltMetal + " — no displacement." };
+    }
+
+    document.getElementById("btn-drop").addEventListener("click", () => {
+      state.dropped = true; state.t = 0;
+      const p = predict();
+      document.getElementById("o-eq").textContent = p.eq;
+      document.getElementById("o-obs").textContent = p.obs;
+    });
+
+    function update(dt) {
+      if (!state.dropped) return;
+      state.t += dt;
+      const p = predict();
+      if (!p.reacts) return;
+      const acid = state.soln === "HCl" || state.soln === "H2SO4";
+      if (acid) {
+        if (Math.random() < 28*dt) state.bubbles.push({ x:(Math.random()-0.5)*30, y: 0, r:1.6+Math.random()*2.5, vy:-50-Math.random()*40 });
+      } else {
+        state.coating = Math.min(1, state.coating + 0.18*dt);
+        state.colorShift = Math.min(1, state.colorShift + 0.12*dt);
+      }
+      for (const b of state.bubbles) b.y += b.vy * dt;
+      state.bubbles = state.bubbles.filter(b => b.y > -120);
+    }
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0,0,W,H);
+      // test tube center
+      const cx = W/2, ty = 70, tw = 70, th = H - 160;
+      // solution color, faded if a colour-shifting reaction has progressed
+      const baseCol = COLORS[state.soln];
+      ctx.fillStyle = baseCol;
+      ctx.globalAlpha = 1 - state.colorShift * 0.7;
+      ctx.fillRect(cx - tw/2, ty + 30, tw, th - 30);
+      ctx.globalAlpha = 1;
+      // tube outline
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx - tw/2, ty);
+      ctx.lineTo(cx - tw/2, ty + th);
+      ctx.arc(cx, ty + th, tw/2, Math.PI, 0, true);
+      ctx.lineTo(cx + tw/2, ty);
+      ctx.stroke();
+      // metal piece
+      if (state.dropped) {
+        const my = ty + th - 30;
+        const baseColors = { Mg:"#cfd6e0", Zn:"#aab2bf", Fe:"#8a99ad", Cu:"#c6783a", Ag:"#e0e7ee" };
+        ctx.fillStyle = baseColors[state.metal];
+        ctx.fillRect(cx - 12, my, 24, 8);
+        // coating from displacement
+        if (state.coating > 0) {
+          const cMap = { CuSO4:"#c6783a", FeSO4:"#8a99ad", AgNO3:"#e6ecf2" };
+          ctx.fillStyle = cMap[state.soln] || "#fff";
+          ctx.globalAlpha = state.coating;
+          ctx.fillRect(cx - 13, my - 2, 26, 4);
+          ctx.globalAlpha = 1;
+        }
+        for (const b of state.bubbles) {
+          ctx.fillStyle = "rgba(180,220,255,.75)";
+          ctx.beginPath(); ctx.arc(cx + b.x, my + b.y, b.r, 0, Math.PI*2); ctx.fill();
+        }
+      }
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText(state.metal + "(s) in " + state.soln + "(aq)", 16, H - 14);
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

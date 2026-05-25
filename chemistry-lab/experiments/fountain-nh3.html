@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ammonia Fountain — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Ammonia fountain</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Ammonia fountain</div>
+    <h1 style="margin:6px 0 4px">The ammonia fountain</h1>
+    <p style="color:var(--muted);margin:0">
+      A round-bottomed flask full of dry NH₃ is connected to a beaker of water
+      containing phenolphthalein. A single squeeze of water into the flask
+      starts a vivid pink fountain.
+    </p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Fountain apparatus</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-squeeze">Squeeze a drop of water</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations</h3>
+          <dl class="kv">
+            <dt>Pressure in flask</dt><dd id="o-p">1.00 atm</dd>
+            <dt>Water risen</dt><dd id="o-rise">0 %</dd>
+            <dt>Indicator color</dt><dd id="o-col">colourless</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Press the rubber dropper to start.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>Why the fountain works</h2>
+          <p>Ammonia is exceptionally soluble — about 700 volumes of NH₃ dissolve in
+             one volume of water at room temperature. A single drop of water
+             dissolves enough gas to reduce the pressure inside the flask
+             dramatically, so atmospheric pressure pushes the water up.</p>
+          <div class="formula">NH₃ + H₂O &nbsp;⇌&nbsp; NH₄⁺ + OH⁻</div>
+          <p>The OH⁻ produced makes phenolphthalein turn pink, so the rising
+             jet glows pink as it fills the flask.</p>
+          <h3>Try this</h3>
+          <ol>
+            <li>Replace NH₃ with HCl gas — what colour would universal
+                indicator turn?</li>
+            <li>Could the same setup work with CO₂? Why is the fountain weaker?</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = { triggered: false, p: 1.0, rise: 0, jets: [], t: 0 };
+    const setMsg = (s) => document.getElementById("o-msg").textContent = s;
+    document.getElementById("btn-squeeze").addEventListener("click", () => {
+      if (state.triggered) return;
+      state.triggered = true; setMsg("Pressure dropping — pink jet rising into the flask!");
+    });
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      state.triggered = false; state.p = 1.0; state.rise = 0; state.jets.length = 0; setMsg("Reset.");
+    });
+
+    function update(dt) {
+      state.t += dt;
+      if (state.triggered) {
+        state.p = Math.max(0.05, state.p - 0.45 * dt);
+        state.rise = Math.min(95, state.rise + (1.0 - state.p) * 70 * dt);
+        // spawn jet droplets
+        if (Math.random() < 90 * dt) {
+          state.jets.push({ y: 360, vy: -250 - Math.random() * 100, x: (Math.random()-0.5)*6, life: 1.4 });
+        }
+      }
+      for (const j of state.jets) { j.y += j.vy * dt; j.vy += 90 * dt; j.life -= dt; }
+      state.jets = state.jets.filter(j => j.life > 0 && j.y > 80);
+
+      document.getElementById("o-p").textContent = state.p.toFixed(2) + " atm";
+      document.getElementById("o-rise").textContent = state.rise.toFixed(0) + " %";
+      document.getElementById("o-col").textContent = state.rise > 5 ? "bright pink" : "colourless";
+    }
+
+    function draw() {
+      const W = width(), H = height();
+      ctx.clearRect(0,0,W,H);
+      const cx = W/2;
+      // flask (round-bottomed) at top
+      const fx = cx, fy = 130, fr = 80;
+      ctx.beginPath();
+      ctx.arc(fx, fy, fr, 0, Math.PI*2);
+      ctx.fillStyle = state.triggered
+        ? "rgba(255,150,200,.18)"
+        : "rgba(180,160,255,.15)";
+      ctx.fill();
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      // neck
+      ctx.beginPath();
+      ctx.moveTo(fx - 14, fy + fr - 6); ctx.lineTo(fx - 14, fy + fr + 40);
+      ctx.lineTo(fx + 14, fy + fr + 40); ctx.lineTo(fx + 14, fy + fr - 6);
+      ctx.stroke();
+      // water filled portion (top down due to inversion - water enters from bottom)
+      if (state.rise > 0) {
+        const f = state.rise / 100;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(fx, fy, fr - 1, 0, Math.PI*2);
+        ctx.clip();
+        ctx.fillStyle = "rgba(255,90,170,.45)";
+        ctx.fillRect(fx - fr, fy + fr - f * (fr*2), fr*2, f * (fr*2));
+        ctx.restore();
+      }
+      // jets
+      for (const j of state.jets) {
+        ctx.fillStyle = `rgba(255,120,190,${Math.min(1,j.life)})`;
+        ctx.beginPath();
+        ctx.arc(fx + j.x, j.y, 2.4, 0, Math.PI*2);
+        ctx.fill();
+      }
+      // delivery tube going down to beaker
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.beginPath();
+      ctx.moveTo(fx, fy + fr + 40); ctx.lineTo(fx, H - 110); ctx.stroke();
+      // beaker at bottom with pink water
+      const bx = cx - 90, by = H - 110, bw = 180, bh = 90;
+      ctx.fillStyle = state.triggered ? "rgba(255,90,170,.4)" : "rgba(80,160,255,.4)";
+      ctx.fillRect(bx, by + 15, bw, bh - 30);
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.strokeRect(bx, by, bw, bh);
+      // dropper
+      const dropPressed = state.triggered;
+      ctx.fillStyle = dropPressed ? "#ff5d6c" : "#42537b";
+      ctx.fillRect(fx - 30, 26, 60, 22);
+      ctx.fillStyle = "rgba(255,255,255,.85)";
+      ctx.font = "11px Inter";
+      ctx.fillText(dropPressed ? "pressed" : "rubber bulb", fx - 26, 41);
+      ctx.strokeStyle = "#9ec2ff";
+      ctx.beginPath(); ctx.moveTo(fx, 48); ctx.lineTo(fx, fy - fr + 6); ctx.stroke();
+
+      // labels
+      ctx.fillStyle = "rgba(255,255,255,.65)";
+      ctx.font = "12px Inter";
+      ctx.fillText("Flask filled with NH₃(g)", fx + fr + 8, fy);
+      ctx.fillText("Phenolphthalein water", bx + 4, by - 8);
+      ctx.fillText("NH₃ + H₂O ⇌ NH₄⁺ + OH⁻ (alkaline → pink)", 16, H - 14);
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

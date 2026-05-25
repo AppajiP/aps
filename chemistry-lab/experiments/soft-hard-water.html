@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Soft and hard water — the soap test",
+  subtitle: "How to tell the two apart in 30 seconds",
+  lede: "Add a few drops of soap solution to a sample of water and shake. Soft water foams readily; hard water gives only a thin scum.",
+  sections: [
+    { heading: "What makes water hard",
+      formula: "Ca²⁺, Mg²⁺ (and small amounts of Fe²⁺) dissolved in water",
+      body: "Hard water carries calcium and magnesium ions picked up from limestone, dolomite, or gypsum as it travels through the ground. These ions react with the long-chain fatty acid anions in soap to form an insoluble grey scum, preventing lather." },
+    { heading: "Procedure",
+      steps: [
+        "Take 10 mL of the test water in a test tube.",
+        "Add 1 mL of soap solution and stopper.",
+        "Shake the tube for 10 s and stand it upright.",
+        "Measure the height of stable foam after 30 s."
+      ] },
+    { heading: "Softening methods",
+      list: [
+        "Boiling — removes temporary hardness only (carbonate of Ca²⁺ precipitates as the dissolved CO₂ is driven off).",
+        "Washing soda (Na₂CO₃) — precipitates Ca²⁺ as CaCO₃.",
+        "Ion exchange — modern household softeners swap Ca²⁺/Mg²⁺ for Na⁺ on a resin.",
+        "Distillation — completely removes all dissolved ions."
+      ] }
+  ],
+  aside: "Hard water is not unsafe to drink — it actually supplies useful calcium. The downsides are appliance scaling (kettles, boilers) and wasted detergent.",
+  questions: [
+    "Why does boiling not remove permanent hardness?",
+    "Predict the result of the soap test on (a) rainwater, (b) tap water from a chalk region."
+  ]
+});
+</script>
+</body></html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Observing a Candle — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Observing a burning candle</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Burning candle</div>
+    <h1 style="margin:6px 0 4px">Observing a burning candle</h1>
+    <p style="color:var(--muted);margin:0">Light a candle, hover a beaker
+       and a piece of card to see where the flame is hottest, and identify
+       the combustion products.</p>
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Candle stage</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-light">Light candle</button>
+          <button class="btn secondary" id="btn-card">Drop card across flame</button>
+          <button class="btn secondary" id="btn-beaker">Cover with cold beaker</button>
+          <button class="btn secondary" id="btn-limewater">Rinse beaker with limewater</button>
+          <button class="btn danger" id="btn-blow">Blow out</button>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations log</h3>
+          <ul id="o-log" style="font-size:13px; line-height:1.6;"></ul>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>Three zones of the flame</h2>
+          <ul>
+            <li><b>Outer zone</b> — pale, almost invisible. Complete combustion. Hottest.</li>
+            <li><b>Middle zone</b> — bright yellow. Incandescent soot particles.</li>
+            <li><b>Inner core</b> — dim blue/violet. Wax vapour, not yet burning.</li>
+          </ul>
+          <h3>Products of combustion</h3>
+          <p>Paraffin (C₂₅H₅₂ approx.) reacts with O₂ to give CO₂ + H₂O. The
+             beaker fogs with condensed water, and shaken with limewater it
+             turns milky from CO₂.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const log = (msg) => {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      document.getElementById("o-log").appendChild(li);
+    };
+    const state = { lit: false, card: 0, beaker: 0, lime: 0, t: 0 };
+    document.getElementById("btn-light").addEventListener("click", () => {
+      if (state.lit) return;
+      state.lit = true; log("Candle lit. Flame has three visible zones.");
+    });
+    document.getElementById("btn-card").addEventListener("click", () => {
+      if (!state.lit) { log("Light the candle first."); return; }
+      state.card = 1;
+      log("Card scorched in a ring shape — outer flame is hottest, centre is cool.");
+      setTimeout(() => state.card = 0, 1500);
+    });
+    document.getElementById("btn-beaker").addEventListener("click", () => {
+      if (!state.lit) { log("Light the candle first."); return; }
+      state.beaker = 1;
+      log("Inside of beaker fogs with water droplets — H₂O is a combustion product.");
+    });
+    document.getElementById("btn-limewater").addEventListener("click", () => {
+      if (state.beaker < 1) { log("Cover the flame with a beaker first."); return; }
+      state.lime = 1;
+      log("Limewater turns milky — CO₂ is also a combustion product.");
+    });
+    document.getElementById("btn-blow").addEventListener("click", () => {
+      if (!state.lit) return;
+      state.lit = false;
+      log("Blown out. Wisp of white wax vapour rises — relight at the wisp and the flame travels back to the wick.");
+    });
+
+    function update(dt) { state.t += dt; }
+
+    function drawFlame(cx, cy) {
+      const t = state.t;
+      // outer
+      const g1 = ctx.createRadialGradient(cx, cy, 4, cx, cy, 26);
+      g1.addColorStop(0, "rgba(255,210,120,.85)");
+      g1.addColorStop(1, "rgba(255,140,40,0)");
+      ctx.fillStyle = g1;
+      ctx.beginPath(); ctx.ellipse(cx, cy - 18 + Math.sin(t*5)*0.6, 12, 30, 0, 0, Math.PI*2); ctx.fill();
+      // middle yellow
+      ctx.fillStyle = "rgba(255,200,80,.9)";
+      ctx.beginPath(); ctx.ellipse(cx, cy - 10, 6, 18, 0, 0, Math.PI*2); ctx.fill();
+      // blue core
+      ctx.fillStyle = "rgba(140,200,255,.85)";
+      ctx.beginPath(); ctx.ellipse(cx, cy - 2, 2.5, 6, 0, 0, Math.PI*2); ctx.fill();
+    }
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0,0,W,H);
+      const cx = W/2, baseY = H - 80;
+      // candle body
+      ctx.fillStyle = "#e8d8a8";
+      ctx.fillRect(cx - 18, baseY - 120, 36, 120);
+      ctx.fillStyle = "#c4b287";
+      ctx.fillRect(cx - 18, baseY - 124, 36, 4);
+      // wick
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(cx, baseY - 120); ctx.lineTo(cx, baseY - 132); ctx.stroke();
+      // flame
+      if (state.lit) drawFlame(cx, baseY - 130);
+
+      // card across flame
+      if (state.card && state.lit) {
+        ctx.fillStyle = "#c8a073";
+        ctx.fillRect(cx - 60, baseY - 144, 120, 6);
+        // scorch ring
+        ctx.fillStyle = "rgba(40,30,20,.85)";
+        ctx.beginPath(); ctx.arc(cx, baseY - 141, 12, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = "#c8a073";
+        ctx.beginPath(); ctx.arc(cx, baseY - 141, 4, 0, Math.PI*2); ctx.fill();
+      }
+
+      // beaker over flame
+      if (state.beaker) {
+        const bx = cx - 40, by = baseY - 200, bw = 80, bh = 80;
+        ctx.fillStyle = state.lime ? "rgba(245,245,255,.4)" : "rgba(200,220,255,.15)";
+        ctx.fillRect(bx, by, bw, bh);
+        ctx.strokeStyle = "#9ec2ff";
+        ctx.strokeRect(bx, by, bw, bh);
+        if (!state.lime) {
+          // condensation
+          for (let i = 0; i < 12; i++) {
+            ctx.fillStyle = "rgba(220,240,255,.6)";
+            ctx.beginPath();
+            ctx.arc(bx + 8 + (i*6)%bw, by + 12 + ((i*7)%(bh-20)), 1.6, 0, Math.PI*2);
+            ctx.fill();
+          }
+        }
+      }
+
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText("Paraffin + O₂ → CO₂ + H₂O", 16, H - 14);
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Has the NaOH gone bad?",
+  subtitle: "Detecting Na₂CO₃ impurity in solid sodium hydroxide",
+  lede: "Pellets of NaOH left in a poorly-sealed jar slowly absorb CO₂ from the air and convert to Na₂CO₃. Three quick tests reveal whether the sample is still pure.",
+  sections: [
+    { heading: "The ageing reaction",
+      formula: "2 NaOH + CO₂ → Na₂CO₃ + H₂O" },
+    { heading: "Diagnostic tests",
+      steps: [
+        "Add dilute HCl to a spatula of the solid. CO₂ bubbles confirm carbonate.",
+        "Add a few drops of BaCl₂ to a solution of the sample. A white BaCO₃ precipitate confirms carbonate.",
+        "Add phenolphthalein. A strong red colour shows that some unreacted NaOH remains."
+      ] },
+    { heading: "Removing the carbonate",
+      body: "Add a slight excess of Ca(OH)₂ to a solution of the sample. Ca(OH)₂ + Na₂CO₃ → 2 NaOH + CaCO₃↓. Filtering off the precipitate restores pure NaOH solution.",
+      formula: "Ca(OH)₂ + Na₂CO₃ → 2 NaOH + CaCO₃↓"
+    }
+  ],
+  aside: "NaOH is hygroscopic — solid pellets fuse with absorbed moisture as well as react with CO₂. Always store in a tightly-stoppered dark bottle.",
+  questions: [
+    "Why is BaCl₂ a better discriminator than HCl for distinguishing carbonate from hydroxide?",
+    "Suggest a single titration that quantifies both NaOH and Na₂CO₃ in the same mixture."
+  ]
+});
+</script>
+</body></html>

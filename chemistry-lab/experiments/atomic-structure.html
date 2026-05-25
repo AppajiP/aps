@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Atomic Structure — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Bohr model of the atom</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Structure of the atom</div>
+    <h1 style="margin:6px 0 4px">Structure of the atom</h1>
+    <p style="color:var(--muted);margin:0">
+      Adjust protons, neutrons, and electrons to build any of the first 20
+      elements and inspect its electron shell layout (2, 8, 8, …).</p>
+
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Bohr model</div><canvas id="stage"></canvas></div>
+        <div class="slider-row">
+          <label for="z">Protons (Z)</label>
+          <input id="z" type="range" min="1" max="20" value="11"/>
+          <span class="val" id="z-val">11</span>
+        </div>
+        <div class="slider-row">
+          <label for="n">Neutrons</label>
+          <input id="n" type="range" min="0" max="30" value="12"/>
+          <span class="val" id="n-val">12</span>
+        </div>
+        <div class="slider-row">
+          <label for="e">Electrons</label>
+          <input id="e" type="range" min="0" max="22" value="11"/>
+          <span class="val" id="e-val">11</span>
+        </div>
+
+        <div class="panel" style="margin-top:14px">
+          <h3>Current atom</h3>
+          <dl class="kv">
+            <dt>Element</dt><dd id="o-name">Sodium (Na)</dd>
+            <dt>Atomic number Z</dt><dd id="o-z">11</dd>
+            <dt>Mass number A</dt><dd id="o-a">23</dd>
+            <dt>Electron config</dt><dd id="o-conf">2, 8, 1</dd>
+            <dt>Net charge</dt><dd id="o-q">0 (neutral)</dd>
+          </dl>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>Reading the diagram</h2>
+          <ul>
+            <li>Centre: the nucleus contains protons (+) and neutrons (0).</li>
+            <li>Rings: each ring is an electron shell K, L, M, N… holding at most 2n² electrons.</li>
+            <li>Atomic number Z = number of protons.</li>
+            <li>Mass number A = protons + neutrons.</li>
+            <li>Neutral atom: electrons = protons. If they differ, the species is an ion.</li>
+          </ul>
+          <h3>Filling rule used here</h3>
+          <p>For the first 20 elements the shells fill in the simple sequence
+             2 → 8 → 8 → 2. This breaks down for transition metals.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const NAMES = [
+      ["H","Hydrogen"],["He","Helium"],["Li","Lithium"],["Be","Beryllium"],
+      ["B","Boron"],["C","Carbon"],["N","Nitrogen"],["O","Oxygen"],
+      ["F","Fluorine"],["Ne","Neon"],["Na","Sodium"],["Mg","Magnesium"],
+      ["Al","Aluminium"],["Si","Silicon"],["P","Phosphorus"],["S","Sulfur"],
+      ["Cl","Chlorine"],["Ar","Argon"],["K","Potassium"],["Ca","Calcium"]
+    ];
+    function shellsFor(e) {
+      const caps = [2, 8, 8, 2];
+      const out = [];
+      let left = e;
+      for (const c of caps) {
+        if (left <= 0) break;
+        const k = Math.min(c, left);
+        out.push(k);
+        left -= k;
+      }
+      return out;
+    }
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const zS = document.getElementById("z");
+    const nS = document.getElementById("n");
+    const eS = document.getElementById("e");
+    let t = 0;
+    function update() {
+      const z = +zS.value, n = +nS.value, e = +eS.value;
+      document.getElementById("z-val").textContent = z;
+      document.getElementById("n-val").textContent = n;
+      document.getElementById("e-val").textContent = e;
+      const name = NAMES[z-1];
+      document.getElementById("o-name").textContent = name ? name[1] + " (" + name[0] + ")" : "—";
+      document.getElementById("o-z").textContent = z;
+      document.getElementById("o-a").textContent = z + n;
+      document.getElementById("o-conf").textContent = shellsFor(e).join(", ") || "—";
+      const q = z - e;
+      let txt = q === 0 ? "0 (neutral)" : (q > 0 ? "+" + q + " (cation)" : q + " (anion)");
+      document.getElementById("o-q").textContent = txt;
+    }
+    [zS, nS, eS].forEach(s => s.addEventListener("input", update));
+    update();
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0, 0, W, H);
+      const z = +zS.value, n = +nS.value, e = +eS.value;
+      const cx = W/2, cy = H/2;
+      // nucleus
+      const nucR = 18 + Math.sqrt(z + n);
+      ctx.fillStyle = "rgba(255,93,108,.18)";
+      ctx.beginPath(); ctx.arc(cx, cy, nucR + 4, 0, Math.PI*2); ctx.fill();
+      // protons/neutrons cluster
+      const total = z + n;
+      const rng = ChemUtils.rng(total * 31 + 7);
+      for (let i = 0; i < total; i++) {
+        const a = i * 2.39996;
+        const r = Math.sqrt(i) * 3;
+        const x = cx + Math.cos(a) * r;
+        const y = cy + Math.sin(a) * r;
+        ctx.fillStyle = i < z ? "#ff7c8a" : "#9aa3b8";
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI*2); ctx.fill();
+      }
+      // shells
+      const shells = shellsFor(e);
+      for (let s = 0; s < shells.length; s++) {
+        const R = nucR + 30 + s * 32;
+        ctx.strokeStyle = "rgba(106,166,255,.35)";
+        ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.stroke();
+        // electrons
+        for (let k = 0; k < shells[s]; k++) {
+          const ang = (k / shells[s]) * Math.PI * 2 + t * (0.6 - s*0.12);
+          const x = cx + Math.cos(ang) * R;
+          const y = cy + Math.sin(ang) * R;
+          ctx.fillStyle = "#6aa6ff";
+          ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI*2); ctx.fill();
+          ctx.strokeStyle = "rgba(255,255,255,.4)";
+          ctx.stroke();
+        }
+      }
+      // label
+      ctx.fillStyle = "rgba(255,255,255,.7)";
+      ctx.font = "11px Inter";
+      ctx.fillText("Z=" + z + "  N=" + n + "  e⁻=" + e, 16, H - 14);
+    }
+    ChemUtils.loop(dt => { t += dt; draw(); });
+  })();
+  </script>
+</body>
+</html>

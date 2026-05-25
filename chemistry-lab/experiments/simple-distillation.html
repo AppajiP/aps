@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Simple laboratory distillation",
+  subtitle: "Purifying water by boiling and condensing",
+  lede: "A round-bottomed flask of impure water is heated; the steam travels through a water-cooled condenser and drips into a clean receiver as pure water.",
+  diagram: `
+    <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg">
+      <rect width="700" height="240" fill="#0e1530"/>
+      <!-- distillation flask -->
+      <circle cx="140" cy="150" r="55" fill="rgba(80,160,255,.25)" stroke="#9ec2ff" stroke-width="2"/>
+      <rect x="130" y="70" width="20" height="40" fill="rgba(80,160,255,.25)" stroke="#9ec2ff" stroke-width="2"/>
+      <text x="100" y="60" fill="#9ec2ff" font-size="11">impure water</text>
+      <!-- thermometer in stopper -->
+      <rect x="125" y="40" width="6" height="34" fill="#ff7c8a"/>
+      <text x="85" y="40" fill="#ff9aa5" font-size="11">thermometer</text>
+      <!-- 75° bend -->
+      <path d="M150 80 L250 80" stroke="#9ec2ff" stroke-width="3" fill="none"/>
+      <!-- Liebig condenser -->
+      <rect x="250" y="60" width="280" height="40" fill="rgba(120,170,255,.18)" stroke="#9ec2ff" stroke-width="2"/>
+      <rect x="262" y="70" width="256" height="20" fill="rgba(120,170,255,.3)" stroke="#9ec2ff"/>
+      <!-- cooling water in/out -->
+      <path d="M520 90 L555 130" stroke="#29d3a0" stroke-width="3" fill="none"/>
+      <text x="545" y="135" fill="#29d3a0" font-size="11">cool H₂O in</text>
+      <path d="M260 70 L240 30" stroke="#29d3a0" stroke-width="3" fill="none"/>
+      <text x="160" y="28" fill="#29d3a0" font-size="11">warm H₂O out</text>
+      <!-- receiver -->
+      <path d="M530 80 L555 80 L555 130" stroke="#9ec2ff" stroke-width="3" fill="none"/>
+      <rect x="540" y="140" width="80" height="80" fill="rgba(80,160,255,.4)" stroke="#9ec2ff" stroke-width="2"/>
+      <text x="538" y="234" fill="#9ec2ff" font-size="11">pure distillate</text>
+      <!-- burner -->
+      <ellipse cx="140" cy="215" rx="20" ry="14" fill="rgba(255,170,60,.7)"/>
+      <ellipse cx="140" cy="215" rx="8" ry="6" fill="rgba(120,200,255,.85)"/>
+      <rect x="130" y="222" width="20" height="4" fill="#42537b"/>
+    </svg>`,
+  sections: [
+    { heading: "Key components",
+      list: [
+        "Round-bottomed flask — holds the impure liquid; rounded shape distributes heat evenly.",
+        "Thermometer at the side-arm opening — reads the boiling point of the vapour, not the liquid below.",
+        "Liebig condenser — long glass tube with a cooling-water jacket; cold water flows counter-current to the vapour.",
+        "Receiver flask — collects the condensed liquid (the 'distillate').",
+        "Heat source — usually a Bunsen burner or hot-plate with a wire gauze."
+      ] },
+    { heading: "Theory of separation",
+      body: "Distillation separates components by their difference in boiling point. The lower-boiling component evaporates first, travels through the condenser, and is collected. Non-volatile impurities (salts, sand, dyes) remain behind in the boiling flask.",
+      formula: "Liquid → vapour (at boiling flask)<br>Vapour → liquid (at condenser)" },
+    { heading: "Common errors",
+      list: [
+        "Cooling water flowing the wrong way — the condenser must be cool at the receiver end.",
+        "Heating too strongly — vapour passes through the condenser too fast to condense fully.",
+        "Receiver vessel not vented — pressure builds and the system can rupture."
+      ] }
+  ],
+  aside: "Simple distillation works only when one component is much more volatile than the rest. Mixtures of two liquids with close boiling points (e.g. ethanol + water) need fractional distillation, in which a packed column gives many repeated condense/evaporate cycles.",
+  questions: [
+    "Why is the thermometer placed at the side-arm rather than dipping into the liquid?",
+    "Predict what will be left in the boiling flask if seawater is distilled to dryness.",
+    "Why is counter-current cooling more efficient than co-current?"
+  ]
+});
+</script>
+</body></html>

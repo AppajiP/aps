@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Fire Extinguisher — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Build a CO₂ extinguisher</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Fire extinguisher</div>
+    <h1 style="margin:6px 0 4px">Designing a simple fire extinguisher</h1>
+    <p style="color:var(--muted);margin:0">
+      Combine sodium hydrogen carbonate with dilute hydrochloric acid inside
+      a sealed bottle. The CO₂ pressure pushes a jet out through the nozzle.</p>
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Extinguisher</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-flip">Tip bottle (mix reagents)</button>
+          <button class="btn secondary" id="btn-fire">Light test fire</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Observations</h3>
+          <dl class="kv">
+            <dt>Pressure inside</dt><dd id="o-p">1.0 atm</dd>
+            <dt>Jet</dt><dd id="o-jet">no flow</dd>
+            <dt>Test fire</dt><dd id="o-fire">unlit</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Light a test fire first, then tip the bottle to mix.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>The reaction</h2>
+          <div class="formula">NaHCO₃ + HCl → NaCl + H₂O + CO₂↑</div>
+          <p>The CO₂ produced is denser than air, smothers the fire by displacing
+             oxygen, and cools the fuel slightly as it expands out of the nozzle.</p>
+          <h3>Real extinguishers</h3>
+          <ul>
+            <li>Soda-acid (this one) — for paper / wood (Class A).</li>
+            <li>Liquid CO₂ — for electrical fires.</li>
+            <li>Dry powder (NaHCO₃) — for flammable liquids.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = { tipped: false, fireLit: false, p: 1.0, jet: 0, t: 0, jets: [], fireSize: 1 };
+    const setMsg = (s) => document.getElementById("o-msg").textContent = s;
+    document.getElementById("btn-flip").addEventListener("click", () => { state.tipped = true; setMsg("Acid mixes with NaHCO₃ — CO₂ builds up."); });
+    document.getElementById("btn-fire").addEventListener("click", () => { state.fireLit = true; state.fireSize = 1; setMsg("Test fire lit. Now tip the extinguisher to put it out."); });
+    document.getElementById("btn-reset").addEventListener("click", () => { state.tipped = false; state.fireLit = false; state.p = 1.0; state.jet = 0; state.jets.length = 0; state.fireSize = 1; setMsg("Reset."); });
+
+    function update(dt) {
+      state.t += dt;
+      if (state.tipped) state.p = Math.min(4, state.p + 0.6 * dt);
+      if (state.p > 1.2) {
+        state.jet = Math.min(1, state.jet + dt);
+        for (let i = 0; i < 8; i++)
+          state.jets.push({ x: 0, y: 0, vx: 220 + Math.random()*80, vy: (Math.random()-0.5)*100, life: 0.9, r: 2+Math.random()*2 });
+        state.p = Math.max(1.0, state.p - 0.4 * dt);
+      } else {
+        state.jet = 0;
+      }
+      for (const j of state.jets) { j.x += j.vx*dt; j.y += j.vy*dt; j.life -= dt; j.vy += 30*dt; }
+      state.jets = state.jets.filter(j => j.life > 0);
+      // fire shrinks if jet reaches it
+      if (state.fireLit && state.jet > 0) state.fireSize = Math.max(0, state.fireSize - 0.4 * dt);
+      if (state.fireLit && state.fireSize === 0) { state.fireLit = false; setMsg("Fire extinguished by CO₂ jet."); }
+
+      document.getElementById("o-p").textContent = state.p.toFixed(2) + " atm";
+      document.getElementById("o-jet").textContent = state.jet > 0 ? "CO₂ jet escaping" : "no flow";
+      document.getElementById("o-fire").textContent = state.fireLit ? (state.fireSize < 0.4 ? "fading" : "burning") : (state.fireSize === 0 ? "out" : "unlit");
+    }
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0,0,W,H);
+      // bottle
+      const bx = 90, by = H/2 - 90, bw = 80, bh = 200;
+      ctx.save();
+      ctx.translate(bx + bw/2, by + bh/2);
+      ctx.rotate(state.tipped ? -0.6 : 0);
+      ctx.translate(-(bx + bw/2), -(by + bh/2));
+      ctx.fillStyle = "rgba(255,90,80,.18)";
+      ctx.fillRect(bx, by, bw, bh);
+      ctx.strokeStyle = "#ff7c8a";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(bx, by, bw, bh);
+      // inside test tube of HCl (drawn as small inner tube)
+      ctx.fillStyle = "rgba(255,210,80,.5)";
+      ctx.fillRect(bx + 25, by + 16, 14, 70);
+      ctx.strokeRect(bx + 25, by + 16, 14, 70);
+      // NaHCO3 solution
+      ctx.fillStyle = "rgba(180,220,255,.3)";
+      ctx.fillRect(bx + 4, by + 100, bw - 8, bh - 110);
+      // nozzle
+      ctx.fillStyle = "#42537b";
+      ctx.fillRect(bx + bw - 6, by + 30, 30, 8);
+      ctx.restore();
+
+      // CO2 jet
+      for (const j of state.jets) {
+        ctx.fillStyle = `rgba(220,235,255,${Math.min(1,j.life)})`;
+        ctx.beginPath();
+        ctx.arc(bx + bw + 30 + j.x, by + 36 + j.y, j.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      // test fire on the right
+      const fx = W - 130, fy = H - 110;
+      ctx.fillStyle = "#a98c5a"; ctx.fillRect(fx - 30, fy + 20, 80, 14);
+      if (state.fireLit) {
+        const f = state.fireSize;
+        const g = ctx.createRadialGradient(fx + 10, fy + 16, 2, fx + 10, fy + 16, 50 * f);
+        g.addColorStop(0, "rgba(255,230,160,.95)");
+        g.addColorStop(0.5, "rgba(255,150,60,.8)");
+        g.addColorStop(1, "rgba(255,80,40,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.ellipse(fx + 10, fy + 0, 28*f, 50*f, 0, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "12px Inter";
+      ctx.fillText("NaHCO₃ + HCl → NaCl + H₂O + CO₂↑", 16, H - 14);
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

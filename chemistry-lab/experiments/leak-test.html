@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Checking apparatus air-tightness",
+  subtitle: "The warm-hand bubble test",
+  lede: "Before generating any gas, every assembled apparatus must be tested for leaks. The classic test relies on the simple fact that warm air takes up more volume than cold air.",
+  diagram: `
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="600" height="220" fill="#0e1530"/>
+      <!-- flask -->
+      <circle cx="180" cy="130" r="48" fill="rgba(120,170,255,.12)" stroke="#9ec2ff" stroke-width="2"/>
+      <rect x="170" y="58" width="20" height="30" fill="rgba(120,170,255,.12)" stroke="#9ec2ff" stroke-width="2"/>
+      <!-- delivery tube -->
+      <path d="M180 60 C 240 30, 320 30, 380 110" stroke="#9ec2ff" stroke-width="2" fill="none"/>
+      <!-- beaker -->
+      <rect x="350" y="120" width="120" height="80" fill="rgba(80,160,255,.22)" stroke="#9ec2ff" stroke-width="2"/>
+      <!-- bubble train -->
+      <circle cx="385" cy="160" r="4" fill="rgba(180,220,255,.8)"/>
+      <circle cx="385" cy="146" r="3" fill="rgba(180,220,255,.7)"/>
+      <circle cx="385" cy="134" r="2.5" fill="rgba(180,220,255,.6)"/>
+      <!-- warm hand -->
+      <ellipse cx="180" cy="160" rx="55" ry="22" fill="rgba(255,150,90,.25)"/>
+      <text x="135" y="200" fill="#ffc987" font-size="13">warm with hands</text>
+      <text x="350" y="116" fill="#9ec2ff" font-size="11">beaker of water</text>
+    </svg>`,
+  sections: [
+    { heading: "Procedure",
+      steps: [
+        "Assemble the gas-generating apparatus normally, but leave the reagent flask empty.",
+        "Dip the end of the delivery tube into a beaker of water.",
+        "Wrap the empty flask with both hands for 10 – 20 s.",
+        "A leak-tight system shows a steady train of bubbles emerging from the delivery tube as the air inside expands.",
+        "Withdraw the hands. As the gas inside cools, water rises a short distance up the delivery tube and stays there. If the apparatus leaks, the water level drops back."
+      ] },
+    { heading: "Why this works",
+      formula: "PV = nRT  (at constant n, V; P rises with T)",
+      body: "Body heat raises the gas temperature by ~5 °C. At constant pressure that increases the gas volume by about 2 %, more than enough to push a few bubbles through the seal." },
+    { heading: "Common leak points",
+      list: [
+        "Rubber stopper not pushed all the way in.",
+        "Cracked glass at a connector joint.",
+        "Loose connection between rubber tubing and a glass adapter.",
+        "Worn ground-glass joint — apply a thin smear of vacuum grease."
+      ] }
+  ],
+  aside: "Air-tightness is not just a tidiness issue — a leaking CO₂ or H₂ generator is a safety hazard. The bubble test takes 30 s and prevents most leak-related accidents.",
+  questions: [
+    "Why does the test use warm hands rather than a heat gun?",
+    "What does it mean if no bubbles appear when the apparatus is warmed but the water still rises on cooling?"
+  ]
+});
+</script>
+</body></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Three zones of an alcohol-lamp flame",
+  subtitle: "Finding the hottest part of the flame",
+  lede: "Hold a wooden splint horizontally across an alcohol-lamp flame for two seconds. The pattern of charring shows exactly which zone is hottest.",
+  diagram: `
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="600" height="220" fill="#0e1530"/>
+      <!-- lamp body -->
+      <rect x="240" y="160" width="120" height="40" rx="6" fill="#42537b"/>
+      <rect x="290" y="140" width="20" height="20" fill="#a98c5a"/>
+      <!-- flame zones -->
+      <ellipse cx="300" cy="100" rx="36" ry="60" fill="rgba(255,170,60,.55)"/>
+      <ellipse cx="300" cy="110" rx="22" ry="44" fill="rgba(255,210,90,.85)"/>
+      <ellipse cx="300" cy="125" rx="10" ry="20" fill="rgba(120,180,255,.85)"/>
+      <text x="350" y="60" fill="#ffc987" font-size="13">Outer zone — hottest (complete combustion)</text>
+      <text x="350" y="110" fill="#ffe18a" font-size="13">Middle zone — bright, incomplete combustion</text>
+      <text x="350" y="140" fill="#9ec2ff" font-size="13">Inner core — coolest, unburned vapour</text>
+    </svg>`,
+  sections: [
+    { heading: "Why three zones?",
+      body: "Inside the flame, alcohol vapour rises around the wick. Right at the wick there is little oxygen — the inner core is cool and dim. Higher up, partial combustion releases incandescent carbon: the bright yellow middle zone. At the outside, fresh air supplies enough O₂ for complete combustion to CO₂ and H₂O — that zone is hottest." },
+    { heading: "Splint test",
+      steps: [
+        "Light the lamp and let the flame steady.",
+        "Hold a thin splint horizontally so it cuts across all three zones for ~2 s.",
+        "Withdraw and inspect: the charred area corresponds to the hottest zone (the two outer rings)."
+      ] },
+    { heading: "Practical rule",
+      body: "When heating a flask, hold it in the outer zone, not in the bright middle. The bright zone is luminous but cooler, and deposits sooty carbon on glass." }
+  ],
+  aside: "The same three-zone structure applies to the candle flame, the Bunsen burner with the air-hole closed, and any other diffusion flame.",
+  questions: [
+    "Why does the inner core of the flame seem 'dark' even though the lamp is on?",
+    "How would the splint pattern change if the air-hole on a Bunsen burner were fully opened?"
+  ]
+});
+</script>
+</body></html>

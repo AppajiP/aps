@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Conservation of Mass — Virtual Chemistry Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-logo">⚗</div>
+        <div><div class="brand-text">Virtual Chemistry Lab</div>
+        <div class="brand-sub">Conservation of mass</div></div></div>
+      <nav><a href="../index.html">All experiments</a></nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="crumbs"><a href="../index.html">Library</a> &raquo; Conservation of mass</div>
+    <h1 style="margin:6px 0 4px">Law of conservation of mass</h1>
+    <p style="color:var(--muted);margin:0">
+      Weigh a flask of reactants before and after a reaction takes place.
+      If the system is sealed, the total mass must remain unchanged.</p>
+    <div class="exp-layout">
+      <div>
+        <div class="stage"><div class="stage-label">Sealed flask on balance</div><canvas id="stage"></canvas></div>
+        <div class="controls">
+          <button class="btn" id="btn-mix">Mix reagents</button>
+          <button class="btn secondary" id="btn-toggle">Toggle stopper</button>
+          <button class="btn danger" id="btn-reset">Reset</button>
+        </div>
+        <div class="slider-row">
+          <label>Reaction</label>
+          <select id="rxn" style="flex:1; padding:6px; background:var(--bg-soft); border:1px solid var(--border); color:var(--text); border-radius:8px;">
+            <option value="ppt">AgNO₃ + NaCl → AgCl↓ + NaNO₃  (no gas)</option>
+            <option value="gas">Na₂CO₃ + 2 HCl → 2 NaCl + H₂O + CO₂↑</option>
+          </select>
+        </div>
+        <div class="panel" style="margin-top:14px">
+          <h3>Balance reading</h3>
+          <dl class="kv">
+            <dt>Before reaction</dt><dd id="o-before">— g</dd>
+            <dt>After reaction</dt><dd id="o-after">— g</dd>
+            <dt>Δm</dt><dd id="o-delta">—</dd>
+          </dl>
+          <p id="o-msg" style="color:var(--accent);min-height:1.4em">Choose a reaction and mix.</p>
+        </div>
+      </div>
+      <aside>
+        <div class="panel">
+          <h2>Lavoisier's law</h2>
+          <p>In any closed-system chemical reaction the total mass of products
+             equals the total mass of reactants. Atoms are merely rearranged,
+             never created or destroyed.</p>
+          <h3>Why open systems seem to violate the law</h3>
+          <p>If a gaseous product escapes (Na₂CO₃ + HCl releases CO₂) the balance
+             will appear to lose mass. Reseal the flask and the discrepancy
+             disappears.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site">Virtual Chemistry Lab</footer>
+  <script src="../scripts/exp-utils.js"></script>
+  <script>
+  (function () {
+    const stage = document.getElementById("stage");
+    const { ctx, width, height } = ChemUtils.setupCanvas(stage);
+    const state = {
+      rxn: "ppt", sealed: true, mixed: false, t: 0,
+      flaskMass: 120.0, agcl: 0, co2: 0, escaped: false, bubbles: []
+    };
+    const rxn = document.getElementById("rxn");
+    rxn.addEventListener("change", () => { state.rxn = rxn.value; reset(); });
+    const setMsg = (s) => document.getElementById("o-msg").textContent = s;
+    document.getElementById("btn-mix").addEventListener("click", () => {
+      state.mixed = true; state.t = 0;
+      setMsg(state.rxn === "ppt" ? "White AgCl precipitate forms." : "CO₂ bubbles form rapidly.");
+    });
+    document.getElementById("btn-toggle").addEventListener("click", () => {
+      state.sealed = !state.sealed;
+      setMsg(state.sealed ? "Stopper closed — system sealed." : "Stopper removed — gas can escape.");
+    });
+    function reset() {
+      state.mixed = false; state.sealed = true; state.t = 0;
+      state.agcl = 0; state.co2 = 0; state.escaped = false; state.bubbles.length = 0;
+      setMsg("Reset.");
+    }
+    document.getElementById("btn-reset").addEventListener("click", reset);
+
+    function update(dt) {
+      state.t += dt;
+      if (state.mixed && state.t < 4) {
+        if (state.rxn === "ppt") state.agcl = Math.min(1, state.agcl + 0.3*dt);
+        else {
+          state.co2 = Math.min(1, state.co2 + 0.4*dt);
+          if (Math.random() < 30*dt) {
+            state.bubbles.push({ x: (Math.random()-0.5)*40, y: 0, r: 2+Math.random()*3, vy: -50-Math.random()*40 });
+          }
+          if (!state.sealed) state.escaped = true;
+        }
+      }
+      for (const b of state.bubbles) b.y += b.vy * dt;
+      state.bubbles = state.bubbles.filter(b => b.y > -120);
+
+      const before = state.flaskMass;
+      let after = before;
+      // If gas escaped, mass drops by ~0.4 g for CO2
+      if (state.escaped) after = before - 0.43 * state.co2;
+      document.getElementById("o-before").textContent = before.toFixed(2) + " g";
+      document.getElementById("o-after").textContent  = (state.mixed ? after : before).toFixed(2) + " g";
+      const d = (state.mixed ? after : before) - before;
+      document.getElementById("o-delta").textContent  = Math.abs(d) < 0.005 ? "0.00 g (mass conserved)" : d.toFixed(2) + " g (gas escaped!)";
+    }
+
+    function draw() {
+      const W = stage.clientWidth, H = stage.clientHeight;
+      ctx.clearRect(0,0,W,H);
+      // balance pan
+      const cx = W/2, py = H - 90;
+      ctx.fillStyle = "#16213f"; ctx.fillRect(cx - 110, py, 220, 8);
+      ctx.fillStyle = "#22304f"; ctx.fillRect(cx - 8, py + 8, 16, 50);
+      ctx.fillStyle = "#16213f"; ctx.fillRect(cx - 70, py + 56, 140, 24);
+      ctx.fillStyle = "rgba(255,255,255,.7)";
+      ctx.font = "14px monospace";
+      const reading = state.mixed && state.escaped ? (state.flaskMass - 0.43 * state.co2) : state.flaskMass;
+      ctx.fillText(reading.toFixed(2) + " g", cx - 30, py + 73);
+      // flask
+      const fx = cx, fy = py - 50;
+      ctx.fillStyle = "rgba(120,170,255,.10)";
+      ctx.beginPath(); ctx.arc(fx, fy, 55, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = "#9ec2ff"; ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(fx - 12, fy - 50); ctx.lineTo(fx - 12, fy - 100);
+      ctx.lineTo(fx + 12, fy - 100); ctx.lineTo(fx + 12, fy - 50);
+      ctx.stroke();
+      // solution
+      ctx.save();
+      ctx.beginPath(); ctx.arc(fx, fy, 53, 0, Math.PI*2); ctx.clip();
+      ctx.fillStyle = state.rxn === "ppt"
+        ? `rgba(255,255,255,${0.15 + state.agcl*0.4})`
+        : "rgba(255,210,80,.25)";
+      ctx.fillRect(fx - 60, fy - 10, 120, 70);
+      // bubbles
+      if (state.rxn === "gas") {
+        for (const b of state.bubbles) {
+          ctx.fillStyle = "rgba(180,220,255,.7)";
+          ctx.beginPath(); ctx.arc(fx + b.x, fy + 30 + b.y, b.r, 0, Math.PI*2); ctx.fill();
+        }
+        if (state.escaped) {
+          // gas escaping above stopper
+          for (let i = 0; i < 5; i++) {
+            const yy = fy - 110 - i*12;
+            ctx.fillStyle = "rgba(200,220,255,.4)";
+            ctx.beginPath(); ctx.arc(fx + (i%2 ? 4 : -4), yy, 3, 0, Math.PI*2); ctx.fill();
+          }
+        }
+      }
+      ctx.restore();
+      // precipitate at bottom
+      if (state.rxn === "ppt") {
+        ctx.fillStyle = `rgba(245,245,255,${0.6 * state.agcl})`;
+        ctx.beginPath();
+        ctx.arc(fx, fy + 40, 22, Math.PI, 0, true);
+        ctx.fill();
+      }
+      // stopper
+      ctx.fillStyle = state.sealed ? "#7a3d2f" : "#42537b";
+      ctx.fillRect(fx - 14, fy - 110, 28, 12);
+      ctx.fillStyle = "rgba(255,255,255,.55)";
+      ctx.font = "11px Inter";
+      ctx.fillText(state.sealed ? "stopper in" : "stopper out", fx - 30, fy - 116);
+    }
+    ChemUtils.loop(dt => { update(dt); draw(); });
+  })();
+  </script>
+</body>
+</html>

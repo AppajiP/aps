@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Pharaoh's serpent",
+  subtitle: "Mercury(II) thiocyanate decomposition",
+  lede: "Igniting a small pellet of mercury(II) thiocyanate produces a fluffy, snake-like solid that uncoils from a tiny dot to dozens of centimetres long.",
+  diagram: `
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="700" height="220" fill="#0e1530"/>
+      <rect x="0" y="170" width="700" height="50" fill="#1a253f"/>
+      <!-- pellet -->
+      <circle cx="200" cy="160" r="6" fill="#ffb347"/>
+      <!-- serpent shape -->
+      <path d="M200 160 C 230 100, 290 130, 340 90 C 400 60, 470 110, 520 60 C 570 30, 610 60, 660 50"
+            stroke="#7a4a2d" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.85"/>
+      <path d="M200 160 C 230 100, 290 130, 340 90 C 400 60, 470 110, 520 60 C 570 30, 610 60, 660 50"
+            stroke="#a86b3d" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <text x="190" y="200" fill="#ffb347" font-size="12">ignite here</text>
+      <text x="540" y="40" fill="#a86b3d" font-size="13">expanding solid foam</text>
+    </svg>`,
+  sections: [
+    { heading: "Approximate chemistry",
+      formula: "2 Hg(SCN)₂ → 2 HgS + CS₂ + C₃N₄ (carbon nitride mesh)",
+      body: "The decomposition produces volatile products (CS₂, HCN, COS) and a porous solid framework of mercury sulfide and carbon nitride. The gases puff up the solid into a long, hollow tube — the 'serpent'." },
+    { heading: "Why we don't demonstrate this in school",
+      list: [
+        "All mercury compounds are highly toxic — vapour and product residue both pose serious health risks.",
+        "The fumes contain HCN, CS₂, and SO₂ — all toxic.",
+        "A safer modern variant uses NaHCO₃ + sucrose + ethanol ('sugar snake') to give a similar visual effect with food-grade reagents."
+      ] }
+  ],
+  aside: [
+    "Pharaoh's serpent was a popular Victorian-era novelty sold in toy shops until the danger of mercury exposure was recognised in the early 20th century.",
+    "The sugar/NaHCO₃ alternative discovered later relies on caramelisation of sucrose plus CO₂ release from baking soda to produce the same expanding-foam effect."
+  ],
+  questions: [
+    "Why does a tiny pellet expand into a long thread? (Hint: think about gas evolution.)",
+    "Identify two reasons this reaction is non-renewable in a school lab."
+  ]
+});
+</script>
+</body></html>

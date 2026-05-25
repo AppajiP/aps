@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="../styles/main.css"/></head>
+<body>
+<script src="../scripts/theory-page.js"></script>
+<script>
+renderTheory({
+  title: "Diluting concentrated sulfuric acid",
+  subtitle: "How — and why — to add acid TO water",
+  lede: "Concentrated H₂SO₄ releases an enormous amount of heat when it mixes with water. Pouring water into the acid can flash-boil a layer at the surface and spit acid out of the beaker.",
+  diagram: `
+    <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="600" height="220" fill="#0e1530"/>
+      <rect x="80" y="60" width="160" height="140" fill="rgba(120,170,255,.18)" stroke="#9ec2ff" stroke-width="2"/>
+      <text x="100" y="50" fill="#9ec2ff" font-size="12">water (in beaker)</text>
+      <path d="M340 50 L340 80 L350 110 L350 150 L370 150 L370 110 L380 80 L380 50 Z"
+            fill="rgba(255,210,80,.45)" stroke="#9ec2ff"/>
+      <text x="335" y="40" fill="#ffc987" font-size="12">conc. H₂SO₄</text>
+      <path d="M360 110 C 320 130, 260 130, 230 130" stroke="#ffd166" stroke-width="3" fill="none"/>
+      <circle cx="220" cy="130" r="6" fill="#ffd166"/>
+      <text x="430" y="120" fill="#29d3a0" font-size="13">slowly add acid TO water</text>
+      <text x="430" y="140" fill="#ff5d6c" font-size="13">while stirring with a glass rod</text>
+    </svg>`,
+  sections: [
+    { heading: "Why the order matters",
+      body: "Dissolution of H₂SO₄ is strongly exothermic (≈ 75 kJ per mole). If concentrated acid is dribbled into a large volume of water, the heat is absorbed by all that water and the temperature rise is modest. Reversing the order traps the heat in a thin layer of water sitting on top of dense acid; it boils violently and spits acid into the air." },
+    { heading: "Standard procedure",
+      steps: [
+        "Place the empty beaker in a sink or bowl of cold water (acts as heat sink).",
+        "Pour the required volume of distilled water into the beaker first.",
+        "Slowly add the concentrated acid down the side of the beaker, with continuous stirring.",
+        "Allow the solution to cool to room temperature before using or transferring."
+      ] },
+    { heading: "PPE",
+      list: [
+        "Splash-proof safety goggles.",
+        "Nitrile or rubber gloves rated for acids.",
+        "Lab coat — no exposed skin on forearms.",
+        "Eyewash station and large bottle of NaHCO₃ nearby for spills."
+      ] }
+  ],
+  aside: "The same rule (acid → water) applies to nitric, hydrochloric, and phosphoric acids when concentrated. A common mnemonic in English-language labs is 'do as you oughta — add the acid to the water'.",
+  questions: [
+    "Why is a glass rod used for stirring rather than a metal spatula?",
+    "Would the same precaution be needed when diluting 1 mol/L H₂SO₄? Explain."
+  ]
+});
+</script>
+</body></html>
